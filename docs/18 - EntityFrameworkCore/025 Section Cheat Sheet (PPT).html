@@ -1,0 +1,91 @@
+<h4>Introduction to EntityFrameworkCore</h4><blockquote><p>EntityFrameworkCore is light-weight, extensible and cross-platform framework for accessing databases in .NET applications.</p><p>It is the most-used database framework for Asp.Net Core Apps.</p></blockquote><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-21_09-08-33-42467f803bbf9e87412a275267e4e9a6.png"></figure><p><br></p><p><strong>EFCore Models</strong></p><figure><img height="284" src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-21_14-27-04-88889e3d2f62eb438f058a1ca5f0da6f.png" width="795"></figure><p><br></p><h4><strong>Pros &amp; Cons of EntityFrameworkCore</strong></h4><p><strong>Shorter Code</strong></p><p>The CRUD operations / calling stored procedures are done with shorter amount of code than ADO.NET.</p><p><br></p><p><strong>Performance</strong></p><p>EFCore performs slower than ADO.NET.</p><p>So ADO.NET or its alternatives (such as Dapper) are recommended for larger &amp; high-traffic applications.</p><p><br></p><p><strong>Strongly-Typed</strong></p><p>The columns as created as properties in model class.</p><p>So the Intellisense offers columns of the table as properties, while writing the code.</p><p>Plus, the developer need not convert data types of values; it's automatically done by EFCore itself.</p><p><br></p><p><br></p><h4>Approaches in Entity Framework Core</h4><p><strong>EFCore Approaches</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-21_14-27-04-0a4f8bf3ae132344fa1adb3eabe030d2.png"></figure><p><br></p><h4>Pros and Cons of EFCore Approaches</h4><p><br></p><p><strong>CodeFirst Approach</strong></p><p>Suitable for newer databases.</p><p>Manual changes to DB will be most probably lost because your code defines the database.</p><p>Stored procedures are to be written as a part of C# code.</p><p>Suitable for smaller applications or prototype-level applications only; but not for larger or high data-intense applications.</p><p><br></p><p><strong>DbFirst Approach</strong></p><p>Suitable if you have an existing database or DB designed by DBAs, developed separately.</p><p>Manual changes to DB can be done independently.</p><p>Stored procedures, indexes, triggers etc., can be created with T-SQL independently.</p><p>Suitable for larger applications and high data-intense applications.</p><p><br></p><p><br></p><h4>DbContext and DbSet</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-21_14-27-04-d9c622fb9d1fc317b64daba88a952dd0.png"></figure><p><strong>DbContext</strong></p><p>An instance of DbContext is responsible to hold a set of DbSets' and represent a connection with database.</p><p><br></p><p><strong>DbSet</strong></p><p>Represents a single database table; each column is represented as a model property.</p><p><br></p><p><strong>Add DbContext as Service in Program.cs:</strong></p><pre class="prettyprint linenums">builder.Services.AddDbContext&lt;DbContextClassName&gt;( options =&gt; {
+ options.UseSqlServer();
+}
+);</pre><p><br></p><p><br></p><h4>Code-First Migrations</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-21_14-27-05-fee99543c4a0c35bbe425c1353b66adb.png"></figure><p><strong>Migrations</strong></p><p>Creates or updates database based on the changes made in the model.</p><p><br></p><p>in<strong> Package Manager Console (PMC):</strong></p><p><code>Add-Migration MigrationName</code></p><p>//Adds a migration file that contains C# code to update the database</p><p><br></p><p><code>Update-Database -Verbose</code></p><p>//Executes the migration; the database will be created or table schema gets updated as a result.</p><p><br></p><p><br></p><p><br></p><h4>Seed Data</h4><p>in DbContext:</p><p><code>modelBuilder.Entity&lt;ModelClass&gt;().HasData(entityObject);</code></p><p>It adds initial data (initial rows) in tables, when the database is newly created.</p><p><br></p><p><br></p><h4>EF CRUD Operations - Query</h4><p><br></p><p><strong>SELECT - SQL</strong></p><pre class="prettyprint linenums">SELECT Column1, Column2 FROM TableName
+ WHERE Column = value
+ ORDER BY Column</pre><p><br></p><p><strong>LINQ Query:</strong></p><pre class="prettyprint linenums">_dbContext.DbSetName
+ .Where(item =&gt; item.Property == value)
+ .OrderBy(item =&gt; item.Property)
+ .Select(item =&gt; item);
+
+//Specifies condition for where clause
+//Specifies condition for 'order by' clause
+//Expression to be executed for each row</pre><p><br></p><p><br></p><h4>EF CRUD Operations - Insert</h4><p><strong>INSERT - SQL</strong></p><p><code>INSERT INTO TableName(Column1, Column2) VALUES (Value1, Value2)</code></p><p><br></p><p><strong>Add:</strong></p><pre class="prettyprint linenums">_dbContext.DbSetName.Add(entityObject);
+//Adds the given model object (entity object) to the DbSet.</pre><p><br></p><p><strong>SaveChanges()</strong></p><pre class="prettyprint linenums">_dbContext.SaveChanges();
+//Generates the SQL INSERT statement based on the model object data and executes the same at database server.</pre><p><br></p><p><br></p><p><br></p><h4>EF CRUD Operations - Delete</h4><p><strong>DELETE - SQL</strong></p><p><code>DELETE FROM TableName WHERE Condition</code></p><p><br></p><p><strong>Remove:</strong></p><pre class="prettyprint linenums">_dbContext.DbSetName.Remove(entityObject);
+//Removes the specified model object (entity object) to the DbSet.</pre><p><br></p><p><strong>SaveChanges()</strong></p><pre class="prettyprint linenums">_dbContext.SaveChanges();
+//Generates the SQL DELETE statement based on the model object data and executes the same at database server.</pre><p><br></p><p><br></p><h4><br>EF CRUD Operations - Update</h4><p><strong>UPDATE - SQL</strong></p><p><code>UPDATE TableName SET Column1 = Value1, Column2 = Value2 WHERE PrimaryKey = Value</code></p><p><br></p><p><strong>Update:</strong></p><pre class="prettyprint linenums">entityObject.Property = value;
+//Updates the specified value in the specific property of the model object (entity object) to the DbSet.</pre><p><br></p><p><strong>SaveChanges()</strong></p><pre class="prettyprint linenums">_dbContext.SaveChanges();
+//Generates the SQL UPDATE statement based on the model object data and executes the same at database server.</pre><p><br></p><p><br></p><p><br></p><h4>How EF Query Works?</h4><p><strong>Workflow of Query Processing in EF</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-21_14-27-05-266c3039617875fcb97762363eb1a0be.png"></figure><p><br></p><h4>EF - Calling Stored Procedures</h4><p><strong>Stored Procedure for CUD (INSERT | UPDATE | DELETE):</strong></p><pre class="prettyprint linenums">int DbContext.Database.ExecuteSqlRaw(
+ string sql,
+ params object[] parameters)
+
+//Eg: "EXECUTE [dbo].[StoredProcName] @Param1 @Parm2
+//A list of objects of SqlParameter type</pre><p><br></p><p><strong>Stored Procedure for Retrieving (Select):</strong></p><pre class="prettyprint linenums">IQueryable&lt;Model&gt; DbSetName.FromSqlRaw(
+ string sql,
+ paramsobject[] parameters)
+
+//Eg: "EXECUTE [dbo].[StoredProcName] @Param1 @Parm2"
+//A list of objects of SqlParameter type</pre><p><br></p><p><br></p><p><strong>Creating Stored Procedure (SQL Server)</strong></p><pre class="prettyprint linenums">CREATE PROCEDURE [schema].[procedure_name]
+(@parameter_name data_type, @parameter_name data_type)
+AS BEGIN
+ statements
+END</pre><p><br></p><p><br></p><h4>Advantages of Stored Procedure</h4><p><strong>Single database call</strong></p><p>You can execute multiple / complex SQL statements with a single database call.</p><p>As a result, you'll get:</p><ul><li><p>Better performance (as you reduce the number of database calls)</p></li><li><p>Complex database operations such as using temporary tables / cursors becomes easier.</p></li></ul><p><br></p><p><strong>Maintainability</strong></p><p>The SQL statements can be changed easily WITHOUT modifying anything in the application source code (as long as inputs and outputs doesn't change)</p><p><br></p><p><br></p><h4>[Column] Attribute</h4><p><strong>Model class</strong></p><pre class="prettyprint linenums">public class ModelClass
+{
+  [Column("ColumnName", TypeName = "datatype")]
+  public DataType PropertyName { get; set; }
+
+  [Column("ColumnName", TypeName = "datatype")]
+  publicDataTypePropertyName { get; set; }
+}</pre><p>Specifies column name and data type of SQL Server table.</p><p><br></p><p><br></p><h4>EF - Fluent API</h4><p><strong>DbContext class</strong></p><pre class="prettyprint linenums">public class CustomDbContext : DbContext
+{
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    //Specify table name (and schema name optionally) to be mapped to the model class
+    modelBuilder.Entity&lt;ModelClass&gt;( ).ToTable("table_name", schema: "schema_name");
+
+    //Specify view name (and schema name optionally) to be mapped to the model class
+    modelBuilder.Entity&lt;ModelClass&gt;( ).ToView("view_name", schema: "schema_name");
+
+    //Specify default schema name applicable for all tables in the DbContext
+    modelBuilder.HasDefaultSchema("schema_name");
+  }
+}</pre><p><br></p><pre class="prettyprint linenums">public class CustomDbContext : DbContext
+{
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    modelBuilder.Entity&lt;ModelClass&gt;( ).Property(temp =&gt; temp.PropertyName)
+      .HasColumnName("column_name") //Specifies column name in table
+      .HasColumnType("data_type") //Specifies column data type in table
+      .HasDefaultValue("default_value") //Specifies default value of the column
+  }
+}</pre><p><br></p><pre class="prettyprint linenums">public class CustomDbContext : DbContext
+{
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    //Adds database index for the specified column for faster searches
+    modelBuilder.Entity&lt;ModelClass&gt;( ).HasIndex("column_name").IsUnique();
+
+    //Adds check constraint for the specified column - that executes for insert &amp; update
+    modelBuilder.Entity&lt;ModelClass&gt;( ).HasCheckConstraint("constraint_name", "condition");
+ }
+}
+</pre><p><br></p><h4>EF - Table Relations with Fluent API</h4><p><strong>Table Relations</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-21_15-23-16-8ca29ce912702eec9ed3805b96613417.png"></figure><p><br></p><p><strong>EF - Table Relations with Navigation Properties</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-21_15-23-17-af5b11d39f7302d5961f41b732120b09.png"></figure><p><br></p><p><strong>EF - Table Relations with Fluent API</strong></p><p><strong>DbContext class</strong></p><pre class="prettyprint linenums">public class CustomDbContext : DbContext
+{
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    //Specifies relation between primary key and foreign key among two tables
+    modelBuilder.Entity&lt;ChildModel&gt;( )
+     .HasOne&lt;ParentModel&gt;(parent =&gt; parent.ParentReferencePropertyInChildModel)
+     .WithMany(child =&gt; child.ChildReferencePropertyInParentModel) //optional
+     .HasForeignKey(child =&gt; child.ForeignKeyPropertyInChildModel)
+  }
+}</pre><p><br></p><p><br></p><h4>EF - Async Operations</h4><p><strong>async</strong></p><ul><li><p>The method is awaitable.</p></li><li><p>Can execute I/O bound code or CPU-bound code</p></li></ul><p><strong>await</strong></p><ul><li><p>Waits for the I/O bound or CPU-bound code execution gets completed.</p></li><li><p>After completion, it returns the return value.</p></li></ul><p><br></p><p><br></p><h4>Generate PDF Files</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-21_15-23-17-77eef6e73efefb8f0c0ee28e9624f17f.png"></figure><p><br></p><p><strong>Rotativa.AspNetCore:</strong></p><pre class="prettyprint linenums">using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
+
+return new ViewAsPdf("ViewName", ModelObject, ViewData)
+{
+  PageMargins = new Margins() { Top = 1, Right = 2, Bottom = 3, Left = 4 },
+  PageOrientation = Orientation.Landscape
+}</pre><p><br></p><p><br></p><p><br></p><h4>Generate CSV Files (CSVHelper)</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-21_15-23-17-d57af63866256b9f1b1e46ff6c351e4d.png"></figure><p><br></p><h4>CsvWriter:</h4><p><strong>WriteRecords(records)</strong></p><p>Writes all objects in the given collection.</p><p>Eg:</p><pre class="prettyprint linenums">1,abc
+2,def</pre><p><br></p><p><strong>WriteHeader&lt;ModelClass&gt;( )</strong></p><p>Writes all property names as headings.</p><p>Eg:</p><p><code>Id, Name</code></p><p><br></p><p><strong>WriteRecord(record)</strong></p><p>Writes the given object as a row.</p><p>Eg:</p><p><code>1, abc</code></p><p><br></p><p><strong>WriteField( value )</strong></p><p>Writes given value.</p><p><br></p><p><strong>NextRecord( )</strong></p><p>Moves to the next line.</p><p><br></p><p><strong>Flush( )</strong></p><p>Writes the current data to the stream.</p><p><br></p><p><br></p><h4>Generate Excel Files (EPPlus)</h4><figure><img height="129" src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-21_15-23-17-81debd5e506cf5a770d6e32005cdaf5f.png" width="621"></figure><p><br></p><h4>ExcelWorksheet</h4><p><code>["cell_address"].Value</code></p><p>Sets or gets value at the specified cell.</p><p><br></p><p><code>["cell_address"].Style</code></p><p>Sets or gets formatting style of the specific cell.</p>

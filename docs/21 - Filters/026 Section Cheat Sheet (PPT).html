@@ -1,0 +1,301 @@
+<h4>Filters</h4><p>Filters are the code blocks that execute before / after specific stages in "Filter Pipeline".</p><p>Filters perform specific tasks such as authorization, caching, exeption handling etc.</p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_05-05-48-4e2742274bd12f07dc8d98096249461f.png"></figure><p><br></p><p><strong>Filter Pipeline</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_05-05-49-24f03235e292c1233240eb8dcd259063.png"></figure><p><br></p><p><br></p><h4>Overview of Types of Filters</h4><p><strong>Authorization Filter</strong></p><p>Determines whether the user is authorized to access the action method.</p><p><br></p><p><strong>Resource Filter</strong></p><p>Invoking custom model binder explicitly</p><p>Caching the response.</p><p><br></p><p><strong>Action Filter</strong></p><p>Manipulating &amp; validating the action method parameters.</p><p>Manipulating the ViewData.</p><p>Overriding the IActionResult provided by action method.</p><p><br></p><p><strong>Exception Filter</strong></p><p>Handling unhandled exception that occur in model binding, action filters or action methods.</p><p><br></p><p><strong>Result Filter</strong></p><p>Preventing IActionResult from execution.</p><p>Adding last-moment changes to response (such as adding response headers).</p><p><br></p><p><br></p><h4>Action Filter</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_05-05-49-9c3b64b1b783e7538df06f53abe11716.png"></figure><p><strong><em>When it runs</em></strong></p><p>Runs immediately before and after an action method executes.</p><p><br></p><p><strong><em>'OnActionExecuting' method</em></strong></p><ul><li><p>It can access the action method parameters, read them &amp; do necessary manipulations on them.</p></li><li><p>It can validate action method parameters.</p></li><li><p>It can short-circuit the action (prevent action method from execution) and return a different IActionResult.</p></li></ul><p><br></p><p><strong><em>'OnActionExecuted' method</em></strong></p><ul><li><p>It can manipulate the ViewData.</p></li><li><p>It can change the result returned from the action method.</p></li></ul><p><br></p><h4>Filter Arguments</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_05-05-49-0e6e833aeea17bde57d136993f7b94dd.png"></figure><p><br></p><h4>Global Filters</h4><p><strong>Filter Scopes</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_05-05-49-d87a876522154c5cd46fb160204118cf.png"></figure><p><br></p><p><strong><em>What are global filters?</em></strong></p><p>Global filters are applied to all action methods of all controllers in the project.</p><p><br></p><p><strong><em>How to add global filters in Program.cs?</em></strong></p><pre class="prettyprint linenums">builder.Services.AddControllersWithViews(options =&gt; {
+  options.Filters.Add&lt;FilterClassName&gt;(); //add by type
+  //or
+  options.Filters.Add(new FilterClassName()); //add filter instance
+});
+</pre><p><br></p><h4>Default Order of Filter Execution</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_06-12-05-4a9e756fad4f6b8f4ae7e6de81fbeda9.png"></figure><p><br></p><p><br></p><h4>Custom Order of Filters</h4><p><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_06-12-05-7de41dfb753f0e475dafe14fac638821.png"></p><p><br></p><p><br></p><h4>IOrderedFilter</h4><p><strong>Example</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_06-27-23-a162d0de4f4b4e870dfc6a74a9c7aa5b.png"></figure><p><br></p><p><br></p><h4>IOrderedFilter</h4><p><strong>Action filter with IOrderedFilter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IActionFilter, IOrderedFilter
+{
+  public int Order { get; set; } //Defines sequence of execution
+
+  public FilterClassName(int order)
+  {
+    Order = order;
+  }
+
+  public void OnActionExecuting(ActionExecutingContext context)
+  {
+    //TO DO: before logic here
+  }
+
+  public void OnActionExecuted(ActionExecutedContext context)
+  {
+    //TO DO: after logic here
+  }
+}</pre><p><br></p><p><br></p><h4>Async Filters</h4><p><strong>Asynchronous Action Filter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IAsyncActionFilter, IOrderedFilter
+{
+  public int Order { get; set; } //Defines sequence of execution
+
+  public FilterClassName(int order)
+  {
+    Order = order;
+  }
+
+  public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+  {
+    //TO DO: before logic here
+    await next();
+    //TO DO: after logic here
+  }
+}</pre><p><br></p><p><br></p><h4>Short-circuiting Filters</h4><p><strong>Action Filters</strong></p><p><strong><em>When it runs</em></strong></p><p>Runs immediately before and after an action method executes.</p><p><br></p><p><strong><em>'OnActionExecuting' method</em></strong></p><ul><li><p>It can access the action method parameters, read them &amp; do necessary manipulations on them.</p></li><li><p>It can validate action method parameters.</p></li><li><p>It can short-circuit the action (prevent action method from execution) and return a different IActionResult.</p></li></ul><p><br></p><p><strong><em>'OnActionExecuted' method</em></strong></p><ul><li><p>It can manipulate the ViewData.</p></li><li><p>It can change the result returned from the action method.</p></li><li><p>It can throw exceptions to either return the exception to the exception filter (if exists); or return the error response to the browser.</p></li></ul><p><br></p><p><br></p><h4>Short-Circuiting Action Filter</h4><pre class="prettyprint linenums">public class FilterClassName : IAsyncActionFilter, IOrderedFilter
+{
+ public int Order { get; set; } //Defines sequence of execution
+
+ public FilterClassName(int order)
+ {
+  Order = order;
+ }
+
+ public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+ {
+  //TO DO: before logic here
+  context.Result = some_action_result; //you can return any type of IActionResult
+  //Not calling next(). So it leads remaining filters &amp; action method short-circuited.
+ }
+}
+</pre><p><br></p><p><br></p><h4>Short-Circuiting (exit) the filters</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_06-27-23-1209bb9104e2f82d34209c745ff98000.png"></figure><p><br></p><p><br></p><h4>Result Filter</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_06-27-24-9aedb513fcc9ea78621b7647547821dd.png"></figure><p><br></p><p><strong><em>When it runs</em></strong></p><ul><li><p>Runs immediately before and after an IActionResult executes.</p></li><li><p>It can access the IActionResult returned by the action method.</p></li></ul><p><br></p><p><strong><em>'OnResultExecuting' method</em></strong></p><ul><li><p>It can continue executing the IActionResult normally, by not assigning "Result" property of the context.</p></li><li><p>It can short-circuit the action (prevent IActionResult from execution) and return a different IActionResult.</p></li></ul><p><br></p><p><strong><em>'OnResultExecuted' method</em></strong></p><ul><li><p>It can manipulate the last-moment changes in the response, such as adding necessary response headers.</p></li><li><p>It should not throw exceptions because, exceptions raised in result filters would not be caught by the exception filter.</p></li></ul><p><br></p><p><strong>Synchronous Result Filter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IResultFilter, IOrderedFilter
+{
+  public int Order { get; set; } //Defines sequence of execution
+
+  public FilterClassName(int order)
+  {
+    Order = order;
+  }
+  public void OnResultExecuting(ResultExecutingContext context)
+  {
+    //TO DO: before logic here
+  }
+  public void OnResultExecuted(ResultExecutedContext context)
+  {
+    //TO DO: after logic here
+  }
+}</pre><p><br></p><p><strong>Asynchronous Result Filter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IAsyncResultFilter, IOrderedFilter
+{
+  public int Order { get; set; } //Defines sequence of execution
+
+  public FilterClassName(int order)
+  {
+    Order = order;
+  }
+
+  public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
+  {
+  //TO DO: before logic here
+  await next();
+  //TO DO: after logic here
+  }
+}</pre><p><br></p><p><br></p><h4>Resource Filter</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_08-14-43-9dd008040763b10f1d05d241671b8a89.png"></figure><p><br></p><p><strong><em>When it runs</em></strong></p><p>Runs immediately after Authorize Filter and after Result Filter executes.</p><p><br></p><p><strong><em>'OnResourceExecuting' method</em></strong></p><ul><li><p>It can do some work before model binding. Eg: Adding metrics to an action method.</p></li><li><p>It can change the way how model binding works (invoking a custom model binder explicitly).</p></li><li><p>It can short-circuit the action (prevent IActionResult from execution) and return a different IActionResult.</p><p>Eg: Short-circuit if an unsupported content type is requested.</p></li></ul><p><br></p><p><strong><em>'OnResourceExecuted' method</em></strong></p><ul><li><p>It can read the response body and store it in cache.</p></li></ul><p><br></p><p><strong>Synchronous Resource Filter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IResourceFilter, IOrderedFilter
+{
+  public int Order { get; set; } //Defines sequence of execution
+
+  public FilterClassName(int order)
+  {
+    Order = order;
+  }
+
+  public void OnResourceExecuting(ResourceExecutingContext context)
+  {
+    //TO DO: before logic here
+  }
+
+  public void OnResourceExecuted(ResourceExecutedContext context)
+  {
+    //TO DO: after logic here
+  }
+}</pre><p><br></p><p><strong>Asynchronous Resource Filter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IAsyncResourceFilter, IOrderedFilter
+{
+  public int Order { get; set; } //Defines sequence of execution
+
+  public FilterClassName(int order)
+  {
+    Order = order;
+  }
+
+  public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
+  {
+    //TO DO: before logic here
+    await next();
+    //TO DO: after logic here
+  }
+}</pre><p><br></p><p><br></p><h4>Authorization Filter</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_08-14-43-e2425b1da409b586897eb0e9ce46638f.png"></figure><p><br></p><p><strong>Authorization Filters</strong></p><p>Runs before any other filters in the filter pipeline.</p><p><br></p><p><strong><em>'OnAuthorize' method</em></strong></p><ul><li><p>Determines whether the user is authorized for the request.</p></li><li><p>Short-circuits the pipeline if the request is NOT authorized.</p></li><li><p>Don't throw exceptions in OnAuthorize method, as they will not be handled by exception filters.</p></li></ul><p><br></p><p><strong>Synchronous Authorization Filter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IAuthorizationFilter
+{
+  public void OnAuthorization(AuthorizationFilterContext context)
+  {
+    //TO DO: authorization logic here
+  }
+}</pre><p><br></p><p><strong>Asynchronous Authorization Filter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IAsyncAuthorizationFilter
+{
+  public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
+  {
+    //TO DO: authorization logic here
+  }
+}</pre><p><br></p><p><br></p><h4>Exception Filter</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_08-14-43-3bd27b6aa0e8c940af494cfd5bc16fed.png"></figure><p><br></p><p><strong><em>When it runs</em></strong></p><p>Runs when an exception is raised during the filter pipeline.</p><p><br></p><p><strong><em>'OnException method</em></strong></p><ul><li><p>Handles unhandled exceptions that occur in controller creation, model binding, action filters or action methods.</p></li><li><p>Doesn't handle the unhandled exceptions that occur in authorization filters, resource filters, result filters or IActionResult execution.</p></li><li><p>Recommended to be used only when you want a different error handling and generate different result for specific controllers; otherwise, ErrorHandlingMiddleware is recommended over Exception Filters.</p></li></ul><p><br></p><p><strong>Synchronous Exception Filter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IAsyncExceptionFilter
+{
+  public async Task OnExceptionAsync(ExceptionFilterContext context)
+  {
+    //TO DO: exception handling logic here, as follows
+    context.Result = some_action_result;
+    //or
+    context.ExceptionHandled = true;
+    return Task.CompletedTask;
+  }
+}</pre><p><br></p><p><strong>Asynchronous Exception Filter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IAsyncExceptionFilter
+{
+  public async Task OnExceptionAsync(ExceptionFilterContext context)
+  {
+    //TO DO: exception handling logic here, as follows
+    context.Result = some_action_result;
+    //or
+    context.ExceptionHandled = true;
+    return Task.CompletedTask;
+  }
+}</pre><p><br></p><p><br></p><h4>Impact of Short-Circuiting</h4><p><strong>Short-circuiting Authorization Filter</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-30-c9b0a4a5e862625c56d7c86ee7902515.png"></figure><p><br></p><p><strong>Short-circuiting Resource Filter</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-30-20bb1ac5c4170aceedf4fff6bdc4efd1.png"></figure><p><br></p><p><strong>Short-circuiting Action Filter</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-31-402c4cfe1a58a98a78faf6f347a9126d.png"></figure><p><br></p><p><strong>Short-circuiting Exception Filter</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-31-667d0aaa94dc5403f76e874665a8d0a4.png"></figure><p><br></p><p><strong>Short-circuiting Result Filter</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-31-629775641088ff36e5dbb17e3cbbcb6e.png"></figure><p><br></p><p><strong>Short-circuiting the filters</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-31-0f14eabc35a7dc0fe56a75548bb95f8c.png"></figure><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-31-48ec65ec023b1610bba5a0cb6dc67d4a.png"></figure><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-32-ca8f4314f22cea9ff4101b1c2506ae17.png"></figure><p><br></p><p><br></p><p><br></p><h4>AlwaysRun Result Filter</h4><p><strong>Short-circuiting Authorization Filter</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-32-1524427638deb1b27aa315db754e3dd5.png"></figure><p><br></p><p><strong>Short-circuiting Resource Filter</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-32-ecf7858980d4eeae07b936f6f267025e.png"></figure><p><br></p><p><strong>Short-circuiting Action Filter</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-32-6c9c4638739bf8d9cab19163f641bc27.png"></figure><p><br></p><p><strong>Short-circuiting Exception Filter</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-32-e4fce4827f082363a62ccd396f95f2ee.png"></figure><p><br></p><p><strong>Short-circuiting Result Filter</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-04-33-d019a827cb33c24dbc5a35f4fa65a329.png"></figure><p><br></p><p><strong><em>When AlwaysRunResultFilter runs</em></strong></p><p>Runs immediately before and after result filters.</p><p><br></p><p><strong>Result filters:</strong></p><p>Doesn't execute when authorization filter, resource filter or exception filter short-circuits.</p><p><br></p><p><strong>AlwaysRunResult filter:</strong></p><p>Execute always even when authorization filter, resource filter or exception filter short-circuits.</p><p><br></p><p><strong><em>'OnResultExecuting' method</em></strong></p><p>Same as Result filter</p><p><br></p><p><strong><em>'OnResultExecuted' method</em></strong></p><p>Same as Result filter</p><p><br></p><p><br></p><p><strong>Synchronous Always Run Result Filter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IAlwaysRunResultFilter
+{
+  public void OnResultExecuting(ResultExecutingContext context)
+  {
+    //TO DO: before logic here
+  }
+  public void OnResultExecuted(ResultExecutedContext context)
+  {
+    //TO DO: after logic here
+  }
+}</pre><p><br></p><p><br></p><p><strong>Asynchronous Always Run Result Filter</strong></p><pre class="prettyprint linenums">public class FilterClassName : IAsyncAlwaysRunResultFilter
+{
+  public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
+  {
+   //TO DO: before logic here
+   await next();
+   //TO DO: after logic here
+  }
+}</pre><p><br></p><h4>Filter Overrides</h4><pre class="prettyprint linenums">[TypeFilter(typeof(FilterClassName))] //filter applied at controller level
+public class ControllerName : Controller
+{
+  public IActionResult Action1() //requirement: The filter SHOULD execute
+  {
+  }
+  public IActionResult Action2() //requirement: The filter SHOULD NOT execute. But how??
+  {
+  }
+}</pre><p><br></p><p><strong>Attribute to be applied to desired action method</strong></p><pre class="prettyprint linenums">public class SkipFilterAttribute : Attribute, IFilterMetadata
+{
+}</pre><p><br></p><p><strong>Action method</strong></p><pre class="prettyprint linenums">[SkipFilter]
+public IActionResult ActionMethod()
+{
+}</pre><p><br></p><p><strong>Filter that respects 'SkipFilterAttribute'</strong></p><pre class="prettyprint linenums">public class FilterClassName : IActionFilter //or any other filter interface
+{
+  public void OnActionExecuting(ActionExecutingContext context)
+  {
+    //get list of filters applied to the current working action method
+    if (context.Filters.OfType&lt;SkipResultFilter&gt;().Any())
+    {
+      return;
+    }
+    //TO DO: before logic here
+  }
+
+  public void OnActionExecuted(ActionExecutedContext context)
+  {
+    //TO DO: after logic here
+  }
+}</pre><p>It skips execution of code of a filter, for specific action methods.</p><p><br></p><p><br></p><p><br></p><h4>[ServiceFilter]</h4><p><strong><em>Common purpose</em></strong></p><p>Both are used to apply a filter a controller or action method.</p><p><br></p><p><strong><em>Type Filter Attribute</em></strong></p><pre class="prettyprint linenums">//can supply arguments to filter
+[TypeFilter(typeof(FilterClassName), Arguments = new object[] { arg1, arg2 })]
+public IActionResult ActionMethod()
+{
+  
+}</pre><p><br></p><p><strong><em>Service Filter Attribute</em></strong></p><pre class="prettyprint linenums">//can't supply arguments to filter
+[ServiceFilter(typeof(FilterClassName))]
+public IActionResult ActionMethod()
+{
+  
+}</pre><p><br></p><p><br></p><p><strong>Type Filter</strong></p><ul><li><p>Can supply arguments to the filter.</p></li><li><p>Filter instances are created by using Microsoft.Extensions.DependencyInjection. ObjectFactory.</p></li><li><p>They're NOT created using DI (Dependency Injection).</p></li><li><p>The lifetime of filter instances is by default transient (a new filter instance gets created every time when it is invoked).</p></li><li><p>But optionally, you can re-use the same instance of filter class across multiple requests, by setting a property called TypeFilterAttribute.IsReusable to 'true'.</p></li><li><p>Filter classes NEED NOT be registered (added) to the IoC container.</p></li><li><p>Filter classes CAN inject services using both constructor injection or method injection.</p></li></ul><p><br></p><p><strong>Service Filter</strong></p><ul><li><p>Can't supply arguments to the filter.</p></li><li><p>Filter instances are created by using ServiceProvider (using DI).</p></li><li><p>The lifetime of filter instances is the actual lifetime of the filter class added in the IoC container.</p></li><li><p>Eg: If the filter class is added to the IoC container with AddScoped() method, then its instances are scoped.</p></li><li><p>Filter class SHOULD be registered (added) to the IoC container, much like any other service.</p></li><li><p>Filter classes CAN inject services using both constructor injection or method injection.</p></li></ul><p><br></p><p><br></p><h4>Filter attribtute classes</h4><p><strong>IActionFilter [vs] ActionFilterAttribute</strong></p><p><strong>[versus]</strong></p><p><strong>Action filter that implements 'IActionFilter'</strong></p><pre class="prettyprint linenums">public class FilterClassName : IActionFilter, IOrderedFilter
+{
+  //supports constructor DI
+}</pre><p><br></p><p><strong>Action filter that inherits 'ActionFilterAttribute'</strong></p><pre class="prettyprint linenums">public class FilterClassName : ActionFilterAttribute
+{
+  //doesn't support constructor DI
+}</pre><p><br></p><p><strong>Filter interfaces:</strong></p><ul><li><p>IAuthorizationFilter</p></li><li><p>IResourceFilter</p></li><li><p>IActionFilter</p></li><li><p>IExceptionFilter</p></li><li><p>IResultFilter</p></li><li><p>IAsyncAuthorizationFilter</p></li><li><p>IAsyncResourceFilter</p></li><li><p>IAsyncActionFilter</p></li><li><p>IAsyncExceptionFilter</p></li><li><p>IAsyncResultFilter</p></li></ul><p><br></p><p><strong>Filter attributes:</strong></p><ul><li><p>ActionFilterAttribute</p></li><li><p>ExceptionFilterAttribute</p></li><li><p>ResultFilterAttribute</p></li></ul><p><br></p><p><strong>Action filter that implements 'IActionFilter'</strong></p><pre class="prettyprint linenums">public class FilterClassName : IActionFilter, IOrderedFilter
+{
+  public int Order { get; set; }
+
+  public FilterClassName(IService service, type arg)
+  {
+  }
+
+  public void OnActionExecuting(ActionExecutingContext context)
+  {
+  }
+
+  public void OnActionExecuted(ActionExecutedContext context)
+  {
+  }
+}</pre><p><br></p><pre class="prettyprint linenums">[TypeFilter(typeof(FilterClassName),
+Arguments = new object[] { arg1,  })]</pre><p><br></p><p><br></p><p><strong>Action filter that inherits 'ActionFilterAttribute'</strong></p><pre class="prettyprint linenums">public class FilterClassName : ActionFilterAttribute
+{
+  public FilterClassName(type arg)
+  {
+  }
+
+  public override void OnActionExecuting(ActionExecutingContext context)
+  {
+  }
+
+  public override void OnActionExecuted(ActionExecutedContext context)
+  {
+  }
+}
+</pre><p><code>[FilterClassName(arg1,  )]</code></p><p><br></p><p><br></p><h4>Internal definitions of IActionFilter and ActionFilterAttribute</h4><p><strong>IActionFilter</strong></p><pre class="prettyprint linenums">namespace Microsoft.AspNetCore.Mvc.Filters
+{
+  public interface IActionFilter : IFilterMetadata
+  {
+    void OnActionExecuting(ActionExecutingContext context);
+    void OnActionExecuted(ActionExecutedContext context);
+  }
+}</pre><p><br></p><p><strong>ActionFilterAttribute</strong></p><pre class="prettyprint linenums">namespace Microsoft.AspNetCore.Mvc.Filters
+{
+  public class ActionFilterAttribute : Attribute, IActionFilter, IAsyncActionFilter, IOrderedFilter, IResultFilter, IAsyncResultFilter
+  {
+    public virtual void OnActionExecuting(ActionExecutingContext context) { }
+    public virtual void OnActionExecuted(ActionExecutedContext context) { }
+    public virtual void OnResultExecuting(ActionExecutingContext context) { }
+    public virtual void OnResultExecuted(ActionExecutedContext context) { }
+    public virtual Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next) { }
+    public virtual Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next) { }
+    public int Order { get; set; }
+  }
+}</pre><p><br></p><p><br></p><h4>Filter interface [vs] FilterAttribute class</h4><p><strong>Filter interface [such as IActionFilter, IResultFilter etc.]</strong></p><ul><li><p>Filter class MUST implement all methods - both "Executing" and "Executed" methods.</p></li><li><p>Filter class CAN have DI with either constructor injection or method injection.</p></li><li><p>Doesn't implement "Attribute" class.</p></li><li><p>Filter should be applied to controller or action methods by using [ServiceFilter] or [TypeFilter] attributes; otherwise can be applied as global filter in the Program.cs.</p><p>Eg: [TypeFilter(typeof(FilterClassName))] //lengthy</p></li><li><p>Filter class can receive arguments only through constructor parameters; but only with [TypeFilter] attribute; not with [ServiceFilter] attribute.</p></li></ul><p><br></p><p><strong>FilterAttribute class [such as ActionFilterAttribute etc.]</strong></p><ul><li><p>Filter class MAY override desired (either or both methods - "Executing" and "Executed") methods.</p></li><li><p>Filter class CAN'T have DI with neither constructor injection nor method injection.</p></li><li><p>FilterAttribute class [such as ActionFilterAttribute etc.]</p></li><li><p>Filter can be applied to controller or action methods by directly using the filter class name itself (without using [ServiceFilter] or [TypeFilter] attributes); otherwise can be applied as global filter in the Program.cs.</p></li><li><p>Eg: [FilterClassName] //simple</p></li><li><p>Filter class can receive arguments either through constructor parameters or filter class's properties.</p></li></ul><p><br></p><p><br></p><p><br></p><h4>IFilterFactory</h4><p><strong>Filter factory that inherits 'IFilterFactory'</strong></p><pre class="prettyprint linenums">public class FilterClassNameAttribute : Attribute,
+IFilterFactory
+{
+  public type Prop1 { get; set; }
+
+  public FilterClassName(type arg1, type arg2)
+  {
+    this.Prop1 = arg1; this.Prop2 = arg2;
+  }
+
+  public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
+  {
+    FilterClassName filter = serviceProvider.GetRequiredService&lt;FilterClassName&gt;(); //instantiate the filter
+    filter.Property1 = Prop1;
+    
+    return filter;
+  }
+}</pre><p><code>[FilterClassName(arg1, arg2,  )]</code></p><p><br></p><p><br></p><p><strong>Action filter that inherits 'ActionFilterAttribute'</strong></p><pre class="prettyprint linenums">public class FilterClassName : ActionFilterAttribute
+{
+  public FilterClassName(type arg1, type arg2)
+  {
+  }
+
+  public override void OnActionExecuting(ActionExecutingContext context)
+  {
+  }
+
+  public override void OnActionExecuted(ActionExecutedContext context)
+  {
+  }
+}</pre><p><code>[FilterClassName(arg1, arg2,  )]</code></p><p><br></p><p><br></p><p><strong>IFilterFactory</strong></p><pre class="prettyprint linenums">namespace Microsoft.AspNetCore.Mvc.Filters
+{
+  public interface IFilterFactory : IFilterMetadata
+  {
+     IFilterMetadata CreateInstance(IServiceProvider serviceProvider);
+     bool IsReusable { get; }
+  }
+}</pre><p><br></p><p><br></p><p><strong>FilterAttribute class [such as ActionFilterAttribute etc.]</strong></p><ul><li><p>Filter CAN be applied as an attribute to the controller or action method. Eg: [FilterClassName]</p></li><li><p>Filter class CAN'T have DI with neither constructor injection nor method injection.</p></li><li><p>Filter class CAN receive arguments either through constructor parameters or filter class's properties.</p></li></ul><p><br></p><p><strong>IFilterFactory</strong></p><ul><li><p>Filter CAN be applied as an attribute to the controller or action method. Eg: [FilterClassName]</p></li><li><p>Filter class CAN have DI with either constructor injection or method injection.</p></li><li><p>Filter class CAN receive arguments only through filter class's properties, if it is instantiated through ServiceProvider (using DI).</p></li></ul><p><br></p><p>Alternatively, if you don't need to inject services using DI in the filter class; you can instantiate the filter class with 'new' keyword, in the CreateInstance() method of IFilterFactory; then the filter class can receive arguments either as constructor parameters or properties.</p><p><br></p><p><br></p><h4>Filters [vs] Middleware</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-26-24-3daa1cd86fffce6a4ffc5c429fe0958d.png"></figure><h4></h4><p><strong>Middleware</strong></p><p>Middleware pipeline is a superset of Filter pipeline, which contains the full-set of all middlewares added to the ApplicationBuilder in the application's startup code (Program.cs).</p><p>Middleware pipeline execute for all requests.</p><p>Middleware handles application-level functionality such as Logging, HTTPS redirection, Performance profiling, Exception handling, Static files, Authentication etc., by accessing low-level abstractions such as HttpContext.</p><p><br></p><p><strong>Filter</strong></p><p>Filter pipeline is a subset of Middleware pipeline which executes under "EndPoint Middleware".</p><p>In addition, filter pipeline executes for requests that reach "EndPoint Middleware".</p><p>Filters handle MVC-specific functionality such as manipulating or accessing ViewData, ViewBag, ModleState, Action result, Action parameters etc.</p><p><strong>Middleware Pipeline</strong></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-23_11-26-24-28ae3c3ddd0d6bcaa6f64e0fda883d67.png"></figure><p><br></p><p><br></p>

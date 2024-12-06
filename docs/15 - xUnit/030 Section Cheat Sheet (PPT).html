@@ -1,0 +1,67 @@
+<h4>Introduction to xUnit</h4><blockquote><p>xUnit is the free, open source unit testing tool for .NET Framework.</p></blockquote><ul><li><p>Easy and extensible.</p></li><li><p>Best to use with a mocking framework called "Moq".</p></li></ul><p><br></p><h4>Add Country - xUnit Test</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-20_17-41-10-da5cebbe7435c0eb25082b4191f35ab7.png"></figure><pre class="prettyprint linenums">public CountryResponse AddCountry(CountryAddRequest? countryAddRequest)
+{
+ //Check if "countryAddRequest" is not null.
+ //Validate all properties of "countryAddRequest"
+ //Convert "countryAddRequest" from "CountryAddRequest" type to "Country".
+ //Generate a new CountryID
+ //Then add it into List&lt;Country&gt;
+ //Return CountryResponse object with generated CountryID
+}</pre><p><br></p><p><br></p><h4>Get All Countries - xUnit Test</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-20_17-41-10-3865c1f5fdc13bed57cd8d080ce35017.png"></figure><pre class="prettyprint linenums">public List&lt;CountryResponse&gt; GetAllCountries()
+{
+ //Convert all countries from "Country" type to "CountryResponse" type.
+ //Return all CountryResponse objects
+}</pre><p><br></p><p><br></p><h4>Get Country by Country ID - xUnit Test</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-20_17-41-10-99e9ae5bd43595a41d07e37bcd6b368b.png"></figure><pre class="prettyprint linenums">public CountryResponse? GetCountryByCountryID(Guid? countryID)
+{
+ //Check if "countryID" is not null.
+ //Get matching country from List&lt;Country&gt; based countryID.
+ //Convert matching country object from "Country" to "CountryResponse" type.
+ //Return CountryResponse object
+}</pre><p><br></p><p><br></p><h4>Add Person - xUnit Test</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-20_17-41-10-7aefba74d469054df16979014a3a3a8b.png"></figure><pre class="prettyprint linenums">public PersonResponse AddPerson(PersonAddRequest? personAddRequest)
+{
+ //Check if "personAddRequest" is not null.
+ //Validate all properties of "personAddRequest".
+ //Convert "personAddRequest" from "PersonAddRequest" type to "Person".
+ //Generate a new PersonID.
+ //Then add it into List&lt;Person&gt;.
+ //Return PersonResponse object with generated PersonID.
+}
+</pre><p><br></p><p><br></p><h4>Get Person by Person ID - xUnit Test</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-20_17-41-10-f0d99bcc51349da4feaa288225fbe589.png"></figure><pre class="prettyprint linenums">public PersonResponse GetPersonByPersonID(Guid? personID)
+{
+ //Check if "personID" is not null.
+ //Get matching person from List&lt;Person&gt; based personID.
+ //Convert matching person object from "Person" to "PersonResponse" type.
+ //Return PersonResponse object
+}</pre><p><br></p><p><br></p><h4>Get All Persons - xUnit Test</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-20_17-41-11-8388b46173952c7080bfa0686bc66168.png"></figure><pre class="prettyprint linenums">public List&lt;PersonResponse&gt; GetAllPersons()
+{
+ //Convert all persons from "Person" type to "PersonResponse" type.
+ //Return all PersonResponse objects
+}</pre><p><br></p><p><br></p><h4>Get Filtered Persons - xUnit Test</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-20_17-41-11-b42384732618103d06a72be4964e68b8.png"></figure><pre class="prettyprint linenums">public List&lt;PersonResponse&gt; GetFilteredPersons(string searchBy, string? searchString)
+{
+ //Check if "searchBy" is not null.
+ //Get matching persons from List&lt;Person&gt; based on given searchBy and searchString.
+ //Convert the matching persons from "Person" type to "PersonResponse" type.
+ //Return all matching PersonResponse objects
+}</pre><p><br></p><p><br></p><h4>Get Sorted Persons - xUnit Test</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-20_17-41-11-189188c839f9f634d6358c9cd95bea21.png"></figure><pre class="prettyprint linenums">public List&lt;PersonResponse&gt; GetSortedPersons(List&lt;PersonResponse&gt; allPersons,
+string sortBy, SortOrderEnum sortOrder)
+{
+ //Check if "sortBy" is not null.
+ //Get sorted persons from "allPersons" based on given "sortBy" and "sortOrder".
+ //Convert the sorted persons from "Person" type to "PersonResponse" type.
+ //Return all sorted PersonResponse objects
+}</pre><p><br></p><p><br></p><h4>Update Person - xUnit Test</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-20_17-41-11-d299c41c608c496e69ed563aa6589b43.png"></figure><pre class="prettyprint linenums">public PersonResponse UpdatePerson(PersonUpdateRequest? personUpdateRequest)
+{
+ //Check if "personUpdateRequest" is not null.
+ //Validate all properties of "personUpdateRequest"
+ //Get the matching "Person" object from List&lt;Person&gt; based on PersonID.
+ //Check if matching "Person" object is not null
+ //Update all details from "PersonUpdateRequest" object to "Person" object
+ //Convert the person object from "Person" to "PersonResponse" type
+ //Return PersonResponse object with updated details
+}</pre><p><br></p><p><br></p><h4>Delete Person - xUnit Test</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-20_17-41-11-54079e804c8b5a7fa5314de56f941547.png"></figure><pre class="prettyprint linenums">public bool DeletePerson(Guid? personID)
+{
+ //Check if "personID" is not null.
+ //Get the matching "Person" object from List&lt;Person&gt; based on PersonID.
+ //Check if matching "Person" object is not null
+ //Delete the matching "Person" object from List&lt;Person&gt;
+ //Return Boolean value indicating whether person object was deleted or not
+}</pre><p><br></p>
