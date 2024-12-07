@@ -6,40 +6,40 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 
 ### 内容概览
 
-01. [x] 介绍 (Introduction)
-02. [ ] 入门 (Getting Started)
-03. [ ] HTTP
-04. [ ] 中间件 (Middleware)
-05. [ ] 路由 (Routing)
-06. [ ] 控制器与 IActionResult (Controllers & IActionResult)
-07. [ ] 模型绑定与验证 (ModelBinding and Validations)
-08. [ ] Razor 视图 (Razor Views)
-09. [ ] 布局视图 (Layout Views)
-10. [ ] 分部视图 (Partial Views)
-11. [ ] 视图组件 (View Components)
-12. [ ] 依赖注入 (Dependency Injection)
-13. [ ] 环境 (Environments)
-14. [ ] 配置 (Configuration)
-15. [ ] 单元测试 (xUnit)
-16. [ ] 增删改查 (CRUD Operations)
-17. [ ] Tag Helpers
-18. [ ] EntityFrameworkCore
-19. [ ] 高级单元测试 (Advanced Unit Testing [Moq & Repository Pattern])
-20. [ ] 日志 (Logging and Serilog)
-21. [ ] 过滤器 (Filters)
-22. [ ] 错误处理 (Error Handling)
-23. [ ] SOLID原则 (SOLID Principles)
-24. [ ] 整洁架构 (Clean Architecture)
-25. [ ] 身份认证 (Identity, Authorization, Security)
-26. [ ] Asp.Net Core Web API
-27. [ ] Swagger / Open API
-28. [ ] ~~Angular and CORS~~
-29. [ ] 身份认证 (JWT & Web API Authorization)
-30. [ ] 最小API Minimal API (new feature)
-31. [ ] 新特性 New Feature of ASP.NET Core 8
-32. [ ] 扩展 Extra: C# Essentials
-33. [ ] ~~Practial Test~~
-34. [ ] The End
+- [x] 01. 介绍 (Introduction)
+- [ ] 02. 入门 (Getting Started)
+- [ ] 03. HTTP
+- [ ] 04. 中间件 (Middleware)
+- [ ] 05. 路由 (Routing)
+- [ ] 06. 控制器与 IActionResult (Controllers & IActionResult)
+- [ ] 07. 模型绑定与验证 (ModelBinding and Validations)
+- [ ] 08. Razor 视图 (Razor Views)
+- [ ] 09. 布局视图 (Layout Views)
+- [ ] 10. 分部视图 (Partial Views)
+- [ ] 11. 视图组件 (View Components)
+- [ ] 12. 依赖注入 (Dependency Injection)
+- [ ] 13. 环境 (Environments)
+- [ ] 14. 配置 (Configuration)
+- [ ] 15. 单元测试 (xUnit)
+- [ ] 16. 增删改查 (CRUD Operations)
+- [ ] 17. Tag Helpers
+- [ ] 18. EntityFrameworkCore
+- [ ] 19. 高级单元测试 (Advanced Unit Testing [Moq & Repository Pattern])
+- [ ] 20. 日志 (Logging and Serilog)
+- [ ] 21. 过滤器 (Filters)
+- [ ] 22. 错误处理 (Error Handling)
+- [ ] 23. SOLID原则 (SOLID Principles)
+- [ ] 24. 整洁架构 (Clean Architecture)
+- [ ] 25. 身份认证 (Identity, Authorization, Security)
+- [ ] 26. Asp.Net Core Web API
+- [ ] 27. Swagger / Open API
+- [ ] 28. ~~Angular and CORS~~
+- [ ] 29. 身份认证 (JWT & Web API Authorization)
+- [ ] 30. 最小API Minimal API (new feature)
+- [ ] 31. 新特性 New Feature of ASP.NET Core 8
+- [ ] 32. 扩展 Extra: C# Essentials
+- [ ] 33. ~~Practial Test~~
+- [ ] 34. The End
 
 ## 一、介绍
 
@@ -83,3 +83,9 @@ ASP.NET Core 应用程序可以托管在 Windows、Linux和Mac上。
 | Asp.Net Web Forms | 发布于2002年 | 由于服务器事件和视图状态而导致的性能问题。 | 仅限 Windows | 不适合 | 不开源 | 事件驱动的开发模型 |
 | Asp.Net Mvc | 发布于2009年 | 由于 asp.net 的某些依赖性 (.net framework) 而导致的性能问题。 | 仅限 Windows | 略微适合 | 开源 | 模型-视图-控制器(MVC)模式 |
 | Asp.Net Core | 发布于2016年 | 更快的性能。 | 跨平台 | 很适合 | 开源 | 模型-视图-控制器(MVC)模式 |
+
+## 二、入门
+
+### 003. 设置环境
+
+- [Visual Studio](https://visualstudio.microsoft.com)
