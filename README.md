@@ -108,3 +108,45 @@ dotnet new web
 # 将项目添加到解决方案中
 dotnet sln add .
 ```
+
+### 005. Kestrel 和 其他服务器
+
+| 类型 | 服务器 |
+| -- | -- |
+| 应用服务器 | Kestrel |
+| 反向代理服务器 | IIS、Nginx、Apache |
+
+#### HTTP 与 Kestrel 的请求流程
+
+```mermaid
+flowchart LR
+    subgraph Asp.Net Core application
+        direction LR
+        B[Kestrel] -->C[Application Code]
+    end
+    A[Internet] -->|HTTP| B
+```
+
+#### HTTP 与 其他服务器的请求流程
+
+```mermaid
+flowchart LR
+    subgraph Reverse proxy server
+        direction LR
+        B[IIS / Nginx / Apache]
+    end
+    subgraph Asp.Net Core application
+        direction LR
+        C[Kestrel] -->D[Application Code]
+    end
+    A[Internet] --> |HTTP| B --> C
+```
+
+#### 反向代理服务器的优势(Benefits)
+
+- 负载均衡(Load Balancing)
+- 缓存(Caching)
+- URL重写(URL Rewriting)
+- 解压缩请求(Decompressing the requests)
+- 认证(Authentication)
+- 解析SSL证书(Decryption of SSL Certificates)
