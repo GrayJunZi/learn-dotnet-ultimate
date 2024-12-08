@@ -89,3 +89,22 @@ ASP.NET Core 应用程序可以托管在 Windows、Linux和Mac上。
 ### 003. 设置环境
 
 - [Visual Studio](https://visualstudio.microsoft.com)
+
+### 004. 创建第一个ASP.NET Core应用程序
+
+```shell
+# 创建文件夹
+mkdir MyFirstApp
+
+# 进入文件夹
+cd ./MyFirstApp
+
+# 创建解决方案
+dotnet new sln
+
+# 创建web项目
+dotnet new web
+
+# 将项目添加到解决方案中
+dotnet sln add .
+```
