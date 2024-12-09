@@ -460,3 +460,31 @@ dotnet sln add .
 ```
 
 名为 `Run` 的扩展方法用于执行一个终止/短路中间件，该中间件不会将请求转发到下一个中间件。
+
+### 019. 中间件链
+
+```csharp
+// middleware 1
+app.Use(async (HttpContext context, RequestDelegate next) =>
+{
+    // befire logic
+    await context.Response.WriteAsync("Hello");
+    await next(context);
+    // after logic
+});
+
+// middleware 2
+app.Use(async (context, next) =>
+{
+    // before logic
+    await context.Response.WriteAsync("Hello 2");
+    await next(context);
+    // after logic
+});
+
+// middleware 3
+app.Run(async (HttpContext context) =>
+{
+    await context.Response.WriteAsync("Hello 3");
+});
+```
