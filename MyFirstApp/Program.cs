@@ -1,6 +1,14 @@
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+// app.MapGet("/", () => "Hello World!");
+
+app.Run(async (HttpContext context) =>
+{
+    // 设置响应码
+    context.Response.StatusCode = 400;
+    await context.Response.WriteAsync("Hello");
+    await context.Response.WriteAsync(" World");
+});
 
 app.Run();

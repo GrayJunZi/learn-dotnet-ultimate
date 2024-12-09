@@ -213,3 +213,30 @@ flowchart LR
 - **HTTP版本**: 1/1、2、3
 - **状态码**: 101、200、302、400、401、404、500
 - **状态描述**: Switching Protocols、OK、Found、Bad Request、Unauthorized、Not Found、Internal Server Error
+
+### 009. HTTP 状态码
+
+| 状态码标识 | 状态码描述 | 状态码 |
+| -- | -- | -- |
+| 1xx | Information | `101` Swithching Protocols |
+| 2xx | Success | `200` OK |
+| 3xx | Redirection | `302` Found <br/> `304` Not MOdified |
+| 4xx | Client error | `400` Bad Request <br/> `401` Unauthorized <br/> `404` Not Found |
+| 5xx | Server error | `500` Internal Server Error |
+
+#### 设置响应码
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.Run(async (HttpContext context) =>
+{
+    // 设置响应码
+    context.Response.StatusCode = 400;
+    await context.Response.WriteAsync("Hello");
+    await context.Response.WriteAsync(" World");
+});
+
+app.Run();
+```
