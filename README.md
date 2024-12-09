@@ -364,3 +364,9 @@ app.Run(async (HttpContext context) =>
 
 app.Run();
 ```
+
+### 014. Postman
+
+- 安装Postman
+- 使用Postman请求
+- 从请求头中获取数据
