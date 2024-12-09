@@ -5,12 +5,15 @@ var app = builder.Build();
 
 app.Run(async (HttpContext context) =>
 {
-    // 获取请求路径
-    var path = context.Request.Path;
-    // 获取请求方法
-    var method = context.Request.Method;
     context.Response.Headers["Content-Type"] = "text/html";
-    await context.Response.WriteAsync($"<p>{method} {path}</p>");
+    if (context.Request.Method == "GET")
+    {
+        if (context.Request.Query.ContainsKey("id"))
+        {
+            var id = context.Request.Query["id"];
+            await context.Response.WriteAsync($"<p>{id}</p>");
+        }
+    }
 });
 
 app.Run();

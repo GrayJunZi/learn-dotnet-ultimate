@@ -306,3 +306,32 @@ app.Run(async (HttpContext context) =>
 
 app.Run();
 ```
+
+### 012. 查询字符串
+
+| 请求格式 | 类型 |
+| -- | -- |
+| GET /dashboard?id=1&name=2 HTTP/1.1 | 起始行(Start Line) |
+| HOst: www.website.com<br/>Accept: text/html | 请求头(Request Headers) |
+| | 空行(Empty Line) |
+| ... | 请求体 |
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.Run(async (HttpContext context) =>
+{
+    context.Response.Headers["Content-Type"] = "text/html";
+    if (context.Request.Method == "GET")
+    {
+        if (context.Request.Query.ContainsKey("id"))
+        {
+            var id = context.Request.Query["id"];
+            await context.Response.WriteAsync($"<p>{id}</p>");
+        }
+    }
+});
+
+app.Run();
+```
