@@ -7,7 +7,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 ### 内容概览
 
 - [x] 01. 介绍 (Introduction)
-- [ ] 02. 入门 (Getting Started)
+- [x] 02. 入门 (Getting Started)
 - [ ] 03. HTTP
 - [ ] 04. 中间件 (Middleware)
 - [ ] 05. 路由 (Routing)
@@ -168,3 +168,31 @@ flowchart LR
             - `Development` - 开发环境，通常用于本地开发，启用了更多的调试工具和详细错误信息。
             - `Staging` - 预发布环境，用于部署前的最后测试阶段，通常会模拟生产环境但会输出详细的日志和监控。
             - `Production` - 用于实际的生产环境，强调性能、安全性和稳定性。
+
+## 三、HTTP
+
+### 007. HTTP 介绍
+
+HTTP(Hyper Text Transfer Protocol, 超文本传输协议)，是一种应用程序协议，它定义了一组规则，用于将请求从浏览器发送到服务器，并将响应从服务器发送到浏览器。
+
+> 最初由 **Tim Berners Lee** 开发，后来由 IETE(Internet Engineering Task Force, 互联网工程任务组) 和 W3C(World Wide Web Consortium, 万维网联盟) 标准化。
+> - SSL (Security Socket Layer, 安全套接层)
+> - HTTPS (Hyper Text Transfer Protocol Security, 超文本传输安全协议)
+
+```mermaid
+flowchart LR
+    subgraph Internet[Internet]
+        direction LR
+        Request[HTTP Request]
+        Response[HTTP Response]
+    end
+    subgraph App[Asp.Net Core Application]
+        direction LR
+        Kestrel[Kestrel（HTTP Server）] --> Code[App Code]
+        Code --> Kestrel
+    end
+    Browser[Browser] --> Request
+    Request --> Kestrel
+    Kestrel --> Response
+    Response --> Browser
+```
