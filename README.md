@@ -196,3 +196,20 @@ flowchart LR
     Kestrel --> Response
     Response --> Browser
 ```
+
+### 008. HTTP 响应
+
+| 响应格式 | 类型 |
+| -- | -- |
+| HTTP/1.1 状态码(StatusCode) 状态描述(StatusDescription) | 起始行(Start Line) |
+| Key: Value | 响应头(Response Headers) |
+| | 空行(Empty Line) |
+| Response Body | 响应体 |
+
+#### 响应起始行 (Response Start Line)
+
+包含HTTP版本、状态码和状态描述。
+
+- **HTTP版本**: 1/1、2、3
+- **状态码**: 101、200、302、400、401、404、500
+- **状态描述**: Switching Protocols、OK、Found、Bad Request、Unauthorized、Not Found、Internal Server Error
