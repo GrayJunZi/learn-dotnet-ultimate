@@ -210,9 +210,17 @@ flowchart LR
 
 包含HTTP版本、状态码和状态描述。
 
-- **HTTP版本**: 1/1、2、3
-- **状态码**: 101、200、302、400、401、404、500
-- **状态描述**: Switching Protocols、OK、Found、Bad Request、Unauthorized、Not Found、Internal Server Error
+**HTTP版本**: HTTP 1/1 | HTTP 2 | HTTP 3
+
+| 状态码 | 状态描述 |
+| -- | -- |
+| 101 | Switching Protocols |
+| 200 | OK |
+| 302 | Found |
+| 400 | Bad Request |
+| 401 | Unauthorized |
+| 404 | Not Found |
+| 500 | Internal Server Error |
 
 ### 009. HTTP 状态码
 
@@ -236,6 +244,38 @@ app.Run(async (HttpContext context) =>
     context.Response.StatusCode = 400;
     await context.Response.WriteAsync("Hello");
     await context.Response.WriteAsync(" World");
+});
+
+app.Run();
+```
+
+### 010. HTTP 响应头
+
+
+| 响应头类型 | 响应值 |
+| -- | -- |
+| Date | 响应的日期时间。 <br/>Ex: Tue, 15 Nov 1994 08:12:31 GMT |
+| Server | 服务器名称。<br/>Ex: Server=Kestrel |
+| Content-Type | 响应体的 MIME 类型。<br/>Ex: text/plain, text/html, application/json, application/xml etc. |
+| Content-Length | 响应体长度（字节）。<br/>Ex: 100 |
+| Cache-Control | 表示浏览器中可以缓存的响应时间的秒数。<br/>Ex: max-age=60 |
+| Set-Cookie | 包含要发送给浏览器的 Cookies。<br/>Ex: x=10 |
+| Access-Control-Allow-Origin | 启用 CORS (Cross-Origin-Resource-Sharing, 跨源资源共享) 功能。<br/>Ex: Access-Control-Allow-Origin: http://www.example.com |
+
+#### 设置响应头
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.Run(async (HttpContext context) =>
+{
+    // 设置响应头
+    context.Response.Headers["MyKey"] = "MyValue";
+    context.Response.Headers["Server"] = "My Server";
+    context.Response.Headers["Content-Type"] = "text/html";
+    await context.Response.WriteAsync("<h1>Hello</h1>");
+    await context.Response.WriteAsync("<h2> World</h2>");
 });
 
 app.Run();
