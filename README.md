@@ -150,3 +150,21 @@ flowchart LR
 - 解压缩请求(Decompressing the requests)
 - 认证(Authentication)
 - 解析SSL证书(Decryption of SSL Certificates)
+
+### 006. launchSettings.json
+
+应用程序的启动配置文件是在位于 `Properties` 文件夹内的 `launchSettings.json` 文件中。
+
+- `iisSettings` - 该节点用于设置`IIS`相关的启动配置。
+- `profiles` - 是自定义的启动相关配置。
+    - `commandName` - 启动应用程序时要执行命令的类型，选项包括：
+        - `Project` - 使用 **Kestrel** 启动项目。
+        - `IISExpress` - 使用 **IISExpress** 启动项目。
+    - `dotnetRunMessages` - 是否在命令行或终端窗口中显示详细的 **.NET CLI** 的运行时消息。如果设置为`false`则仅输出必要消息。
+    - `launchBrowser` - 启动时是否打开默认浏览器。
+    - `applicationUrl` - 应用的启动地址。
+    - `environmentVariables` - 设置环境变量
+        - `ASPNETCORE_ENVIRONMENT` - 指定 ASPNET.Core 应用程序的运行环境。它定义了三个标准的环境名称：
+            - `Development` - 开发环境，通常用于本地开发，启用了更多的调试工具和详细错误信息。
+            - `Staging` - 预发布环境，用于部署前的最后测试阶段，通常会模拟生产环境但会输出详细的日志和监控。
+            - `Production` - 用于实际的生产环境，强调性能、安全性和稳定性。
