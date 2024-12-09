@@ -370,3 +370,31 @@ app.Run();
 - 安装Postman
 - 使用Postman请求
 - 从请求头中获取数据
+
+### 015. HTTP Get请求与Post请求对比
+
+| 请求方法 | 描述 | 
+| -- | -- |
+| GET | 检索信息（页面、实体对象或静态文件）的请求。 |
+| POST | 将实体对象发送到服务器;通常，它将插入到数据库中。 |
+| PUT | 将实体对象发送到服务器;通常会更新数据库中的所有属性 （full-update）。 |
+| PATCH | 将实体对象发送到服务器;通常会更新数据库中的少量属性 （partial-update）。 |
+| DELETE | 删除数据库中实体的请求。 |
+
+#### HTTP 请求
+
+| 请求格式 | 类型 |
+| -- | -- |
+| GET Url HTTP/1.1 | 起始行(Start Line) |
+| Key: Value<br/>Key: Value | 请求头(Request Headers) |
+| | 空行(Empty Line) |
+| 请求体为空 | 请求体 |
+
+#### HTTP 响应
+
+| 响应格式 | 类型 |
+| -- | -- |
+| POST Url HTTP/1.1 | 起始行(Start Line) |
+| Key: Value<br/>Key: Value | 请求头(Request Headers) |
+| | 空行(Empty Line) |
+| 请求体 <br/> ... <br/> ... | 请求体 |
