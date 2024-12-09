@@ -8,7 +8,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 
 - [x] 01. 介绍 (Introduction)
 - [x] 02. 入门 (Getting Started)
-- [ ] 03. HTTP
+- [x] 03. HTTP
 - [ ] 04. 中间件 (Middleware)
 - [ ] 05. 路由 (Routing)
 - [ ] 06. 控制器与 IActionResult (Controllers & IActionResult)
@@ -401,3 +401,43 @@ app.Run();
 
 ### 016. HTTP Get请求与Post请求对比
 
+```csharp
+using System.IO;
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.Run(async (HttpContext context) =>
+{
+    context.Response.Headers["Content-Type"] = "text/html";
+    var reader = new StreamReader(context.Request.Body);
+    var body = await reader.ReadToEndAsync();
+    await context.Response.WriteAsync($"<p>{body}</p>");
+
+    var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(body);
+
+    if (query.ContainsKey("name"))
+    {
+        foreach (var name in query["name"])
+        {
+            await context.Response.WriteAsync($"<h5>{name}</h5>");
+        }
+    }
+
+});
+
+app.Run();
+```
+
+## 四、中间件
+
+### 017. 中间件介绍
+
+中间件是组装到应用程序管道中以处理请求和响应的组件。
+
+> Middleware 是一个接一个地链接起来的，并按照添加它们时的顺序执行。
+
+```mermaid
+flowchart LR
+    Middleware1 --> Middleware2 --> Middleware3
+```
