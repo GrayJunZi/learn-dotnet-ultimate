@@ -398,3 +398,6 @@ app.Run();
 | Key: Value<br/>Key: Value | 请求头(Request Headers) |
 | | 空行(Empty Line) |
 | 请求体 <br/> ... <br/> ... | 请求体 |
+
+### 016. HTTP Get请求与Post请求对比
+
