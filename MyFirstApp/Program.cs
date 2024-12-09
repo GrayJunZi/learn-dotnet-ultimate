@@ -5,12 +5,12 @@ var app = builder.Build();
 
 app.Run(async (HttpContext context) =>
 {
-    // 设置响应头
-    context.Response.Headers["MyKey"] = "MyValue";
-    context.Response.Headers["Server"] = "My Server";
+    // 获取请求路径
+    var path = context.Request.Path;
+    // 获取请求方法
+    var method = context.Request.Method;
     context.Response.Headers["Content-Type"] = "text/html";
-    await context.Response.WriteAsync("<h1>Hello</h1>");
-    await context.Response.WriteAsync("<h2> World</h2>");
+    await context.Response.WriteAsync($"<p>{method} {path}</p>");
 });
 
 app.Run();

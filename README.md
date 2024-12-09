@@ -280,3 +280,29 @@ app.Run(async (HttpContext context) =>
 
 app.Run();
 ```
+
+### 011. HTTP 请求
+
+| 请求格式 | 类型 |
+| -- | -- |
+| Method Url HTTP/1.1 | 起始行(Start Line) |
+| Key: Value<br/>Key: Value | 请求头(Request Headers) |
+| | 空行(Empty Line) |
+| Request Body | 请求体 |
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.Run(async (HttpContext context) =>
+{
+    // 获取请求路径
+    var path = context.Request.Path;
+    // 获取请求方法
+    var method = context.Request.Method;
+    context.Response.Headers["Content-Type"] = "text/html";
+    await context.Response.WriteAsync($"<p>{method} {path}</p>");
+});
+
+app.Run();
+```
