@@ -251,7 +251,6 @@ app.Run();
 
 ### 010. HTTP 响应头
 
-
 | 响应头类型 | 响应值 |
 | -- | -- |
 | Date | 响应的日期时间。 <br/>Ex: Tue, 15 Nov 1994 08:12:31 GMT |
@@ -330,6 +329,36 @@ app.Run(async (HttpContext context) =>
             var id = context.Request.Query["id"];
             await context.Response.WriteAsync($"<p>{id}</p>");
         }
+    }
+});
+
+app.Run();
+```
+
+### 013. HTTP 请求头
+
+| 请求头类型 | 请求值 |
+| -- | -- |
+| Accept | 表示客户端要接受的响应内容的MIME类型。<br/>Ex: text/html |
+| Accept-Language | 表示客户端可接受的响应内容的自然语言。<br/>Ex: en-US |
+| Content-Type | 响应体的 MIME 类型。<br/>Ex: text/plain, text/html, application/json, application/xml etc. |
+| Content-Length | 响应体长度（字节）。<br/>Ex: 100 |
+| Date | 响应的日期时间。 <br/>Ex: Tue, 15 Nov 1994 08:12:31 GMT |
+| Host | 服务器域名。<br/>Eg: www.example.com |
+| User-Agent | 浏览器（客户端）详细信息。<br/>Eg: Mozilla/5.0 Firefox/12.0 |
+| Cookie | 包含要发送到服务器的cookie。<br.>Eg: x=100 |
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.Run(async (HttpContext context) =>
+{
+    context.Response.Headers["Content-Type"] = "text/html";
+    if (context.Request.Headers.ContainsKey("User-Agent"))
+    {
+        var userAgent = context.Request.Headers["User-Agent"];
+        await context.Response.WriteAsync($"<p>{userAgent}</p>");
     }
 });
 
