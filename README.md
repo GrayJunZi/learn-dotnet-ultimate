@@ -441,3 +441,22 @@ app.Run();
 flowchart LR
     Middleware1 --> Middleware2 --> Middleware3
 ```
+
+> 中间件可以是请求委托(匿名方法或lambda表达式)或类。
+
+### 018. Run 方法
+
+```shell
+# 创建文件夹
+mkdir MiddlewareExample
+# 进入文件夹
+cd MiddlewareExample
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web
+# 将项目添加至解决方案中
+dotnet sln add .
+```
+
+名为 `Run` 的扩展方法用于执行一个终止/短路中间件，该中间件不会将请求转发到下一个中间件。
