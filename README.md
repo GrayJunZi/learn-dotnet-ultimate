@@ -488,3 +488,22 @@ app.Run(async (HttpContext context) =>
     await context.Response.WriteAsync("Hello 3");
 });
 ```
+
+名为 `Use` 的扩展方法用于执行非终止/短路的中间件，该中间件 可能会/可能不会（通过调用next()方法来控制） 将请求转发到下一个中间件。
+
+### 020. 自定义中间件类
+
+中间件类用于将中间件逻辑从lambda表达式分离到单独/可重用的类中。
+
+```csharp
+class MiddlewareClassName : IMiddleware
+{
+  public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+  {
+    //before logic
+    await next(context);
+    //after logic
+  }
+}
+app.UseMiddleware<MiddlewareClassName>();
+```
