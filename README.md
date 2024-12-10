@@ -630,3 +630,44 @@ app.UseEndpoints(endpoints =>
 ```
 
 根据 `UseRouting()` 选择的端点执行相应的端点。
+
+### 026. Map、MapGet、MapPost 的使用
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+// 启用路由
+app.UseRouting();
+
+// 创建终端节点
+app.UseEndpoints(endpoints =>
+{
+    endpoints.Map("map1", async (context) =>
+    {
+        await context.Response.WriteAsync("In map1");
+    });
+
+    endpoints.Map("map2", async (context) =>
+    {
+        await context.Response.WriteAsync("In map2");
+    });
+
+    endpoints.MapGet("map_get", async (context) =>
+    {
+        await context.Response.WriteAsync("In map get");
+    });
+
+    endpoints.MapPost("map_post", async (context) =>
+    {
+        await context.Response.WriteAsync("In map post");
+    });
+});
+
+app.Run(async context =>
+{
+    await context.Response.WriteAsync($"Request received at {context.Request.Path}");
+});
+
+app.Run();
+```
