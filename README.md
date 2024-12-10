@@ -556,3 +556,22 @@ public static class HelloCustomMiddlewareExtensions
 
 app.UseHelloCustomMiddleware();
 ```
+
+### 023. 中间件的正确顺序
+
+```csharp
+app.UseExceptionHandler("/Error");
+app.UseHsts();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseSession();
+app.MapControllers();
+
+// 添加自定义中间件
+
+app.Run();
+```
