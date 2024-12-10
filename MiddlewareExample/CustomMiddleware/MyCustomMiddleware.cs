@@ -9,3 +9,12 @@ public class MyCustomMiddleware : IMiddleware
         await context.Response.WriteAsync("My Custom Middleware - Ends\n");
     }
 }
+
+public static class CustomMiddlewareExtensions
+{
+    public static IApplicationBuilder UseMyCustomMiddleware(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<MyCustomMiddleware>();
+        return app;
+    }
+}

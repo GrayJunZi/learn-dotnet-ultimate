@@ -507,3 +507,20 @@ class MiddlewareClassName : IMiddleware
 }
 app.UseMiddleware<MiddlewareClassName>();
 ```
+
+### 021. 自定义中间件扩展
+
+中间件扩展方法用于通过单个方法调用来调用中间件。
+
+```csharp
+public static class CustomMiddlewareExtensions
+{
+    public static IApplicationBuilder UseMyCustomMiddleware(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<MyCustomMiddleware>();
+        return app;
+    }
+}
+
+app.UseMyCustomMiddleware();
+```
