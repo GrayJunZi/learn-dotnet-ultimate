@@ -671,3 +671,38 @@ app.Run(async context =>
 
 app.Run();
 ```
+
+### 027. GetEndPoint 方法
+
+`context.GetEndPoint()` 方法返回 `Microsoft.AspNetCore.Http.Endpoint` 类型的实例，该类型表示终结点。该实例包含两个重要属性：`DisplayName`、`RequestDelegate`。
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.Use(async (context, next) =>
+{
+    Microsoft.AspNetCore.Http.Endpoint? endpoint = context.GetEndpoint();
+    await context.Response.WriteAsync($"UseRouting Before is null {endpoint == null}\n");
+    await next(context);
+});
+
+// 启用路由
+app.UseRouting();
+
+app.Use(async (context, next) =>
+{
+    Microsoft.AspNetCore.Http.Endpoint? endpoint = context.GetEndpoint();
+    await context.Response.WriteAsync($"UseRouting After is null {endpoint == null}, DisplayName: {endpoint?.DisplayName}\n");
+    await next(context);
+});
+
+app.Map("map1", async (context) =>
+{
+    await context.Response.WriteAsync($"In map1");
+});
+
+app.Run();
+```
+
+在调用 `UseRouting()` 之前是获取不到 `GetEndpoint()` 信息的，必须在调用 `UseRouting()` 之后才能拿到 `GetEndpoint()` 信息。
