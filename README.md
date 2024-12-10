@@ -575,3 +575,18 @@ app.MapControllers();
 
 app.Run();
 ```
+
+### 024. UseWhen
+
+```csharp
+app.UseWhen(context => context.Request.Query.ContainsKey("username"), app =>
+{
+    app.Use(async (context, next) =>
+    {
+        await conte.Response.WriteAsync("Hello from middleware UseWhen");
+        await next();
+    })
+});
+```
+
+名为 `UseWhen` 的扩展方法仅用于仅在指定条件为 true 时执行中间件的分支。

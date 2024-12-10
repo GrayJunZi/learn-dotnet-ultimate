@@ -31,4 +31,13 @@ app.Run(async (HttpContext context) =>
     await context.Response.WriteAsync("Middleware 3\n");
 });
 
+app.UseWhen(context => context.Request.Query.ContainsKey("username"), app =>
+{
+    app.Use(async (context, next) =>
+    {
+        await conte.Response.WriteAsync("Hello from middleware UseWhen");
+        await next();
+    })
+});
+
 app.Run();
