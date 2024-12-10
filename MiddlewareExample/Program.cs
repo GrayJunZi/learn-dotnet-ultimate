@@ -23,6 +23,7 @@ app.Use(async (context, next) =>
 // Custom Middleware
 // app.UseMiddleware<MyCustomMiddleware>();
 app.UseMyCustomMiddleware();
+app.UseHelloCustomMiddleware();
 
 // middleware 3
 app.Run(async (HttpContext context) =>
