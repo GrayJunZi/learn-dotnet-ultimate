@@ -9,7 +9,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 01. 介绍 (Introduction)
 - [x] 02. 入门 (Getting Started)
 - [x] 03. HTTP
-- [ ] 04. 中间件 (Middleware)
+- [x] 04. 中间件 (Middleware)
 - [ ] 05. 路由 (Routing)
 - [ ] 06. 控制器与 IActionResult (Controllers & IActionResult)
 - [ ] 07. 模型绑定与验证 (ModelBinding and Validations)
@@ -590,3 +590,43 @@ app.UseWhen(context => context.Request.Query.ContainsKey("username"), app =>
 ```
 
 名为 `UseWhen` 的扩展方法仅用于仅在指定条件为 true 时执行中间件的分支。
+
+## 五、路由
+
+### 025. 路由介绍
+
+路由是通过检查HTTP Method 和 Url 来匹配传入的 HTTP 请求的过程，然后调用相应的终端节点(Endpoint)。
+
+```shell
+# 创建文件夹
+mkdir RoutingExample
+# 进入文件夹
+cd RoutingExample
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web
+# 将Web项目添加至解决方案中
+dotnet sln add .
+```
+
+#### UseRouting
+
+```csharp
+app.UseRouting();
+```
+
+启用路由并根据Url路径和HTTP Method选择合适的端点。
+
+#### UseEndPoints
+
+```csharp
+app.UseEndpoints(endpoints => 
+{
+    endpoints.Map();
+    endpoints.MapGet();
+    endpoints.MapPost();
+});
+```
+
+根据 `UseRouting()` 选择的端点执行相应的端点。
