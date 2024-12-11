@@ -12,6 +12,18 @@ app.UseEndpoints(endpoints =>
         var extension = context.Request.RouteValues["extension"];
         await context.Response.WriteAsync($"In files: FileName {filename}, Extension {extension}");
     });
+
+    endpoints.Map("employee/profile/{EmployeeName=MySelf}", async context =>
+    {
+        var employeeName = context.Request.RouteValues["employeename"];
+        await context.Response.WriteAsync($"In employee: Name {employeeName}");
+    });
+
+    endpoints.Map("products/details/{id=1}", async context =>
+    {
+        var id = context.Request.RouteValues["ID"];
+        await context.Response.WriteAsync($"In product: Id {id}");
+    });
 });
 
 app.Run(async context =>

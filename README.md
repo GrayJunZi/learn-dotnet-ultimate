@@ -735,3 +735,26 @@ app.UseEndpoints(endpoints =>
 ```
 
 通过 `{parameter}` 来定义路由中的参数，使用 `RouteValues` 获取路由中匹配的参数值(忽略大小写)。
+
+### 029. 默认路由参数
+
+
+路由中的 `{parameter=value}` 定义为具有默认值的参数，如果参数为空，则使用设置的默认值作为参数内容。
+
+```csharp
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.Map("employee/profile/{EmployeeName=MySelf}", async context =>
+    {
+        var employeeName = context.Request.RouteValues["employeename"];
+        await context.Response.WriteAsync($"In employee: Name {employeeName}");
+    });
+
+    endpoints.Map("products/details/{id=1}", async context =>
+    {
+        var id = context.Request.RouteValues["ID"];
+        await context.Response.WriteAsync($"In product: Id {id}");
+    });
+});
+```
