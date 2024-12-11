@@ -1,26 +1,22 @@
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.Use(async (context, next) =>
-{
-    Microsoft.AspNetCore.Http.Endpoint? endpoint = context.GetEndpoint();
-    await context.Response.WriteAsync($"UseRouting Before is null {endpoint == null}\n");
-    await next(context);
-});
-
 // 启用路由
 app.UseRouting();
 
-app.Use(async (context, next) =>
+app.UseEndpoints(endpoints =>
 {
-    Microsoft.AspNetCore.Http.Endpoint? endpoint = context.GetEndpoint();
-    await context.Response.WriteAsync($"UseRouting After is null {endpoint == null}, DisplayName: {endpoint?.DisplayName}\n");
-    await next(context);
+    endpoints.Map("files/{filename}.{extension}", async context =>
+    {
+        var filename = context.Request.RouteValues["filename"];
+        var extension = context.Request.RouteValues["extension"];
+        await context.Response.WriteAsync($"In files: FileName {filename}, Extension {extension}");
+    });
 });
 
-app.Map("map1", async (context) =>
+app.Run(async context =>
 {
-    await context.Response.WriteAsync($"In map1");
+    await context.Response.WriteAsync($"Request received at {context.Request.Path}");
 });
 
 app.Run();

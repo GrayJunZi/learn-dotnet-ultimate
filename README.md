@@ -705,4 +705,33 @@ app.Map("map1", async (context) =>
 app.Run();
 ```
 
-在调用 `UseRouting()` 之前是获取不到 `GetEndpoint()` 信息的，必须在调用 `UseRouting()` 之后才能拿到 `GetEndpoint()` 信息。
+在调用 `GetEndpoint()` 方法时，必须要在 `UseRouting()` 方法之后调用，否则获取不到信息。
+
+### 028. 路由参数
+
+路由中的 `{parameter}` 参数可以与任何值匹配。
+
+```mermaid
+flowchart LR
+    subgraph Url
+        sample
+    end
+    subgraph Route[Route Parameter]
+        parameter["{parameter}"]
+    end
+    Url --> Route
+```
+
+```csharp
+app.UseEndpoints(endpoints =>
+{
+    endpoints.Map("files/{filename}.{extension}", async context =>
+    {
+        var filename = context.Request.RouteValues["filename"];
+        var extension = context.Request.RouteValues["extension"];
+        await context.Response.WriteAsync($"In files: FileName {filename}, Extension {extension}");
+    });
+});
+```
+
+通过 `{parameter}` 来定义路由中的参数，使用 `RouteValues` 获取路由中匹配的参数值(忽略大小写)。
