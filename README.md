@@ -810,10 +810,43 @@ app.UseEndpoints(endpoints =>
 ```csharp
 app.UseEndpoints(endpoints =>
 {
-    endpoints.Map("cities//{id:guid}", async context =>
+    endpoints.Map("cities/{id:guid}", async context =>
     {
         var id = context.Request.RouteValues["ID"];
         await context.Response.WriteAsync($"In Cities: Id {id}");
+    });
+});
+```
+
+### 033. 路由约束
+
+| 长度约束 | 描述 | 语法 | 示例值 |
+| -- | -- | -- | -- |
+| `minlength(value)` | 与至少具有指定字符数的字符串匹配 | `{username:minlength(4)}` | John、Alice、William |   
+| `maxlength(value)` | 与小于或等于指定字符数的字符串匹配 | `{username:maxlength(7)}` | John、Allen、William |
+| `length(min,max)` | 与具有给定最小长度和最大长度之间的字符数的字符串匹配，**包括最大最小两个数字** | `{username:length(4,7)}` | John、Allen、William |
+| `length(value)` | 与具有精确指定字符数的字符串匹配 | `{tin:length(9)}` | 123456789 |
+| `min(value)` | 与大于或等于指定值的整型数匹配 | `{age:min(18)}` | 18、19、20 |
+| `max(value)` | 与小于或等于指定值的整型数匹配 | `{age:max(100)}` | -1、1、18、100 |
+| `range(min,max)` | 与指定的最小值和最大值之间的整数值匹配，**包括最大最小两个数字** | `{age:range(18,100)}` | 18、19、99、100 |
+| `alpha` | 与仅包含字母的字符串匹配，**忽略大小写** | `username:alpha` | rick、morty |
+| `regex` | 与指定正则表达式匹配的字符串匹配 | `{age:regex(^[0-9]{2}$)}`<br/>`{age:regex(^\d{3}-\d{3}$)}` | 10、11、98、99<br/>123-456 |
+
+
+```csharp
+app.UseEndpoints(endpoints =>
+{
+    endpoints.Map("employee/profile/{EmployeeName:minlength(3):maxlength(7)}", async context =>
+    {
+        var employeename = context.Request.RouteValues["employeename"];
+        await context.Response.WriteAsync($"In Employee: {employeename}");
+    });
+
+    endpoints.Map("sales-report/{year:int:min(1900)}/{month:regex(^(apr|jul|oct|jan)$)}", async context =>
+    {
+        var year = context.Request.RouteValues["year"];
+        var month = context.Request.RouteValues["month"];
+        await context.Response.WriteAsync($"In sales-report: year {year}, month {month}");
     });
 });
 ```

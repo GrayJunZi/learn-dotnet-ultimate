@@ -6,10 +6,17 @@ app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.Map("cities//{id:guid}", async context =>
+    endpoints.Map("employee/profile/{EmployeeName:minlength(3):maxlength(7)}", async context =>
     {
-        var id = context.Request.RouteValues["ID"];
-        await context.Response.WriteAsync($"In Cities: Id {id}");
+        var employeename = context.Request.RouteValues["employeename"];
+        await context.Response.WriteAsync($"In Employee: {employeename}");
+    });
+
+    endpoints.Map("sales-report/{year:int:min(1900)}/{month:regex(^(apr|jul|oct|jan)$)}", async context =>
+    {
+        var year = context.Request.RouteValues["year"];
+        var month = context.Request.RouteValues["month"];
+        await context.Response.WriteAsync($"In sales-report: year {year}, month {month}");
     });
 });
 
