@@ -782,10 +782,11 @@ app.UseEndpoints(endpoints =>
 
 ### 031. 路由约束
 
-支持的路由约束类型如下：
-- `int` - 匹配任何整型数值，示例 `{id:int}`
-- `bool` - 匹配任何布尔类型值，**不区分大小写**，示例 `{active:bool}`。
-- `datetime` - 匹配有效的日期值，格式包括 "yyyy-MM-dd HH:mm:ss tt" 和 "MM/dd/yyyy hh:mm:ss tt"，示例 `{id:datetime}`。
+| 数据类型约束 | 描述 | 语法 | 示例值 |
+| -- | -- | -- | -- |
+| `int` | 匹配有效的小数数值 | `{price:decimal}` | -2,147,483,648 到 2,147,483,647 |   
+| `bool` | 匹配有效的布尔类型值，**不区分大小写** | `{active:bool}` | true、false |
+| `datetime` | 匹配有效的日期值，格式包括 "yyyy-MM-dd HH:mm:ss tt" 和 "MM/dd/yyyy hh:mm:ss tt" | `{date:datetime}` | 2024/12/12 12:12:12 |
 
 ```csharp
 app.UseEndpoints(endpoints =>
@@ -794,6 +795,25 @@ app.UseEndpoints(endpoints =>
     {
         var reportdate = context.Request.RouteValues["reportdate"];
         await context.Response.WriteAsync($"In daily-digest-report: reportdate {reportdate}");
+    });
+});
+```
+
+### 032. 路由约束
+
+| 数据类型约束 | 描述 | 语法 | 示例值 |
+| -- | -- | -- | -- |
+| `decimal` | 匹配有效的小数数值 | `{price:decimal}` | 49.99、-1、0.01 |   
+| `long` | 匹配有效的长整型数值 | `{id:long}` | -9,223,372,036,854,775,808 到 9,223,372,036,854,775,807 |
+| `guid` | 匹配有效的Guid值 | `{id:guid}` | 8DE341A3-70AC-1F34-63D5-A2347456C9F0 |
+
+```csharp
+app.UseEndpoints(endpoints =>
+{
+    endpoints.Map("cities//{id:guid}", async context =>
+    {
+        var id = context.Request.RouteValues["ID"];
+        await context.Response.WriteAsync($"In Cities: Id {id}");
     });
 });
 ```
