@@ -779,3 +779,21 @@ app.UseEndpoints(endpoints =>
     });
 });
 ```
+
+### 031. 路由约束
+
+支持的路由约束类型如下：
+- `int` - 匹配任何整型数值，示例 `{id:int}`
+- `bool` - 匹配任何布尔类型值，**不区分大小写**，示例 `{active:bool}`。
+- `datetime` - 匹配有效的日期值，格式包括 "yyyy-MM-dd HH:mm:ss tt" 和 "MM/dd/yyyy hh:mm:ss tt"，示例 `{id:datetime}`。
+
+```csharp
+app.UseEndpoints(endpoints =>
+{
+    endpoints.Map("daily-digest-report/{reportdate:datetime}", async context =>
+    {
+        var reportdate = context.Request.RouteValues["reportdate"];
+        await context.Response.WriteAsync($"In daily-digest-report: reportdate {reportdate}");
+    });
+});
+```
