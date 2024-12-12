@@ -738,7 +738,6 @@ app.UseEndpoints(endpoints =>
 
 ### 029. 默认路由参数
 
-
 路由中的 `{parameter=value}` 定义为具有默认值的参数，如果参数为空，则使用设置的默认值作为参数内容。
 
 ```csharp
@@ -755,6 +754,28 @@ app.UseEndpoints(endpoints =>
     {
         var id = context.Request.RouteValues["ID"];
         await context.Response.WriteAsync($"In product: Id {id}");
+    });
+});
+```
+
+### 030. 可选路由参数
+
+路由中的 `{parameter?}` 定义为可选参数，这意味着，它与空值也可以匹配。
+
+```csharp
+app.UseEndpoints(endpoints =>
+{
+    endpoints.Map("products/details/{id?}", async context =>
+    {
+        var id = context.Request.RouteValues["ID"];
+        if (id != null)
+        {
+            await context.Response.WriteAsync($"In product: Id {id}");
+        }
+        else
+        {
+            await context.Response.WriteAsync($"In product: Id is not supplied");
+        }
     });
 });
 ```

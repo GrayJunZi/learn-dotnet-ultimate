@@ -6,23 +6,17 @@ app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.Map("files/{filename}.{extension}", async context =>
-    {
-        var filename = context.Request.RouteValues["filename"];
-        var extension = context.Request.RouteValues["extension"];
-        await context.Response.WriteAsync($"In files: FileName {filename}, Extension {extension}");
-    });
-
-    endpoints.Map("employee/profile/{EmployeeName=MySelf}", async context =>
-    {
-        var employeeName = context.Request.RouteValues["employeename"];
-        await context.Response.WriteAsync($"In employee: Name {employeeName}");
-    });
-
-    endpoints.Map("products/details/{id=1}", async context =>
+    endpoints.Map("products/details/{id?}", async context =>
     {
         var id = context.Request.RouteValues["ID"];
-        await context.Response.WriteAsync($"In product: Id {id}");
+        if (id != null)
+        {
+            await context.Response.WriteAsync($"In product: Id {id}");
+        }
+        else
+        {
+            await context.Response.WriteAsync($"In product: Id is not supplied");
+        }
     });
 });
 
