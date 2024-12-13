@@ -961,3 +961,71 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath,"mywwwroot"))
 });
 ```
+
+## 六、控制器与 IActionResult
+
+### 037. 创建控制器
+
+控制器是一个类，用于对一组操作作进行分组。当收到请求并返回结果(响应)时，操作方法会执行某些操作。
+
+```mermaid
+flowchart LR
+    subgraph Controller
+        Action1["Action 1
+        [endpoint]"]
+        Action2["Action 2
+        [endpoint]"]
+    end
+    Request1[Request to /url1] --> Routing
+    Request2[Request to /url2] --> Routing
+    Routing --> |"Request to /url1"| Action1
+    Routing --> |"Request to /url2"| Action2
+```
+
+创建Web项目。
+
+```shell
+# 创建文件夹
+mkdir ControllersExample
+# 进入文件夹
+cd ControllersExample
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web
+# 将Web项目添加至解决方案中
+dotnet sln add .
+```
+
+创建控制器类。
+
+```csharp
+using Microsoft.AspNetCore.Mvc;
+
+namespace ControllersExample.Controllers;
+
+public class HomeController
+{
+    [Route("index")]
+    public string Index()
+    {
+        return "Hello from index";
+    }
+}
+```
+
+添加控制器路由
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+// 注册所有控制器服务
+builder.Services.AddControllers();
+
+var app = builder.Build();
+
+// 启用控制器路由
+app.MapControllers();
+
+app.Run();
+```
