@@ -982,7 +982,7 @@ flowchart LR
     Routing --> |"Request to /url2"| Action2
 ```
 
-创建Web项目。
+#### 创建Web项目
 
 ```shell
 # 创建文件夹
@@ -997,7 +997,9 @@ dotnet new web
 dotnet sln add .
 ```
 
-创建控制器类。
+#### 创建控制器类
+
+控制器类名称应以 `Controller` 为后缀。
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -1014,7 +1016,10 @@ public class HomeController
 }
 ```
 
-添加控制器路由
+#### 添加控制器路由
+
+- `AddControllers` 方法将所有控制器添加到容器中。这样匹配到对应的路由时，就可以访问到它们。
+- `MapControllers` 方法将所有操作方法添加为路由节点，这样就不需要使用 `UseEndpoint` 方法来手动将方法添加为端点了。
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -1028,4 +1033,32 @@ var app = builder.Build();
 app.MapControllers();
 
 app.Run();
+```
+
+### 038. 多个 Action 方法
+
+可以在一个控制器中定义多个Action方法。
+
+```csharp
+public class HomeController
+{
+    [Route("home")]
+    [Route("/")]
+    public string Index()
+    {
+        return "Hello from Index";
+    }
+
+    [Route("about")]
+    public string About()
+    {
+        return "Hello from About";
+    }
+
+    [Route("contact-us/{mobile:regex(^\\d{{11}}$)}")]
+    public string Contact()
+    {
+        return "Hello from Contact";
+    }
+}
 ```
