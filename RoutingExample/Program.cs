@@ -1,4 +1,12 @@
+using RoutingExample.CustomConstraints;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddRouting(options =>
+{
+    options.ConstraintMap.Add("months",typeof(MonthsCustomConstraint));
+});
+
 var app = builder.Build();
 
 // 启用路由
@@ -6,13 +14,7 @@ app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.Map("employee/profile/{EmployeeName:minlength(3):maxlength(7)}", async context =>
-    {
-        var employeename = context.Request.RouteValues["employeename"];
-        await context.Response.WriteAsync($"In Employee: {employeename}");
-    });
-
-    endpoints.Map("sales-report/{year:int:min(1900)}/{month:regex(^(apr|jul|oct|jan)$)}", async context =>
+    endpoints.Map("sales-report/{year:int:min(1900)}/{month:months}", async context =>
     {
         var year = context.Request.RouteValues["year"];
         var month = context.Request.RouteValues["month"];

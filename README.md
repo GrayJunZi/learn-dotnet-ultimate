@@ -850,3 +850,51 @@ app.UseEndpoints(endpoints =>
     });
 });
 ```
+
+### 034. 自定义路由约束
+
+实现 `IRouteConstraint` 接口来实现自定义路由约束。
+
+```csharp
+public class MonthsCustomConstraint : IRouteConstraint
+{
+    public bool Match(HttpContext? httpContext, IRouter? route, string routeKey, RouteValueDictionary values,
+        RouteDirection routeDirection)
+    {
+        // 检查值是否存在
+        if (!values.ContainsKey(routeKey))
+        {
+            return false;
+        }
+        
+        Regex regex = new(@"^(apr|jul|oct|jan)$");
+        
+        var monthValue = values[routeKey].ToString();
+        
+        return regex.IsMatch(monthValue);
+    }
+}
+```
+
+将自定义路由约束添加到路由中。
+
+```csharp
+builder.Services.AddRouting(options =>
+{
+    options.ConstraintMap.Add("months",typeof(MonthsCustomConstraint));
+});
+```
+
+在路由中使用自定义约束。
+
+```csharp
+app.UseEndpoints(endpoints =>
+{
+    endpoints.Map("sales-report/{year:int:min(1900)}/{month:months}", async context =>
+    {
+        var year = context.Request.RouteValues["year"];
+        var month = context.Request.RouteValues["month"];
+        await context.Response.WriteAsync($"In sales-report: year {year}, month {month}");
+    });
+});
+```
