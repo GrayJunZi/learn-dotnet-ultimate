@@ -1,6 +1,10 @@
+using Microsoft.Extensions.FileProviders;
 using RoutingExample.CustomConstraints;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    WebRootPath = "myroot",
+});
 
 builder.Services.AddRouting(options =>
 {
@@ -8,6 +12,15 @@ builder.Services.AddRouting(options =>
 });
 
 var app = builder.Build();
+
+// 启用静态文件
+app.UseStaticFiles();
+
+// 添加静态文件目录
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider( Path.Combine(builder.Environment.ContentRootPath,"mywwwroot") )
+});
 
 // 启用路由
 app.UseRouting();

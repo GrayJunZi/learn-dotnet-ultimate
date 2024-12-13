@@ -10,7 +10,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 02. 入门 (Getting Started)
 - [x] 03. HTTP
 - [x] 04. 中间件 (Middleware)
-- [ ] 05. 路由 (Routing)
+- [x] 05. 路由 (Routing)
 - [ ] 06. 控制器与 IActionResult (Controllers & IActionResult)
 - [ ] 07. 模型绑定与验证 (ModelBinding and Validations)
 - [ ] 08. Razor 视图 (Razor Views)
@@ -782,6 +782,16 @@ app.UseEndpoints(endpoints =>
 
 ### 031. 路由约束
 
+```mermaid
+flowchart TD
+    subgraph Routing
+        matched{Is the Constraint Matched?}
+    end
+    Request[Request to /value] --> Routing
+    matched --> |Yes| Endpoint
+    matched --> |No| NextRoute[Check the Next Route]
+```
+
 | 数据类型约束 | 描述 | 语法 | 示例值 |
 | -- | -- | -- | -- |
 | `int` | 匹配有效的小数数值 | `{price:decimal}` | -2,147,483,648 到 2,147,483,647 |   
@@ -853,6 +863,16 @@ app.UseEndpoints(endpoints =>
 
 ### 034. 自定义路由约束
 
+```mermaid
+flowchart TD
+    subgraph Routing
+        matched{Is Custom Constraint Matched?}
+    end
+    Request[Request to /value] --> Routing
+    matched --> |Yes| Endpoint
+    matched --> |No| NextRoute[Check the Next Route]
+```
+
 实现 `IRouteConstraint` 接口来实现自定义路由约束。
 
 ```csharp
@@ -907,3 +927,37 @@ app.UseEndpoints(endpoints =>
 | 2 | 带有文本文字的URL模板比路由参数具有更高的优先级 | "a/b" 高于 "a/{parameter}" |
 | 3 | 带有路由约束参数的URL模板比没有约束的参数段具有更高的优先级 | "a/b:int" 高于 "a/b" |
 | 4 | 捕获所有参数的优先级最低 | "a/{b}" 高于 "a/**" |
+
+### 036. WebRoot 和 UseStaticFiles 方法
+
+#### WebRoot
+
+```mermaid
+flowchart TD
+    subgraph UseStaticFiles["UseStaticFiles()"]
+        matched{Does the file exists in the WebRoot folder?}
+    end
+    Request[Request to /file.extension] --> UseStaticFiles
+    matched --> |Yes| response[send the file as response]
+    matched --> |No| http[HTTP 404]
+```
+
+默认的 WebRoot 文件夹是 "wwwroot"，可以手动配置。
+
+```csharp
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    WebRootPath = "myroot",
+});
+```
+
+#### UseStaticFiles 方法
+
+使用 `UseStaticFiles` 可以添加新的静态文件目录。
+
+```csharp
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath,"mywwwroot"))
+});
+```
