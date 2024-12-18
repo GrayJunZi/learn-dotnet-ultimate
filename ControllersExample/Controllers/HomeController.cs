@@ -2,19 +2,23 @@
 
 namespace ControllersExample.Controllers;
 
-public class HomeController
+public class HomeController : Controller
 {
     [Route("home")]
     [Route("/")]
-    public string Index()
+    public ContentResult Index()
     {
-        return "Hello from Index";
+        return new ContentResult
+        {
+            Content = "<h1 align='center'>Hello World from Index!</h1>",
+            ContentType = "text/html",
+        };
     }
 
     [Route("about")]
-    public string About()
+    public ContentResult About()
     {
-        return "Hello from About";
+        return Content("Hello from About", "text/plain"); ;
     }
 
     [Route("contact-us/{mobile:regex(^\\d{{11}}$)}")]

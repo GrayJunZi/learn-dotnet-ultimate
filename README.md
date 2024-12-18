@@ -2147,3 +2147,33 @@ public class HomeController
 | 调用模型 | 调用业务逻辑方法。通常，以 “服务” 的形式提供。 |
 | 验证参数 | 验证传入请求详细信息，例如：查询字符串(query string)参数、请求正文、请求Cookie、请求头等。 |
 | 准备响应 | 选择向客户端发送什么样的响应 |
+
+
+### 040. ContentResult
+
+`ContentResult` 可以根据指定的MIME类型来表示任何类型的响应。MIME类型表示内容的类型，例如 `text/plain`、`text/html`、`application/json`、`application/xml`、`application/pdf`等。
+
+使用方式可以在接口中直接实例化`ContentResult`类型：
+```csharp
+public ContentResult Index()
+{
+    return new ContentResult
+    {
+        Content = "<h1>Hello World!</h1>",
+        ContentType = "text/html",
+    };
+}
+```
+
+或者将控制器继承自 `Microsoft.AspNetCore.Mvc.Controller` 类后，直接在接口中返回 `Content()` 方法。
+
+```csharp
+public class HomeController : Controller
+{
+    [Route("about")]
+    public ContentResult About()
+    {
+        return Content("Hello from About", "text/plain"); ;
+    }
+}
+```
