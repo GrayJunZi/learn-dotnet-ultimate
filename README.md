@@ -2177,3 +2177,38 @@ public class HomeController : Controller
     }
 }
 ```
+
+### 041. JsonResult
+
+`JsonResult` 可以用于表示JSON（JavaScript Object Notation）格式的对象。
+
+使用方式同样可以直接返回`JsonResult`实例：
+```csharp
+[Route("person")]
+public JsonResult Person()
+{
+    var person = new Person
+    {
+        Id = Guid.NewGuid(),
+        Name = "James",
+        Age = 25
+    };
+    return new JsonResult(person);
+}
+```
+
+或者直接返回 `Json()` 方法。
+
+```csharp
+[Route("person")]
+public JsonResult Person()
+{
+    var person = new Person
+    {
+        Id = Guid.NewGuid(),
+        Name = "James",
+        Age = 25
+    };
+    return Json(person);
+}
+```
