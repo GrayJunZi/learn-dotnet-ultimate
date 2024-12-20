@@ -5,6 +5,17 @@ namespace ControllersExample.Controllers;
 
 public class BookController : Controller
 {
+    [Route("store")]
+    public IActionResult Store()
+    {
+        // 301 - Permanently
+        // return RedirectToActionPermanent("Book","Store", new {});
+        // return new RedirectToActionResult("Book", "Store", new {}, true);
+        
+        // 302 - Found
+        return RedirectToAction("Book", "Store", new { });
+    }
+
     [Route("book")]
     public IActionResult Index()
     {
@@ -17,9 +28,9 @@ public class BookController : Controller
         {
             return BadRequest("Book ID can't be null or empty");
         }
-        
+
         var bookId = Convert.ToInt16(Request.Query["bookid"]);
-        if (bookId<=0)
+        if (bookId <= 0)
         {
             return BadRequest("Book ID can't be less than or equal to zero");
         }
@@ -33,7 +44,7 @@ public class BookController : Controller
         {
             return Unauthorized("User must be authenticated");
         }
-        
+
         return File("/sample.txt", "text/plain");
     }
 }

@@ -2323,6 +2323,10 @@ public IActionResult Index()
 
 用于想要发送特定HTTP状态码作为响应时使用。
 
+```csharp
+return StatusCode(401);
+```
+
 #### UnauthorizedResult
 
 `UnauthorizedResult` 发送状态码为`401 Unauthorized` 的响应。
@@ -2330,10 +2334,7 @@ public IActionResult Index()
 用于在用户未授权（未登录）时使用。
 
 ```csharp
-if (!Convert.ToBoolean(Request.Query["isloggedin"]))
-{
-    return Unauthorized("User must be authenticated");
-}
+return Unauthorized("User must be authenticated");
 ```
 
 #### BadRequestResult
@@ -2343,10 +2344,7 @@ if (!Convert.ToBoolean(Request.Query["isloggedin"]))
 当请求的参数无效（参数验证失败）时使用。
 
 ```csharp
-if (!Request.Query.ContainsKey("bookid"))
-{
-    return BadRequest("Book ID is not supplied");
-}
+return BadRequest("Book ID is not supplied");
 ```
 
 #### NotFoundResult
@@ -2356,8 +2354,41 @@ if (!Request.Query.ContainsKey("bookid"))
 当请求的信息在服务器上不存在时使用。
 
 ```csharp
-if (bookId > 1000)
+return NotFound("Book ID can't be greater than 1000");
+```
+
+### 045. RedirectResult
+
+`RedirectResult` 向浏览器发送状态码 `301` 或 `302` 的响应，以便重定向到特定操作或URL中。
+
+```csharp
+```
+#### RedirectToActionResult
+
+`RedirectToActionResult` 发送状态码为 `302 Found` 的响应，用于根据操作方法名和控制器名从当前操作方法重定向到另一个操作方法的响应。
+
+第一个参数是要跳转的方法，第二个参数是方法所在的控制器，第三个参数是要传递的数据。
+
+```csharp
+[Route("store")]
+public IActionResult Store()
 {
-    return NotFound("Book ID can't be greater than 1000");
+    return RedirectToAction("Book","Store", new {});
 }
+```
+
+可以通过 `RedirectToActionResult` 的第四个参数设置为`true`，将返回状态码 `301 Move Permanently` 的响应。
+
+```csharp
+[Route("store")]
+public IActionResult Store()
+{
+    return new RedirectToActionResult("Book","Store", new {}, true);
+}
+```
+
+或者使用 `RedirectToActionPermanent` 方法。
+
+```csharp
+return RedirectToActionPermanent("Book","Store", new {});
 ```
