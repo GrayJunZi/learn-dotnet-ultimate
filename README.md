@@ -2444,3 +2444,65 @@ flowchart LR
     Request[Http Request] --> Routing --> ModelBinding
     ModelBinding --> Controller
 ```
+
+### 048. Query String 与 Route Data 的对比
+
+使用QueryString的形式传入参数，例如：“/bookstore?bookid=123&isloggedin=false”。
+
+```csharp
+[Route("bookstore")]
+public IActionResult Query(int? bookid, bool? isloggedin)
+{
+    if (!bookid.HasValue)
+    {
+        return BadRequest("Book ID is not supplied");
+    }
+
+    if (bookid <= 0)
+    {
+        return BadRequest("Book ID can't be less than or equal to zero");
+    }
+
+    if (bookid > 1000)
+    {
+        return NotFound("Book ID can't be greater than 1000");
+    }
+
+    if (!isloggedin.HasValue || !isloggedin.Value)
+    {
+        return Unauthorized("User must be authenticated");
+    }
+
+    return File("/sample.txt", "text/plain");
+}
+```
+
+使用 Route Data 的形式传入，可以将参数直接写在路径中。例如：“/bookstore/1234/true”。
+
+```csharp
+[Route("bookstore/{bookid}/{isloggedin}")]
+public IActionResult Query(int? bookid, bool? isloggedin)
+{
+    if (!bookid.HasValue)
+    {
+        return BadRequest("Book ID is not supplied");
+    }
+
+    if (bookid <= 0)
+    {
+        return BadRequest("Book ID can't be less than or equal to zero");
+    }
+
+    if (bookid > 1000)
+    {
+        return NotFound("Book ID can't be greater than 1000");
+    }
+
+    if (!isloggedin.HasValue || !isloggedin.Value)
+    {
+        return Unauthorized("User must be authenticated");
+    }
+
+    return File("/sample.txt", "text/plain");
+}
+```

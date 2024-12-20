@@ -1,25 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 
 namespace ControllersExample.Controllers;
 
 public class BookController : Controller
 {
-    [Route("store")]
-    public IActionResult Store()
+    [Route("bookstore/{bookid}/{isloggedin}")]
+    public IActionResult Query(int? bookid, bool? isloggedin)
     {
-        // 301 - Permanently
-        // return RedirectToActionPermanent("Book","Store", new {});
-        // return new RedirectToActionResult("Book", "Store", new {}, true);
+        if (!bookid.HasValue)
+        {
+            return BadRequest("Book ID is not supplied");
+        }
 
-        // 302 - Found
-        // return RedirectToAction("Book", "Store", new { Id = 1001 });
-        
-        // return LocalRedirect($"store/book/{1123}");
-        // return LocalRedirectPermanent($"store/book/{2223}");
-        
-        // return Redirect($"store/book/{3333}");
-        return RedirectPermanent($"store/book/{4434}");
+        if (bookid <= 0)
+        {
+            return BadRequest("Book ID can't be less than or equal to zero");
+        }
+
+        if (bookid > 1000)
+        {
+            return NotFound("Book ID can't be greater than 1000");
+        }
+
+        if (!isloggedin.HasValue || !isloggedin.Value)
+        {
+            return Unauthorized("User must be authenticated");
+        }
+
+        return File("/sample.txt", "text/plain");
     }
 
     [Route("book")]
@@ -52,5 +60,22 @@ public class BookController : Controller
         }
 
         return File("/sample.txt", "text/plain");
+    }
+
+    [Route("store")]
+    public IActionResult Store()
+    {
+        // 301 - Permanently
+        // return RedirectToActionPermanent("Book","Store", new {});
+        // return new RedirectToActionResult("Book", "Store", new {}, true);
+
+        // 302 - Found
+        // return RedirectToAction("Book", "Store", new { Id = 1001 });
+
+        // return LocalRedirect($"store/book/{1123}");
+        // return LocalRedirectPermanent($"store/book/{2223}");
+
+        // return Redirect($"store/book/{3333}");
+        return RedirectPermanent($"store/book/{4434}");
     }
 }
