@@ -2212,3 +2212,62 @@ public JsonResult Person()
     return Json(person);
 }
 ```
+
+### 042. FileResult
+
+`FileResult`将文件内容作为响应发送出去。例如`pdf`、`txt`、`exe`、`zip`文件等。
+
+#### VirtualFileResult（虚拟文件）
+
+`VirtualFileResult` 类型返回位于WebRoot文件夹中的文件，默认为 `wwwroot`。
+
+> 当文件位于WebRoot文件夹中时使用。
+
+```csharp
+[Route("file-download-virtual")]
+public FileResult FileDownloadVirtual()
+{
+    return new VirtualFileResult("/sample.txt", "text/plain");
+}
+```
+
+#### PhysicalFileResult（物理文件）
+
+`PhysicalFileResult` 类型返回位于物理位置的文件。
+
+> 当文件位于WebRoot文件夹之外的位置时使用。
+
+```csharp
+[Route("file-download-physical")]
+public FileResult FileDownloadPhysical()
+{
+    return new PhysicalFileResult("d:/sample.txt", "text/plain");
+}
+```
+
+#### FileContentResult（文件内容）
+
+`FileContentResult` 类型返回文件的字节数组。
+
+> 当文件来自其他数据源的文件或`byte[]`的一部分作为响应返回时使用。
+
+```csharp
+[Route("file-download-bytes")]
+public FileResult FileDownloadBytes()
+{
+    var bytes = System.IO.File.ReadAllBytes("sample.txt");
+    return new FileContentResult(bytes, "text/plain");
+}
+```
+
+#### File
+
+`File()`方法有多种重载，支持返回相对路径、文件字节数组以及文件流等。
+
+```csharp
+[Route("file-download")]
+public FileResult FileDownload()
+{
+    return File("sample.txt", "text/plain");
+}
+```

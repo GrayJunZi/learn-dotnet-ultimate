@@ -39,4 +39,29 @@ public class HomeController : Controller
         };
         return Json(person);
     }
+
+    [Route("file-download-virtual")]
+    public FileResult FileDownloadVirtual()
+    {
+        return new VirtualFileResult("/sample.txt", "text/plain");
+    }
+    
+    [Route("file-download-physical")]
+    public FileResult FileDownloadPhysical()
+    {
+        return new PhysicalFileResult("d:/sample.txt", "text/plain");
+    }
+    
+    [Route("file-download-bytes")]
+    public FileResult FileDownloadBytes()
+    {
+        var bytes = System.IO.File.ReadAllBytes("sample.txt");
+        return new FileContentResult(bytes, "text/plain");
+    }
+
+    [Route("file-download")]
+    public FileResult FileDownload()
+    {
+        return File("sample.txt", "text/plain");
+    }
 }
