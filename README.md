@@ -2316,3 +2316,48 @@ public IActionResult Index()
     return File("/sample.txt", "text/plain");
 }
 ```
+
+### 044. StatusCodeResult
+
+`StatusCodeResult` 发送具有指定状态码的空响应。例如 `200`、`400`、`401`、`404`、`500`等。
+
+用于想要发送特定HTTP状态码作为响应时使用。
+
+#### UnauthorizedResult
+
+`UnauthorizedResult` 发送状态码为`401 Unauthorized` 的响应。
+
+用于在用户未授权（未登录）时使用。
+
+```csharp
+if (!Convert.ToBoolean(Request.Query["isloggedin"]))
+{
+    return Unauthorized("User must be authenticated");
+}
+```
+
+#### BadRequestResult
+
+`BadRequestResult` 发送状态码为 `400 Bad Request` 的响应。
+
+当请求的参数无效（参数验证失败）时使用。
+
+```csharp
+if (!Request.Query.ContainsKey("bookid"))
+{
+    return BadRequest("Book ID is not supplied");
+}
+```
+
+#### NotFoundResult
+
+`NotFoundResult` 发送状态码为 `404 Not Found` 的响应。
+
+当请求的信息在服务器上不存在时使用。
+
+```csharp
+if (bookId > 1000)
+{
+    return NotFound("Book ID can't be greater than 1000");
+}
+```
