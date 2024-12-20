@@ -2392,3 +2392,33 @@ public IActionResult Store()
 ```csharp
 return RedirectToActionPermanent("Book","Store", new {});
 ```
+
+### 046. RedirectResult
+
+#### LocalRedirectResult
+
+`LocalRedirectResult` 用于根据特定的URL从当前操作方法重定向到另一个操作方法的响应。
+
+```csharp
+return LocalRedirect($"store/book/{1123}");
+```
+
+或者返回 `301 Move Permanently` 状态码。
+
+```csharp
+return LocalRedirectPermanent($"store/book/{2223}");
+```
+
+#### RedirectResult
+
+`RedirectResult` 表示从当前操作方法重定向到任何其他URL（可以是当前Web应用程序或其他Web应用程序）的响应。
+
+```csharp
+return Redirect($"store/book/{1123}");
+```
+
+或者返回 `301 Move Permanently` 状态码。
+
+```csharp
+return RedirectPermanent($"store/book/{2223}");
+```

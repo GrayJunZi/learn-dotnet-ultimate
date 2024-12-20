@@ -11,9 +11,15 @@ public class BookController : Controller
         // 301 - Permanently
         // return RedirectToActionPermanent("Book","Store", new {});
         // return new RedirectToActionResult("Book", "Store", new {}, true);
-        
+
         // 302 - Found
-        return RedirectToAction("Book", "Store", new { });
+        // return RedirectToAction("Book", "Store", new { Id = 1001 });
+        
+        // return LocalRedirect($"store/book/{1123}");
+        // return LocalRedirectPermanent($"store/book/{2223}");
+        
+        // return Redirect($"store/book/{3333}");
+        return RedirectPermanent($"store/book/{4434}");
     }
 
     [Route("book")]
