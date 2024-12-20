@@ -11,7 +11,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 03. HTTP
 - [x] 04. 中间件 (Middleware)
 - [x] 05. 路由 (Routing)
-- [ ] 06. 控制器与 IActionResult (Controllers & IActionResult)
+- [x] 06. 控制器与 IActionResult (Controllers & IActionResult)
 - [ ] 07. 模型绑定与验证 (ModelBinding and Validations)
 - [ ] 08. Razor 视图 (Razor Views)
 - [ ] 09. 布局视图 (Layout Views)
@@ -2421,4 +2421,26 @@ return Redirect($"store/book/{1123}");
 
 ```csharp
 return RedirectPermanent($"store/book/{2223}");
+```
+
+## 七、模型绑定与验证
+
+### 047. 模型绑定介绍
+
+模型绑定是从HTTP请求中读取值并将其作为参数传递给操作方法。
+
+```mermaid
+flowchart LR
+    subgraph ModelBinding[Model Binding]
+        direction LR
+        FormFields
+        RequestBody[Request Body]
+        RouteData[Route Data]
+        QueryStringParameters[Query String Parameters]
+    end
+    subgraph Controller
+        Action[Action 1]
+    end
+    Request[Http Request] --> Routing --> ModelBinding
+    ModelBinding --> Controller
 ```
