@@ -5,7 +5,7 @@ namespace ControllersExample.Controllers;
 public class BookController : Controller
 {
     [Route("bookstore/{bookid}/{isloggedin}")]
-    public IActionResult Query(int? bookid, bool? isloggedin)
+    public IActionResult Query([FromRoute] int? bookid, [FromRoute] bool? isloggedin)
     {
         if (!bookid.HasValue)
         {

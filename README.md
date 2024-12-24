@@ -2506,3 +2506,29 @@ public IActionResult Query(int? bookid, bool? isloggedin)
     return File("/sample.txt", "text/plain");
 }
 ```
+
+### 049. FromQuery 和 FromRoute
+
+#### [FromQuery]
+
+从Query String中获取参数值。
+
+```csharp
+[Route("bookstore/{bookid}/{isloggedin}")]
+public IActionResult Query([FromQuery] int? bookid, [FromQuery] bool? isloggedin)
+{
+    
+}
+```
+
+#### [FromRoute]
+
+从路由中获取参数值
+
+```csharp
+[Route("bookstore/{bookid}/{isloggedin}")]
+public IActionResult Query([FromRoute] int? bookid, [FromRoute] bool? isloggedin)
+{
+    
+}
+```
