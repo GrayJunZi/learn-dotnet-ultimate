@@ -2607,3 +2607,43 @@ value2
 
 > - 当使用 `application/x-www-form-urlencoded` 时，只有从[FromQuery]和模型绑定参数才能接收数据。
 > - 当使用 `multipart/form-data` 时，只有[FromRoute]和模型绑定参数才能接收数据。
+
+
+### 052. 模型验证介绍
+
+创建项目
+
+```shell
+# 创建文件夹
+mkdir ModelValidationsExample
+# 进入文件夹
+cd ModelValidationsExample
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web
+# 将项目添加至解决方案中
+dotnet sln add .
+```
+
+可以在模型类中的属性上面增加验证特性，用以验证参数是否合法。
+
+```csharp
+using System.ComponentModel.DataAnnotations;
+
+public class Person
+{
+    [Required]
+    public string? Name { get; set; }
+    public string? Email { get; set; }
+    public string? Phone { get; set; }
+    public string? Password { get; set; }
+    public string? ConfirmPassword { get; set; }
+    public double? Price { get; set; }
+
+    public override string ToString()
+    {
+        return $"Person: {Name}, {Email}, {Phone}, {Password}, {ConfirmPassword}, {Price}";
+    }
+}
+```
