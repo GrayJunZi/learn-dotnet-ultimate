@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ControllersExample.Models;
 
 namespace ControllersExample.Controllers;
 
 public class BookController : Controller
 {
-    [Route("bookstore/{bookid}/{isloggedin}")]
-    public IActionResult Query([FromRoute] int? bookid, [FromRoute] bool? isloggedin)
+    [Route("bookstore/{bookid?}/{isloggedin?}")]
+    public IActionResult Query([FromRoute] bool? isloggedin, Book book)
     {
+        var bookid = book.BookId;
         if (!bookid.HasValue)
         {
             return BadRequest("Book ID is not supplied");
@@ -27,7 +29,7 @@ public class BookController : Controller
             return Unauthorized("User must be authenticated");
         }
 
-        return File("/sample.txt", "text/plain");
+        return Content($"Book: {book}", "text/plain");
     }
 
     [Route("book")]

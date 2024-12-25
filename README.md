@@ -2532,3 +2532,34 @@ public IActionResult Query([FromRoute] int? bookid, [FromRoute] bool? isloggedin
     
 }
 ```
+
+### 050. 模型类
+
+`Model` 是一个类，它用于从请求中接收或发送到响应的数据结构。也成为 **POCO**（Plain Old CLR Objects）
+
+定义一个模型类，可以标记特性用以选择从查询字符串中获取数据，或者路由数据等。默认相同名称可以自动绑定。
+```csharp
+using Microsoft.AspNetCore.Mvc;
+
+public class Book
+{
+    [FromQuery]
+    public int? BookId { get; set; }
+    public string? Author { get; set; }
+
+    public override string ToString()
+    {
+        return $"Book: Id {BookId}, Author {Author}";
+    }
+}
+```
+
+在定义的方法中增加模型类参数，当接口请求时，会将请求参数自动绑定到该模型类上。
+
+```csharp
+[Route("bookstore/{bookid?}/{isloggedin?}")]
+public IActionResult Query([FromRoute] bool? isloggedin, Book book)
+{
+    
+}
+```
