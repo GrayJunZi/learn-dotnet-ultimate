@@ -2563,3 +2563,47 @@ public IActionResult Query([FromRoute] bool? isloggedin, Book book)
     
 }
 ```
+
+### 051. form-urlencoded 和 form-data
+
+#### form-urlencoded
+
+`form-urlencoded` 是默认的请求方式。
+
+- 请求头：
+
+```
+Content-Type: `application/x-www-form-urlencoded`
+```
+
+- 请求正文：
+```
+?param1=value1&param2=value2
+```
+
+#### form-data
+
+- 请求头：
+
+```
+Content-Type: multipart/form-data
+```
+
+- 请求正文：
+
+```
+--------------------------d74496d66958873e
+
+Content-Disposition: form-data; name="param1"
+
+value1
+
+--------------------------d74496d66958873e
+
+Content-Disposition: form-data; name="param2"
+
+value2
+```
+
+> - 当使用 `application/x-www-form-urlencoded` 时，只有从[FromQuery]和模型绑定参数才能接收数据。
+> - 当使用 `multipart/form-data` 时，只有[FromRoute]和模型绑定参数才能接收数据。
