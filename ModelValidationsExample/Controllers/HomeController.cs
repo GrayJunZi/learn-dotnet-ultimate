@@ -8,6 +8,14 @@ public class HomeController : Controller
     [Route("register")]
     public IActionResult Register(Person person)
     {
+        if (ModelState.IsValid)
+        {
+            var errors = string.Join(',', ModelState.Values
+                .SelectMany(x => x.Errors)
+                .Select(x => x.ErrorMessage));
+            return BadRequest(errors);
+        }
+
         return Content($"{person}");
     }
 }

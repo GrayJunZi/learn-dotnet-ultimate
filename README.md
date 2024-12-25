@@ -2626,7 +2626,7 @@ dotnet new web
 dotnet sln add .
 ```
 
-可以在模型类中的属性上面增加验证特性，用以验证参数是否合法。
+可以在模型类中的属性上面增加验证特性，用以验证参数是否有效。
 
 ```csharp
 using System.ComponentModel.DataAnnotations;
@@ -2645,5 +2645,73 @@ public class Person
     {
         return $"Person: {Name}, {Email}, {Phone}, {Password}, {ConfirmPassword}, {Price}";
     }
+}
+```
+
+### 053. ModelState
+
+`ModelState` 是验证模型属性是否验证通过的状态结果。
+
+#### IsValid
+
+当验证的结果没有任何错误时结果为`true`否则为`false`。
+
+#### Values
+
+包含每个模型属性值和相应的 `Errors` 属性，该属性包含模型属性的验证错误列表。
+
+#### ErrorCount
+
+返回错误数量。
+
+#### 输出所有错误结果
+
+```csharp
+[Route("register")]
+public IActionResult Register(Person person)
+{
+    if (ModelState.IsValid)
+    {
+        var errors = new List<string>();
+        foreach (var value in ModelState.Values)
+        {
+            foreach (var error in value.Errors)
+            {
+                errors.Add(error.ErrorMessage);
+            }
+        }
+        var errorMessage = string.Join(',', errors);
+        return BadRequest(errorMessage);
+    }
+    
+    return Content($"{person}");
+}
+```
+
+使用LINQ优化双重循环。
+
+```csharp
+[Route("register")]
+public IActionResult Register(Person person)
+{
+    if (ModelState.IsValid)
+    {
+        var errors = string.Join(',', ModelState.Values
+            .SelectMany(x => x.Errors)
+            .Select(x => x.ErrorMessage));
+        return BadRequest(errors);
+    }
+    
+    return Content($"{person}");
+}
+```
+
+可以在特性中增加自定义错误消息。
+
+```csharp
+public class Person
+{
+    [Required(ErrorMessage = "Name can't be empty or null")]
+    public string? Name { get; set; }
 }
 ```
