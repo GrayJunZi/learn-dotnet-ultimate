@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using ModelValidationsExample.CustomValidators;
 
 namespace ModelValidationsExample.Models;
 
@@ -28,6 +29,9 @@ public class Person
     [Range(0, 999.99, ErrorMessage = "{0} must be between {1} and {2}")]
     [ValidateNever]
     public double? Price { get; set; }
+
+    [MinimumYearValidator(2000, ErrorMessage = "Date of Birth should be newer than {0} year")]
+    public DateTime? DateOfBirth { get; set; }
 
     public override string ToString()
     {
