@@ -2715,3 +2715,54 @@ public class Person
     public string? Name { get; set; }
 }
 ```
+
+### 054. 模型验证
+
+通过在模型的属性上方添加特性来验证模型中的值是否有效，可以给特性中的`ErrorMessage`填写自定义消息内容。
+
+#### [Required(ErrorMessage = "")]
+
+验证当前属性值不允许为空。
+
+如果错误内容中需要增加属性名称使用`{0}`来占位，它会自动替换掉该占位符。
+
+```csharp
+[Required(ErrorMessage = "{0} can't be empty or null")]
+public string Name { get; set; }
+```
+
+我们可以为属性起一个别名，这样错误消息的内容就会使用该别名。
+
+```csharp
+[Required(ErrorMessage = "{0} can't be empty or null")]
+[Display(Name = "Person Name")]
+public string Name { get; set; }
+```
+
+#### [StringLength(int maximumLength，int minimumLength = value， ErrorMessage = "")]
+
+验证字符串中允许的最小长度和最大长度（字符数）。
+
+字符串中的占位符：
+- `{0}` - 属性名称。
+- `{1}` - 最大长度。
+- `{2}` - 最小长度。
+
+```csharp
+[StringLength(40, MinimumLength = 3, ErrorMessage = "{0} must be between {2} and {1} characters")]
+public string? Name { get; set; }
+```
+
+#### [Range(int maximumLength， MinimumLength = value， ErrorMessage = "")]
+
+验证数值的大小范围。
+
+字符串中的占位符：
+- `{0}` - 属性名称。
+- `{1}` - 最小数值。
+- `{2}` - 最大数值。
+
+```csharp
+[Range(0, 999.99, ErrorMessage = "{0} must be between {1} and {2}")]
+public double? Price { get; set; }
+```
