@@ -2881,3 +2881,52 @@ public class MinimumYearValidatorAttribute : ValidationAttribute
 public DateTime? DateOfBirth { get; set; }
 ```
 
+#### ValidationAttribute
+
+- 该类是所有验证特性的基类。（例如：RequiredAttribute、RegularExpressionAttribute、RangeAttribute、StringLengthAttribute、CompareAttribute 等）
+- 它提供了 `ErrorMessage` 属性 以及 `Validate()`和`IsValid()` 方法等。
+
+#### ValidationContext
+
+- 充当自定义验证属性类的 “IsValid（）” 方法的参数。
+- 提供 ObjectType、ObjectInstance 等属性。
+
+### 057. 多个属性的自定义验证
+
+通过反射来获取 `ValidationContext` 类中的 `ObjectType` 下指定的属性值。 
+
+```csharp
+using System.ComponentModel.DataAnnotations;
+
+namespace ModelValidationsExample.CustomValidators;
+
+public class DateRangeValidatorAttribute : ValidationAttribute
+{
+    public string OtherPropertyName { get; set; }
+
+    public DateRangeValidatorAttribute(string otherPropertyName)
+    {
+        OtherPropertyName = otherPropertyName;
+    }
+
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+    {
+        if (value == null)
+            return null;
+
+        var toDate = (DateTime)value;
+
+        var otherProperty = validationContext.ObjectType.GetProperty(OtherPropertyName);
+        if (otherProperty != null)
+        {
+            var fromDate = (DateTime)otherProperty.GetValue(validationContext.ObjectInstance);
+            if (fromDate > toDate)
+            {
+                return new ValidationResult(ErrorMessage, [OtherPropertyName, validationContext.MemberName]);
+            } 
+        }
+
+        return null;
+    }
+}
+```

@@ -27,10 +27,6 @@ public class MinimumYearValidatorAttribute : ValidationAttribute
             {
                 return new ValidationResult(string.Format(ErrorMessage?? DefaultErrorMessage, nameof(MinimumYear)));
             }
-            else
-            {
-                return ValidationResult.Success;
-            }
         }
 
         return null;

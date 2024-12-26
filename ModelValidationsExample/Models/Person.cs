@@ -33,6 +33,11 @@ public class Person
     [MinimumYearValidator(2000, ErrorMessage = "Date of Birth should be newer than {0} year")]
     public DateTime? DateOfBirth { get; set; }
 
+    
+    public DateTime? FromDate { get; set; }
+    [DateRangeValidator("FromDate", ErrorMessage = "{1} should be older than or equal to {0}")]
+    public DateTime? ToDate { get; set; }
+
     public override string ToString()
     {
         return $"Person: {Name}, {Email}, {Phone}, {Password}, {ConfirmPassword}, {Price}";
