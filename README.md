@@ -2743,26 +2743,88 @@ public string Name { get; set; }
 
 验证字符串中允许的最小长度和最大长度（字符数）。
 
-字符串中的占位符：
-- `{0}` - 属性名称。
-- `{1}` - 最大长度。
-- `{2}` - 最小长度。
-
 ```csharp
 [StringLength(40, MinimumLength = 3, ErrorMessage = "{0} must be between {2} and {1} characters")]
 public string? Name { get; set; }
 ```
 
+字符串中的占位符：
+- `{0}` - 属性名称。
+- `{1}` - 最大长度。
+- `{2}` - 最小长度。
+
 #### [Range(int maximumLength， MinimumLength = value， ErrorMessage = "")]
 
 验证数值的大小范围。
+
+```csharp
+[Range(0, 999.99, ErrorMessage = "{0} must be between {1} and {2}")]
+public double? Price { get; set; }
+```
 
 字符串中的占位符：
 - `{0}` - 属性名称。
 - `{1}` - 最小数值。
 - `{2}` - 最大数值。
 
+### 055. 模型验证
+
+#### [RegularExpression(string pattern, ErrorMessage = "")]
+
+验证该值是否有效的匹配模式（正则表达式）。
+
 ```csharp
-[Range(0, 999.99, ErrorMessage = "{0} must be between {1} and {2}")]
-public double? Price { get; set; }
+[RegularExpression("^[A-Za-z .]$", ErrorMessage = "{0} must only contain alphanumeric characters, space and dot (.)")]
+public string? Name { get; set; }
+```
+
+#### [EmailAddress(ErrorMessage = "")]
+
+验证该值是否是有效的电子邮箱地址。
+
+```csharp
+[EmailAddress(ErrorMessage = "{0} must be a valid email address")]
+public string? Email { get; set; }
+```
+
+#### [Phone(ErrorMessage = "")]
+
+验证该值是否是有效的电话号码。
+
+```csharp
+[Phone(ErrorMessage = "{0} must be a valid phone number")]
+public string? Phone { get; set; }
+```
+
+#### [Compare(string otherProperty, ErrorMessage = "")]
+
+验证该值与其他属性值是否一致。
+
+```csharp
+public string? Password { get; set; }
+
+[Compare("Password", ErrorMessage = "{0} and {1} do not match")]
+public string? ConfirmPassword { get; set; }
+```
+
+字符串中的占位符：
+- `{0}` - 当前属性名称。
+- `{1}` - 对比属性名称。
+
+#### [Url(ErrorMessage = "")]
+
+验证该值是否是有效的URL地址。
+
+#### [ValidateNever]
+
+不验证该属性（从模型验证中排除属性）。
+
+```csharp
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
+public class Person 
+{
+    [ValidateNever]
+    public double? Price { get; set; }
+}
 ```
