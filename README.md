@@ -3172,3 +3172,25 @@ builder.Services.AddControllers(options =>
         options.ModelBinderProviders.Insert(0, new PersonBinderProvider());
     });
 ```
+
+### 064. 集合绑定
+
+可以在模型中定义集合属性，用于接收一组数据。
+
+```csharp
+public class Person
+{
+    ...
+
+    public List<string> Tags { get; set; } = new List<string>();
+
+    ...
+}
+```
+
+使用 `form-data` 调用时，可以传入：
+
+```
+Tags[0]  #dotnet
+Tags[1]  #python
+```
