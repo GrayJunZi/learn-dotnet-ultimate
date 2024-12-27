@@ -3045,3 +3045,19 @@ public IActionResult Register([FromBody] Person person)
     ...
 }
 ```
+
+### 061. 输入格式化器
+
+`InputFormatter` 用于将请求参数以对应格式进行转换。
+
+内置以下两种格式化器：
+- XmlSerializerInputFormatter
+- JsonInputFormatter
+
+可以将 `XmlSerializerInputFormatter` 注册到容器中，用以支持Xml格式的参数。
+
+```csharp
+builder.Services.AddControllers()
+    .AddXmlSerializerFormatters();
+```
+
