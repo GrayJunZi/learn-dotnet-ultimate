@@ -12,7 +12,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 04. 中间件 (Middleware)
 - [x] 05. 路由 (Routing)
 - [x] 06. 控制器与 IActionResult (Controllers & IActionResult)
-- [ ] 07. 模型绑定与验证 (ModelBinding and Validations)
+- [x] 07. 模型绑定与验证 (ModelBinding and Validations)
 - [ ] 08. Razor 视图 (Razor Views)
 - [ ] 09. 布局视图 (Layout Views)
 - [ ] 10. 分部视图 (Partial Views)
@@ -3206,3 +3206,48 @@ public IActionResult Register([FromBody] Person person, [FromHeader(Name = "User
     ...
 }
 ```
+
+## 八、Razor 视图
+
+### 066. MVC架构模式
+
+MVC(Model-View-Controller)，它是一种架构模式，它将程序代码划分为三个主要组件：模型、视图、控制器。
+
+MVC的调用过程如下：
+
+1. 控制器(Controller) 调用 业务模型(Model)。
+2. 控制器(Controller) 创建 视图模型(Model)。
+3. 控制器(Controller) 调用 视图(View)。
+4. 视图(View) 访问 视图模型(Model)。
+
+#### MVC的职责
+
+控制器：
+- 接收HTTP请求数据。
+- 调用业务模型来执行业务逻辑。
+
+业务模型：
+- 接收来自控制器的数据。
+- 执行业务操作，例如从数据库中读写数据。
+- 将数据库中的数据返回给控制器。
+
+控制器：
+- 创建视图模型(ViewModel)对象并将数据填充到其属性中。
+- 选择一个视图并调用它，并将视图模型(ViewModel)对象传递给视图。
+
+视图：
+- 从控制器接收视图模型(ViewModel)的对象。
+- 访问视图模型(ViewModel)的属性以在html中呈现数据。
+
+
+#### MVC 架构模式的好处 / 目标
+
+- 明确分离关注点
+- 每个组件（模型、视图和控制器）都执行单一的职责。
+- 识别和修复错误将很容易。
+- 每个组件（模型、视图和控制器）都可以独立开发。
+- 实际上，视图和控制器都依赖于模型。
+- Model 既不依赖于视图也不依赖于控制器。
+- 这是“清洁分离”的主要优势之一。
+- 这种分离允许独立构建和测试模型。
+- 对每个单独的组件进行单元测试更容易。
