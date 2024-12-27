@@ -3194,3 +3194,15 @@ public class Person
 Tags[0]  #dotnet
 Tags[1]  #python
 ```
+
+### 065. FromHeader
+
+可以使用 [FromHeader] 特性，用于从请求头中获取数据。
+
+```csharp
+[Route("register")]
+public IActionResult Register([FromBody] Person person, [FromHeader(Name = "User-Agent")] string userAgent)
+{
+    ...
+}
+```

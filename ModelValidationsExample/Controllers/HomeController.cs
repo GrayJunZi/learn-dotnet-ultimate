@@ -6,7 +6,7 @@ namespace ModelValidationsExample.Controllers;
 public class HomeController : Controller
 {
     [Route("register")]
-    public IActionResult Register([FromBody] Person person)
+    public IActionResult Register([FromBody] Person person,[FromHeader(Name = "User-Agent")] string userAgent)
     {
         if (ModelState.IsValid)
         {
@@ -16,6 +16,8 @@ public class HomeController : Controller
             return BadRequest(errors);
         }
 
-        return Content($"{person}");
+        var key = ControllerContext.HttpContext.Response.Headers["key"];
+
+        return Content($"{person}, {userAgent}");
     }
 }
