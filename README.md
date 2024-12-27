@@ -3061,3 +3061,56 @@ builder.Services.AddControllers()
     .AddXmlSerializerFormatters();
 ```
 
+### 062. 自定义模型绑定器
+
+创建自定义模型绑定器类，继承接口 `IModelBinder` 并实现 `BindModelAsync` 方法，用以实现自定义的模型绑定。
+
+```csharp
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ModelValidationsExample.Models;
+
+namespace ModelValidationsExample.CustomModelBinders;
+
+public class PersonModelBinder : IModelBinder
+{
+    public Task BindModelAsync(ModelBindingContext bindingContext)
+    {
+        var person = new Person();
+        
+        // 名称
+        var name = bindingContext.ValueProvider.GetValue("Name");
+        if (name.Length > 0)
+        {
+            person.Name = name.FirstValue;
+        } 
+        
+        // 邮箱
+        var email = bindingContext.ValueProvider.GetValue("Email");
+        if (email.Length > 0)
+        {
+            person.Email = email.FirstValue;
+        }
+        
+        bindingContext.Result = ModelBindingResult.Success(person);
+        return Task.CompletedTask;
+    }
+}
+```
+
+在控制器方法中的参数上标记 `[ModelBinder]` 特性，并指定创建好的自定义模型绑定器。
+
+```csharp
+[Route("register")]
+public IActionResult Register([FromBody] [ModelBinder(BinderType = typeof(PersonModelBinder))] Person person)
+{
+    if (ModelState.IsValid)
+    {
+        var errors = string.Join(',', ModelState.Values
+            .SelectMany(x => x.Errors)
+            .Select(x => x.ErrorMessage));
+        return BadRequest(errors);
+    }
+
+    return Content($"{person}");
+}
+```
