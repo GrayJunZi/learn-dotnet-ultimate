@@ -6,7 +6,7 @@ namespace ModelValidationsExample.Controllers;
 public class HomeController : Controller
 {
     [Route("register")]
-    public IActionResult Register([Bind(nameof(Person.Name), nameof(Person.Email))] Person person)
+    public IActionResult Register([FromBody] Person person)
     {
         if (ModelState.IsValid)
         {

@@ -2996,3 +2996,52 @@ public class Person : IValidatableObject
     }
 }
 ```
+
+### 059. Bind 和 BindNever
+
+#### [Bind]
+
+- 该特性用于在模型绑定中，仅指定的属性包含在模型绑定中。
+- 防止过度暴露其他属性，尤其是创建场景。
+
+仅绑定 `Name`、`Email` 属性，其他属性将忽略。
+```csharp
+[Route("register")]
+public IActionResult Register([Bind(nameof(Person.Name), nameof(Person.Email))]Person person)
+{
+    ...
+}
+```
+
+#### [BindNever]
+
+- 该特性用于在模型绑定中，指定的属性不包含在模型绑定中。
+- 当指定不绑定的属性很少时，会很方便。
+
+
+模型绑定时忽略`Age`属性。
+```csharp
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+public class Person : IValidatableObject
+{
+    ...
+
+    [BindNever]
+    public int? Age { get; set; }
+
+    ...
+}
+```
+
+### 060. FromBody
+
+在参数上标记 `[FromBody]` 特性从请求体（JSON、XML或其他）获取数据。
+
+```csharp
+[Route("register")]
+public IActionResult Register([FromBody] Person person)
+{
+    ...
+}
+```
