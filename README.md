@@ -3063,6 +3063,18 @@ builder.Services.AddControllers()
 
 ### 062. 自定义模型绑定器
 
+#### IModelBinder
+
+- `IModelBinder` 是所有自定义模型绑定器的父接口。
+- 该接口提供 `BindModelAsync` 方法，用于定义从请求中绑定（读取）数据并创建已在操作方法中作为参数接收的模型对象的逻辑。
+
+#### ModelBindingContext
+
+- 作为自定义模型绑定器接口中的 `BindModelAsync` 方法里的参数。
+- 提供 `HttpContext`、`ModelState`、`ValueProvider`、`Result` 等属性。
+
+#### 实际使用
+
 创建自定义模型绑定器类，继承接口 `IModelBinder` 并实现 `BindModelAsync` 方法，用以实现自定义的模型绑定。
 
 ```csharp
@@ -3113,4 +3125,50 @@ public IActionResult Register([FromBody] [ModelBinder(BinderType = typeof(Person
 
     return Content($"{person}");
 }
+```
+
+### 063. 自定义模型绑定器提供程序
+
+#### IModelBinderProvider
+
+- 它是所有自定义模型绑定器提供程序的父接口。
+- 提供名为 `GetBinder()` 的方法，以返回自定义模型绑定器类的类型。
+
+#### ModelBinderProviderContext
+
+- 作为自定义模型绑定器提供程序类的 `GetBinder()` 方法的参数。
+- 提供 Metadata、BindingInfo、Services 等属性。
+
+#### 实际使用
+
+创建自定义模型绑定器提供程序类，继承接口 `IModelBinderProvider` 并实现 `GetBinder` 方法，用以实现自定义模型绑定器提供程序。
+
+```csharp
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using ModelValidationsExample.Models;
+
+namespace ModelValidationsExample.CustomModelBinders;
+
+public class PersonBinderProvider : IModelBinderProvider
+{
+    public IModelBinder? GetBinder(ModelBinderProviderContext context)
+    {
+        if (context.Metadata.ModelType == typeof(Person))
+        {
+            return new BinderTypeModelBinder(typeof(PersonModelBinder));
+        }
+
+        return null;
+    }
+}
+```
+
+将自定义模型绑定器提供程序注册到容器中，即可实现自定匹配参数类的模型绑定器。
+
+```csharp
+builder.Services.AddControllers(options =>
+    {
+        options.ModelBinderProviders.Insert(0, new PersonBinderProvider());
+    });
 ```
