@@ -4,7 +4,7 @@ using ModelValidationsExample.CustomValidators;
 
 namespace ModelValidationsExample.Models;
 
-public class Person
+public class Person : IValidatableObject
 {
     [Required(ErrorMessage = "{0} can't be empty or null")]
     [Display(Name = "Person Name")]
@@ -33,13 +33,25 @@ public class Person
     [MinimumYearValidator(2000, ErrorMessage = "Date of Birth should be newer than {0} year")]
     public DateTime? DateOfBirth { get; set; }
 
-    
+
     public DateTime? FromDate { get; set; }
+
     [DateRangeValidator("FromDate", ErrorMessage = "{1} should be older than or equal to {0}")]
     public DateTime? ToDate { get; set; }
+
+    public int? Age { get; set; }
 
     public override string ToString()
     {
         return $"Person: {Name}, {Email}, {Phone}, {Password}, {ConfirmPassword}, {Price}";
+    }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (!DateOfBirth.HasValue && !Age.HasValue)
+        {
+            yield return new ValidationResult("Either the Date of Birth or Age must be supplied",
+                new[] { nameof(DateOfBirth), nameof(Age) });
+        }
     }
 }
