@@ -3251,3 +3251,54 @@ MVC的调用过程如下：
 - 这是“清洁分离”的主要优势之一。
 - 这种分离允许独立构建和测试模型。
 - 对每个单独的组件进行单元测试更容易。
+
+### 067. 视图
+
+视图是一个网页(.cshtml)，负责将数据与静态代码(html)合并展示（亦被称为服务端渲染）。
+
+- 控制器创建一个`ViewModel`对象，并在其属性中填充数据。
+- 控制器选择一个适当的视图并调用，然后将数据传递给视图。
+- 视图访问`ViewModel`对象。
+- 视图包含带有Razor标记的html标签（可以编写C#代码，用于展示动态内容）。
+- 视图不应包含大量C#代码，应尽量只与展示逻辑相关。
+- 视图既不能直接调用业务模型，也不能直接调用控制器的方法。但它可以向控制器发起请求。
+
+#### 创建项目
+
+```shell
+# 创建文件夹
+mkdir ViewsExample
+# 进入文件夹
+cd ViewsExample
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web
+# 将项目添加至解决方案中
+dotnet sln add .
+```
+
+#### 向容器添加控制器与视图
+
+```csharp
+builder.Services.AddControllersWithViews();
+```
+
+#### 在控制器方法中调用视图
+
+```csharp
+public IActionResult Index()
+{
+    // 查找 Views/Home/Index.cshtml
+    return View();
+
+    // 查找 abc.cshtml
+    return View("abc");
+}
+```
+
+#### 创建视图
+
+1. 创建 Views 文件夹。（所有的视图文件都放在该文件夹中）
+2. 在 Views 文件夹中创建与控制器同名的文件夹。（用于表示某个控制器下的所有的视图，不带`Controller`后缀）
+3. 在控制器文件夹中创建与方法同名的 `.cshtml` 文件，用于表示视图文件。
