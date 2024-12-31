@@ -3349,3 +3349,17 @@ else
     <h3>Date of birth is unknown</h3>
 }
 ```
+
+### 070. Razor分支选择
+
+```csharp
+@switch (person.Gender)
+{
+    case Gender.Male:
+        <p>November 19 is International Men's Day</p>
+        break;
+    case Gender.Female:
+        <p>March 8 is International Women's Day</p>
+            break;
+}
+```
