@@ -3495,3 +3495,14 @@ var persons = (IEnumerable<Person>)ViewData["Persons"];
 
 <title>@ViewData["Title"]</title>
 ```
+
+### 077. ViewData
+
+
+ViewData - 属性和方法
+- `int Count { get; set; }` 获取元素数。
+- `[string Key]` 获取或设置元素。
+- `Add(string key, object value)` 添加新元素。
+- `ContainsKey(string key)` 确定指定的键是否存在。
+- `Clear()` 清除（删除）所有元素。
+

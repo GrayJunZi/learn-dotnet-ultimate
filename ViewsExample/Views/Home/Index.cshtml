@@ -1,34 +1,42 @@
 ﻿@using ViewsExample.Models
 @{
     var persons = (IEnumerable<Person>)ViewData["Persons"];
-    string alertMessage = $"<script>alert('{persons.Count()} people found')</script>";
 }
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
     <title>@ViewData["Title"]</title>
     <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="bootstrap.min.css"/>
 </head>
 <body>
 <h1>Welcome</h1>
 
-@Html.Raw(alertMessage)
-
-@for (var i = 0; i < persons.Count(); i++)
-{
-    var person = persons.ElementAt(i);
-    @: Hello
-    <div>
-        @person.Name
-        <span>,</span>
-        <span>@person.Gender</span>
-        @if (person.DateOfBirth != null)
-        {
-            <span>@person.DateOfBirth.Value.ToString("yyyy-MM-dd HH:mm:ss.ff")</span>
-            <span>@GetAge(person.DateOfBirth) years old</span>
-        }
-    </div>
-}
+<table class="table table-hover table-striped">
+    <thead>
+    <tr>
+        <th>名称</th>
+        <th>性别</th>
+        <th>年龄</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var person in persons)
+    {
+        <tr>
+            <td>@person.Name</td>
+            <td>@person.Gender</td>
+            <td>
+                @if (person.DateOfBirth != null)
+                {
+                    <span>@person.DateOfBirth.Value.ToString("yyyy-MM-dd HH:mm:ss.ff")</span>
+                    <span>@GetAge(person.DateOfBirth) years old</span>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
 
 @functions{
 
