@@ -5,7 +5,6 @@
     {
         Name = "John"
     };
-    var dateOfBirth = DateTime.Parse("2024-12-31");
 }
 <!DOCTYPE html>
 <html>
@@ -16,5 +15,14 @@
 <body>
 <h1>Welcome</h1>
 <h2>Hello {@person.Name}</h2>
+@if (person.DateOfBirth.HasValue)
+{
+    var age = Math.Round((DateTime.Now - person.DateOfBirth.Value).TotalDays / 365.25);
+    <h3>@age years old</h3>
+}
+else
+{
+    <h3>Date of birth is unknown</h3>
+}
 </body>
 </html>

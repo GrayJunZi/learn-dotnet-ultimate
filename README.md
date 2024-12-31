@@ -3333,3 +3333,19 @@ Razor表达式是一个C#表达式，用于返回 字段、属性，或方法调
 
 @(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff"))
 ```
+
+### 069. Razor逻辑判断
+
+可以在Razor代码块中编写html代码。
+
+```csharp
+@if (person.DateOfBirth.HasValue)
+{
+    var age = Math.Round((DateTime.Now - person.DateOfBirth.Value).TotalDays / 365.25);
+    <h3>@age years old</h3>
+}
+else
+{
+    <h3>Date of birth is unknown</h3>
+}
+```
