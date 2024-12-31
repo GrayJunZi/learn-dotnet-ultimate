@@ -18,8 +18,9 @@
 <body>
 <h1>Welcome</h1>
 
-@foreach (var person in persons)
+@for (var i = 0 ; i<persons.Count();i++)
 {
+    var person = persons.ElementAt(i);
     <div>
         @person.Name
         <span>,</span>

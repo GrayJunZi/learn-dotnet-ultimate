@@ -3380,3 +3380,21 @@ else
     </div>
 }
 ```
+
+### 072. Razor 循环for
+
+```csharp
+@for (var i = 0 ; i<persons.Count();i++)
+{
+    var person = persons.ElementAt(i);
+    <div>
+        @person.Name
+        <span>,</span>
+        <span>@person.Gender</span>
+        @if (person.DateOfBirth != null)
+        {
+            <span>@person.DateOfBirth.Value.ToString("yyyy-MM-dd HH:mm:ss.ff")</span>
+        }
+    </div>
+}
+```
