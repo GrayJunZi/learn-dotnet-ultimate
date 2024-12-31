@@ -8,6 +8,9 @@
         DateOfBirth = DateTime.Now,
         Gender = Gender.Male
     });
+
+
+    string alertMessage = $"<script>alert('{persons.Count()} people found')</script>";
 }
 <!DOCTYPE html>
 <html>
@@ -18,10 +21,12 @@
 <body>
 <h1>Welcome</h1>
 
-@for (var i = 0 ; i<persons.Count();i++)
+@Html.Raw(alertMessage)
+
+@for (var i = 0; i < persons.Count(); i++)
 {
     var person = persons.ElementAt(i);
-    @: Hello 
+    @: Hello
     <div>
         @person.Name
         <span>,</span>
@@ -35,6 +40,7 @@
 }
 
 @functions{
+
     double? GetAge(DateTime? dateOfBirth)
     {
         if (dateOfBirth is not null)
@@ -44,6 +50,7 @@
 
         return null;
     }
+
 }
 
 </body>

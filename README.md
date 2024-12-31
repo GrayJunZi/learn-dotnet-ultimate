@@ -3416,7 +3416,6 @@ else
     @:Hi there!
 }
 ```
-
 ### 074. Razor 本地函数
 
 本地函数可以在当前视图中调用。
@@ -3433,4 +3432,16 @@ else
         return null;
     }
 }
+```
+
+### 075. Html.Raw
+
+`Html.Raw()` 方法用于将带有html内容的字符串以html标签输出。
+
+```csharp
+@{
+    string alertMessage = $"<script>alert('{persons.Count()} people found')</script>";
+}
+
+@Html.Raw(alertMessage)
 ```
