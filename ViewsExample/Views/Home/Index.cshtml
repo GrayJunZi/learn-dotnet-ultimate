@@ -1,11 +1,13 @@
 ﻿@using ViewsExample.Models
 @{
     var title = "Asp.Net Core App";
-    var person = new Person()
+
+    var persons = Enumerable.Range(1, 10).Select(x => new Person()
     {
-        Name = "John",
+        Name = "Robot T" + (3500 + x),
+        DateOfBirth = DateTime.Now,
         Gender = Gender.Male
-    };
+    });
 }
 <!DOCTYPE html>
 <html>
@@ -15,25 +17,19 @@
 </head>
 <body>
 <h1>Welcome</h1>
-<h2>Hello {@person.Name}</h2>
-@if (person.DateOfBirth.HasValue)
+
+@foreach (var person in persons)
 {
-    var age = Math.Round((DateTime.Now - person.DateOfBirth.Value).TotalDays / 365.25);
-    <h3>@age years old</h3>
-}
-else
-{
-    <h3>Date of birth is unknown</h3>
+    <div>
+        @person.Name
+        <span>,</span>
+        <span>@person.Gender</span>
+        @if (person.DateOfBirth != null)
+        {
+            <span>@person.DateOfBirth.Value.ToString("yyyy-MM-dd HH:mm:ss.ff")</span>
+        }
+    </div>
 }
 
-@switch (person.Gender)
-{
-    case Gender.Male:
-        <p>November 19 is International Men's Day</p>
-        break;
-    case Gender.Female:
-        <p>March 8 is International Women's Day</p>
-            break;
-}
 </body>
 </html>

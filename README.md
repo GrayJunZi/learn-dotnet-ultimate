@@ -3363,3 +3363,20 @@ else
             break;
 }
 ```
+
+### 071. Razor 循环foreach
+
+```csharp
+@foreach (var person in persons)
+{
+    <div>
+        @person.Name
+        <span>,</span>
+        <span>@person.Gender</span>
+        @if (person.DateOfBirth != null)
+        {
+            <span>@person.DateOfBirth.Value.ToString("yyyy-MM-dd HH:mm:ss.ff")</span>
+        }
+    </div>
+}
+```
