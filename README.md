@@ -3416,3 +3416,21 @@ else
     @:Hi there!
 }
 ```
+
+### 074. Razor 本地函数
+
+本地函数可以在当前视图中调用。
+
+```csharp
+@functions{
+    double? GetAge(DateTime? dateOfBirth)
+    {
+        if (dateOfBirth is not null)
+        {
+            return (DateTime.Now - dateOfBirth.Value).TotalDays / 365.25;
+        }
+
+        return null;
+    }
+}
+```

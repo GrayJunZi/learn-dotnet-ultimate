@@ -29,8 +29,21 @@
         @if (person.DateOfBirth != null)
         {
             <span>@person.DateOfBirth.Value.ToString("yyyy-MM-dd HH:mm:ss.ff")</span>
+            <span>@GetAge(person.DateOfBirth) years old</span>
         }
     </div>
+}
+
+@functions{
+    double? GetAge(DateTime? dateOfBirth)
+    {
+        if (dateOfBirth is not null)
+        {
+            return (DateTime.Now - dateOfBirth.Value).TotalDays / 365.25;
+        }
+
+        return null;
+    }
 }
 
 </body>
