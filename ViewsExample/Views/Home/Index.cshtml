@@ -1,21 +1,12 @@
 ﻿@using ViewsExample.Models
 @{
-    var title = "Asp.Net Core App";
-
-    var persons = Enumerable.Range(1, 10).Select(x => new Person()
-    {
-        Name = "Robot T" + (3500 + x),
-        DateOfBirth = DateTime.Now,
-        Gender = Gender.Male
-    });
-
-
+    var persons = (IEnumerable<Person>)ViewData["Persons"];
     string alertMessage = $"<script>alert('{persons.Count()} people found')</script>";
 }
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@title</title>
+    <title>@ViewData["Title"]</title>
     <meta charset="UTF-8"/>
 </head>
 <body>

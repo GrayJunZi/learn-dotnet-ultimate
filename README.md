@@ -3445,3 +3445,53 @@ else
 
 @Html.Raw(alertMessage)
 ```
+
+### 076. ViewData
+
+`ViewData` 是一个字典数据，它在收到请求时自动创建，在向客户端发送响应之前删除。它主要用于从控制器向视图发送数据。
+
+`ViewData` 是 `Microsoft.AspNetCore.Mvc.Controller` 类和 `Microsoft.AspNetCore.Mvc.Razor.RazorPage` 类的属性。
+
+它是 `Microsoft.AspNet.Mvc.ViewFeatures.ViewDataDictionary` 类型。
+
+```csharp
+namespace Microsoft.AspNetCore.Mvc
+{
+ public abstract class Controller : ControllerBase
+ {
+   public ViewDataDictionary ViewData { get; set; }
+ }
+}
+```
+
+- 它派生自 IDictionary<KeyValuePair<string， object>> 类型。
+- 这意味着，它充当键/值对的字典。
+- Key 是字符串类型。
+- value 是 object 类型。
+
+使用 `ViewData` 存储数据。
+
+```csharp
+[Route("home")]
+[Route("/")]
+public IActionResult Index()
+{
+    ViewData["Title"] = "Home";
+    ViewData["Persons"] = Enumerable.Range(1, 10).Select(x => new Person()
+    {
+        Name = "Robot T" + (3500 + x),
+        DateOfBirth = DateTime.Now,
+        Gender = Gender.Male
+    });
+    return View();
+}
+```
+
+在视图中使用 `ViewData` 数据。
+
+```csharp
+var persons = (IEnumerable<Person>)ViewData["Persons"];
+
+
+<title>@ViewData["Title"]</title>
+```
