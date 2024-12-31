@@ -1,10 +1,20 @@
-﻿<!DOCTYPE html>
+﻿@using ViewsExample.Models
+@{
+    var title = "Asp.Net Core App";
+    var person = new Person()
+    {
+        Name = "John"
+    };
+    var dateOfBirth = DateTime.Parse("2024-12-31");
+}
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Asp.Net Core App</title>
+    <title>@title</title>
     <meta charset="UTF-8"/>
 </head>
 <body>
-Welcome
+<h1>Welcome</h1>
+<h2>Hello {@person.Name}</h2>
 </body>
 </html>

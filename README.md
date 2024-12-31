@@ -3302,3 +3302,34 @@ public IActionResult Index()
 1. 创建 Views 文件夹。（所有的视图文件都放在该文件夹中）
 2. 在 Views 文件夹中创建与控制器同名的文件夹。（用于表示某个控制器下的所有的视图，不带`Controller`后缀）
 3. 在控制器文件夹中创建与方法同名的 `.cshtml` 文件，用于表示视图文件。
+
+### 068. Razor代码块与表达式
+
+#### Razor代码块
+
+Razor代码块是一个C#代码块，其中可以包含一行或多行C#代码，这些代码可以是任何语句和函数。
+
+```csharp
+@using ViewsExample.Models
+@{
+    var title = "Asp.Net Core App";
+    var person = new Person()
+    {
+        Name = "John"
+    };
+    var dateOfBirth = DateTime.Parse("2024-12-31");
+}
+```
+
+#### Razor表达式
+
+Razor表达式是一个C#表达式，用于返回 字段、属性，或方法调用的值。
+
+```csharp
+@using ViewsExample.Models
+@title
+
+// 或者
+
+@(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff"))
+```
