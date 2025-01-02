@@ -1,6 +1,6 @@
 ﻿@using ViewsExample.Models
 @{
-    var persons = (IEnumerable<Person>)ViewData["Persons"];
+    //var persons = (IEnumerable<Person>)ViewData["Persons"];
 }
 <!DOCTYPE html>
 <html lang="zh">
@@ -21,7 +21,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var person in persons)
+    @foreach (var person in ViewBag.Persons)
     {
         <tr>
             <td>@person.Name</td>

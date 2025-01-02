@@ -3506,3 +3506,43 @@ ViewData - 属性和方法
 - `ContainsKey(string key)` 确定指定的键是否存在。
 - `Clear()` 清除（删除）所有元素。
 
+### 078. ViewBag
+
+`ViewBag` 是控制器和视图的一个属性，用于轻松访问 `ViewData` 因为它是 `dynamic` 类型。
+
+ViewBag 是 Microsoft.AspNetCore.Mvc.Controller 类和 Microsoft.AspNetCore.Mvc.Razor.RazorPageBase 类的属性。
+
+```csharp
+namespace Microsoft.AspNetCore.Mvc
+{
+ public abstract class Controller : ControllerBase
+ {
+   public dynamic ViewBag { get; set; }
+ }
+}
+```
+
+`dynamic` 类型类似于 `var` 关键字。但是，它会在运行时而不是在编译时检查数据类型。如果您尝试访问 ViewBag 中不存在的属性，它将返回 null。
+
+```csharp
+@foreach (var person in ViewBag.Persons)
+{
+
+}
+```
+
+也可以直接为 `ViewBag` 属性赋值。
+
+```csharp
+ViewBag.Persons = Enumerable.Range(1, 10).Select(x => new Person()
+{
+    Name = "Robot T" + (3500 + x),
+    DateOfBirth = DateTime.Now,
+    Gender = Gender.Male
+});
+```
+
+#### ViewBag的优势
+
+- ViewBag的语法比ViewData更容易访问属性。
+- 读取值时，无需对值进行类型转换。
