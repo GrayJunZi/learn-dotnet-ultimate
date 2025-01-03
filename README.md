@@ -13,7 +13,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 05. 路由 (Routing)
 - [x] 06. 控制器与 IActionResult (Controllers & IActionResult)
 - [x] 07. 模型绑定与验证 (ModelBinding and Validations)
-- [ ] 08. Razor 视图 (Razor Views)
+- [x] 08. Razor 视图 (Razor Views)
 - [ ] 09. 布局视图 (Layout Views)
 - [ ] 10. 分部视图 (Partial Views)
 - [ ] 11. 视图组件 (View Components)
@@ -3641,3 +3641,55 @@ flowchart TB
 ### 083. 共享视图
 
 共享视图存放在 `Views` 文件夹中的 `Shared` 文件夹下。
+
+## 九、布局视图
+
+### 084. 创建布局视图
+
+布局视图是一个网页(.cshtml)，负责展示逻辑模板（通常是包含页头、侧边栏、页脚等html模板）。
+
+创建项目
+```shell
+# 创建文件夹
+mkdir LayoutViewsExample
+# 进入文件夹
+cd LayoutViewsExample
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web
+# 将项目添加至解决方案中
+dotnet sln add .
+```
+
+编写 `Views\Shared\_Layout.cshtml` 文件内容。
+
+```csharp
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <link href="~/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+
+    <div class="navbar">
+        <div class="navbar-brand">Asp.Net Core App</div>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="/search-products">Search Products</a></li>
+            <li><a href="/order-product">Order Product</a></li>
+        </ul>
+    </div>
+
+    @RenderBody()
+
+</div>
+
+</body>
+</html>
+```
