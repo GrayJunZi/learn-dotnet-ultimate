@@ -3546,3 +3546,64 @@ ViewBag.Persons = Enumerable.Range(1, 10).Select(x => new Person()
 
 - ViewBag的语法比ViewData更容易访问属性。
 - 读取值时，无需对值进行类型转换。
+
+### 079. 强类型视图
+
+强类型视图是绑定到指定模型类的视图。主要用于在视图中轻松访问模型对象或模型集合。
+
+在控制器方法中返回一个模型类。
+```csharp
+[Route("home")]
+[Route("/")]
+public IActionResult Index()
+{
+    ViewData["Title"] = "Home";
+    var persons = Enumerable.Range(1, 10).Select(x => new Person()
+    {
+        Name = "Robot T" + (3500 + x),
+        DateOfBirth = DateTime.Now,
+        Gender = Gender.Male
+    });
+    return View("Index", persons);
+}
+```
+
+在视图中指定模型，然后通过`Model`来应用该模型数据。
+```csharp
+@using ViewsExample.Models
+@model IEnumerable<Person>
+
+
+<table class="table table-hover table-striped">
+    <thead>
+    <tr>
+        <th>名称</th>
+        <th>性别</th>
+        <th>年龄</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var person in Model)
+    {
+        <tr>
+            <td>@person.Name</td>
+            <td>@person.Gender</td>
+            <td>
+                @if (person.DateOfBirth != null)
+                {
+                    <span>@person.DateOfBirth.Value.ToString("yyyy-MM-dd HH:mm:ss.ff")</span>
+                    <span>@GetAge(person.DateOfBirth) years old</span>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+```
+
+#### 强类型视图的好处
+
+- 在强类型视图中访问模型属性时，可以得到智能提示，因为`@model`指令中指定了模型类。
+- 属性名称在编译时检查，如果强类型视图中出现拼写错误/不存在的属性时显示为错误。
+- 在强类型视图中，每个视图只有一个模型。
+- 易于识别视图中正在访问的模型。
