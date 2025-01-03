@@ -3766,3 +3766,9 @@ public class ProductsController : Controller
 
 <h1>@ViewData["Title"]</h1>
 ```
+
+### 088. _ViewStart.cshtml
+
+`_ViewStart.cshtml` 是 `Views` 文件夹及其子文件夹中的特殊文件，在执行视图之前 先调用 `_ViewImports.cshtml` 然后再调用 `_ViewStart.cshtml` 中的内容。
+
+> 主要用于指定公用的布局页，这样视图文件中需要指定布局页面了。
