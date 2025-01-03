@@ -3701,3 +3701,55 @@ dotnet sln add .
 - 视图页面和布局视图 共享同一个 `ViewData` 对象。
 - 因此，可以将数据从视图发送到布局视图中，因为视图首先执行。
 - 在布局视图中引入的css、js文件也适用于视图，因为视图的内容将在运行时合并到布局视图中。
+
+### 086. 用于多个视图的布局视图
+
+创建`Home`控制器并指定路由，然后在 `Views\Home` 文件夹下创建 `Index`、`About`、`Contact` 视图。
+
+```csharp
+public class HomeController : Controller
+{
+    [Route("/")]
+    public IActionResult Index()
+    {
+        return View();  
+    }
+
+    [Route("/about")]
+    public IActionResult About()
+    {
+        return View();
+    }
+
+    [Route("/contact")]
+    public IActionResult Contact()
+    {
+        return View();
+    }
+}
+```
+
+创建`Products`控制器并指定路由，然后在 `Views\Products` 文件夹下创建 `Products`、`SearchProducts`、`OrderProduct` 视图。
+
+```csharp
+public class ProductsController : Controller
+{
+    [Route("/products")]
+    public IActionResult Products()
+    {
+        return View();
+    }
+
+    [Route("/search-products")]
+    public IActionResult SearchProducts()
+    {
+        return View();
+    }
+
+    [Route("/order-product")]
+    public IActionResult OrderProduct()
+    {
+        return View();
+    }
+}
+```
