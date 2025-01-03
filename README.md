@@ -3637,3 +3637,7 @@ flowchart TB
     View["View.cshtml"] -->
     LayoutView["LayoutView.cshtml"]
 ```
+
+### 083. 共享视图
+
+共享视图存放在 `Views` 文件夹中的 `Shared` 文件夹下。
