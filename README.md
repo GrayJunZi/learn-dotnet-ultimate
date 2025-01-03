@@ -3616,3 +3616,9 @@ public IActionResult Index()
 - `return View(object Model)` - 返回和控制器方法同名的视图，并接收一个模型对象。
 - `return View(string ViewName)` - 返回指定名称的视图。
 - `return View(string ViewName, object Model)` - 返回指定名称的视图，并接收一个模型对象。
+
+### 081. 具有多个模型的强类型视图
+
+强类型视图可以直接绑定到单个模型。但是该模型类可以引用其他模型类的对象。
+
+可以通过创建一个包装类，，将我们所需的模型对象都包含进去，然后在视图中绑定该包装类，即可实现让强类型视图支持多个模型（本质还是只能绑定一个模型）。
