@@ -3622,3 +3622,18 @@ public IActionResult Index()
 强类型视图可以直接绑定到单个模型。但是该模型类可以引用其他模型类的对象。
 
 可以通过创建一个包装类，，将我们所需的模型对象都包含进去，然后在视图中绑定该包装类，即可实现让强类型视图支持多个模型（本质还是只能绑定一个模型）。
+
+### 082. _ViewImports.cshtml
+
+`ViewImports.cshtml` 是 `Views` 文件夹及其子文件夹中的特殊文件，在执行视图之前自动调用该文件中的内容。
+
+> 主要用于引用公用的命名空间，这样视图文件中需要额外引用了。
+
+
+```mermaid
+flowchart TB
+    ViewImports["_ViewImports.cshtml"] -->
+    ViewStart["_ViewStart"] --> 
+    View["View.cshtml"] -->
+    LayoutView["LayoutView.cshtml"]
+```
