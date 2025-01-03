@@ -3772,3 +3772,23 @@ public class ProductsController : Controller
 `_ViewStart.cshtml` 是 `Views` 文件夹及其子文件夹中的特殊文件，在执行视图之前 先调用 `_ViewImports.cshtml` 然后再调用 `_ViewStart.cshtml` 中的内容。
 
 > 主要用于指定公用的布局页，这样视图文件中需要指定布局页面了。
+
+### 089. 动态布局视图
+
+我们可以在视图页面中对Layout属性赋值，它会覆盖 `_ViewStart.cshtml` 中的布局页设置。
+
+我们可以根据某个业务逻辑来动态指定应该以哪个页面作为我们的布局视图。
+
+```csharp
+@{
+    if (value == 1) 
+    {
+        Layout = "~/Views/Shared/_Layout1.cshtml";  
+    }
+    else if (value == 2)
+    {
+        Layout = "~/Views/Shared/_Layout2.cshtml";  
+    }
+}
+
+```
