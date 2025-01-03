@@ -3753,3 +3753,16 @@ public class ProductsController : Controller
     }
 }
 ```
+
+### 087. 布局视图中的ViewData
+
+由于在布局视图中的 `@RenderBody()` 方法会先执行，所以视图中的代码会先触发，当视图中的的ViewData发生变更时，布局视图是可以获取得到的，因为视图和布局视图中的ViewData是共享的。
+
+```csharp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Home";
+}
+
+<h1>@ViewData["Title"]</h1>
+```
