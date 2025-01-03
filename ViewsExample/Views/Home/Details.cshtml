@@ -1,5 +1,5 @@
-﻿@using ViewsExample.Models
-@model IEnumerable<Person>
+﻿@model ViewsExample.Models.Person
+
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="/bootstrap.min.css"/>
 </head>
 <body>
-<h1>Welcome</h1>
+<h1>@Model.Name</h1>
 
+<a href="/">返回</a>
 <table class="table table-hover table-striped">
     <thead>
     <tr>
@@ -19,20 +20,18 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var person in Model)
-    {
         <tr>
-            <td> <a href="/person-details/@person.Name">@person.Name</a></td>
-            <td>@person.Gender</td>
+            <td>@Model.Name</td>
+            <td>@Model.Gender</td>
             <td>
-                @if (person.DateOfBirth != null)
+                @if (@Model.DateOfBirth != null)
                 {
-                    <span>@person.DateOfBirth.Value.ToString("yyyy-MM-dd HH:mm:ss.ff")</span>
-                    <span>@GetAge(person.DateOfBirth) years old</span>
+                    <span>@Model.DateOfBirth.Value.ToString("yyyy-MM-dd HH:mm:ss.ff")</span>
+                    <span>@GetAge(Model.DateOfBirth) years old</span>
                 }
             </td>
         </tr>
-    }
+    
     </tbody>
 </table>
 

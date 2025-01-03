@@ -3601,9 +3601,18 @@ public IActionResult Index()
 </table>
 ```
 
+### 080. 强类型视图
+
 #### 强类型视图的好处
 
 - 在强类型视图中访问模型属性时，可以得到智能提示，因为`@model`指令中指定了模型类。
 - 属性名称在编译时检查，如果强类型视图中出现拼写错误/不存在的属性时显示为错误。
 - 在强类型视图中，每个视图只有一个模型。
 - 易于识别视图中正在访问的模型。
+
+#### View() 重载方法
+
+- `return View()` - 返回和控制器方法同名的视图。
+- `return View(object Model)` - 返回和控制器方法同名的视图，并接收一个模型对象。
+- `return View(string ViewName)` - 返回指定名称的视图。
+- `return View(string ViewName, object Model)` - 返回指定名称的视图，并接收一个模型对象。
