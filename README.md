@@ -3792,3 +3792,25 @@ public class ProductsController : Controller
 }
 
 ```
+
+### 090. 部分布局视图
+
+`Section` 定义了在视图中的内容，在指定的布局视图位置中渲染。 
+
+在 `_Layout.cshtml` 视图中的指定位置加入要渲染Section的代码。
+
+```csharp
+<div>
+    @RenderSection("footer_section", false)
+</div>
+```
+
+然后在 `Contact.cshtml` 视图中使用。
+
+```csharp
+@section footer_section {
+    <p>Contact support: xxx</p>
+}
+```
+
+> @RenderSection() 方法的第一个参数是 section 的名称，第二个参数是否必填。
