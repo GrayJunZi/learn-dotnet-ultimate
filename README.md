@@ -3814,3 +3814,7 @@ public class ProductsController : Controller
 ```
 
 > @RenderSection() 方法的第一个参数是 section 的名称，第二个参数是否必填。
+
+### 091. 嵌套布局视图
+
+在一个布局视图中引用了其他布局视图就称作嵌套布局视图。
