@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Products\OrderProduct.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Products\Products.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Products\SearchProducts.cshtml" />
+  </ItemGroup>
+
+</Project>

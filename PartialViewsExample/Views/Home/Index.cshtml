@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<partial name="_ListPartialView"/>
+
+<h1>Partial Async</h1>
+
+@await Html.PartialAsync("_ListPartialView")
+
+<h1>C# Block Render Partial View</h1>
+
+@{
+    await Html.RenderPartialAsync("_ListPartialView");
+}

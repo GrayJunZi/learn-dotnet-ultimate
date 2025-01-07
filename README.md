@@ -14,7 +14,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 06. 控制器与 IActionResult (Controllers & IActionResult)
 - [x] 07. 模型绑定与验证 (ModelBinding and Validations)
 - [x] 08. Razor 视图 (Razor Views)
-- [ ] 09. 布局视图 (Layout Views)
+- [x] 09. 布局视图 (Layout Views)
 - [ ] 10. 分部视图 (Partial Views)
 - [ ] 11. 视图组件 (View Components)
 - [ ] 12. 依赖注入 (Dependency Injection)
@@ -3818,3 +3818,73 @@ public class ProductsController : Controller
 ### 091. 嵌套布局视图
 
 在一个布局视图中引用了其他布局视图就称作嵌套布局视图。
+
+## 十、分部视图
+
+### 092. 创建分部视图
+
+分部视图是一个 razor 文件 (.cshtml)，无法从控制器单独调用，但可以从同一Web应用程序中的任何视图中调用。
+
+#### 创建项目
+
+```shell
+# 创建文件夹
+mkdir PartialViewsExample
+# 进入文件夹
+cd PartialViewsExample
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web
+# 将项目添加至解决方案中
+dotnet sln add .
+```
+
+#### 创建分部视图
+
+在 `Views\Shared` 文件夹下创建一个 `_ListPartialView.cshtml` 文件作为分部视图
+```html
+<h3>Cities</h3>
+<ul class="list-group">
+    <li class="list-group-item">Beijing</li>
+    <li class="list-group-item">Shanghai</li>
+    <li class="list-group-item">Guangzhou</li>
+    <li class="list-group-item">Shenzhen</li>
+</ul>
+```
+
+#### 调用分部视图
+
+在视图页面中使用 `partial` 标签，并填写要调用的视图名称。
+
+```html
+<partial name="_ListPartialView"/>
+```
+
+或者使用 `TagHelper` 来调用分部视图。
+
+在 `Views` 文件下创建一个 `_ViewImports.cshtml` 文件。
+
+```csharp
+@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
+```
+
+然后在视图中进行调用。
+
+```csharp
+@Html.Partial("_ListPartialView")
+```
+
+或使用异步方法来加载。
+
+```csharp
+@await Html.PartialAsync("_ListPartialView")
+```
+
+亦或者使用代码块来加载分部视图。
+
+```csharp
+@{
+    await Html.RenderPartialAsync("_ListPartialView");
+}
+```
