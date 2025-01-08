@@ -3875,16 +3875,46 @@ dotnet sln add .
 @Html.Partial("_ListPartialView")
 ```
 
-或使用异步方法来加载。
+或使用异步方法来加载，该方式将内容返回到父视图中。
 
 ```csharp
 @await Html.PartialAsync("_ListPartialView")
 ```
 
-亦或者使用代码块来加载分部视图。
+亦或者使用代码块来加载分部视图，该方式将内容以流式传输到浏览器。
 
 ```csharp
 @{
     await Html.RenderPartialAsync("_ListPartialView");
+}
+```
+
+### 093. 在分部视图中使用ViewData
+
+调用分部视图时，它会收到父视图的ViewData副本。因此，对分部视图中的ViewData的所有更改都不会影响到父视图中的ViewData。
+
+如果不希望分部视图访问父视图的整个ViewData对象，可以向分部视图提供自定义的ViewData对象。
+
+在父视图中为分部视图传递自定义ViewData对象。
+```csharp
+@{
+    var myViewData = new ViewDataDictionary(ViewData);
+
+    myViewData["ListTitle"] = "My View Data";
+    myViewData["Cities"] = new[] { "Shanghai" };
+}
+
+<partial name="_ListPartialView" view-data="myViewData"/>
+```
+
+或使用 `RenderPartialAsync()`
+```csharp
+@{
+    var myViewData = new ViewDataDictionary(ViewData);
+
+    myViewData["ListTitle"] = "My View Data";
+    myViewData["Cities"] = new[] { "Shanghai" };
+
+    await Html.RenderPartialAsync("_ListPartialView", myViewData);
 }
 ```

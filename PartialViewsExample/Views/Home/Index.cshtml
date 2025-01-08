@@ -15,3 +15,14 @@
 @{
     await Html.RenderPartialAsync("_ListPartialView");
 }
+
+<h1>Partial With ViewData</h1>
+
+@{
+    var myViewData = new ViewDataDictionary(ViewData);
+
+    myViewData["ListTitle"] = "My View Data";
+    myViewData["Cities"] = new[] { "Shanghai" };
+}
+
+<partial name="_ListPartialView" view-data="myViewData"/>

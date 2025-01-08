@@ -7,7 +7,9 @@ public class HomeController : Controller
     [Route("/")]
     public IActionResult Index()
     {
-        return View();  
+        ViewData["ListTitle"] = "Cities";
+        ViewData["Cities"] = new[] { "Beijing", "Shanghai", "Guangzhou", "Shenzhen" };
+        return View();
     }
 
     [Route("/about")]

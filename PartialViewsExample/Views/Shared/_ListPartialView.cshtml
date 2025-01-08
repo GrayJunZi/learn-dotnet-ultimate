@@ -1,7 +1,7 @@
-﻿<h3>Cities</h3>
+﻿<h3>@ViewBag.ListTitle</h3>
 <ul class="list-group">
-    <li class="list-group-item">Beijing</li>
-    <li class="list-group-item">Shanghai</li>
-    <li class="list-group-item">Guangzhou</li>
-    <li class="list-group-item">Shenzhen</li>
+    @foreach (var city in ViewBag.Cities)
+    {
+        <li class="list-group-item">@city</li>
+    }
 </ul>
