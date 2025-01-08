@@ -23,6 +23,22 @@
 
     myViewData["ListTitle"] = "My View Data";
     myViewData["Cities"] = new[] { "Shanghai" };
+
+    await Html.RenderPartialAsync("_ListPartialView", myViewData);
 }
 
 <partial name="_ListPartialView" view-data="myViewData"/>
+
+<h1>Strongly Typed Partial View</h1>
+
+@{
+    var listModel = new ListModel()
+    {
+        Title = "Languages",
+        List = new [] { "zh-CN", "en-US" }
+    };
+
+    await Html.RenderPartialAsync("_StronglyListPartialView", listModel);
+}
+
+<partial name="_StronglyListPartialView" model="listModel"/>

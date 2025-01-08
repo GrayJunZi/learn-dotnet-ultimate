@@ -3918,3 +3918,35 @@ dotnet sln add .
     await Html.RenderPartialAsync("_ListPartialView", myViewData);
 }
 ```
+
+### 094. 强类型分部视图
+
+强类型分部视图是绑定到指定模型类的分部视图。因此，它具有强类型视图的所有优势。
+
+使用 `partial` 标签加载强类型分部视图。
+
+```csharp
+@{
+    var listModel = new ListModel()
+    {
+        Title = "Languages",
+        List = new [] { "zh-CN", "en-US" }
+    };
+}
+
+<partial name="_StronglyListPartialView" model="listModel"/>
+```
+
+使用 `RenderPartialAsync` 加载强类型分部视图。
+
+```csharp
+@{
+    var listModel = new ListModel()
+    {
+        Title = "Languages",
+        List = new [] { "zh-CN", "en-US" }
+    };
+
+    await Html.RenderPartialAsync("_StronglyListPartialView", listModel);
+}
+```

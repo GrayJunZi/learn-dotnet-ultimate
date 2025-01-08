@@ -1,0 +1,9 @@
+﻿@model ListModel
+
+<h3>@Model.Title</h3>
+<ul class="list-group">
+    @foreach (var item in Model.List)
+    {
+        <li class="list-group-item">@item</li>
+    }
+</ul>
