@@ -2937,6 +2937,11 @@ public IActionResult ProgrammingLanguages()
 
 `View Component` 是提供数据的类（派生自 `Microsoft.AspNetCore.ViewComponents`），用于呈现数据和分部视图的组合。
 
+- 视图组件只呈现一部分，而不是整个响应。
+- 具有控制器和视图相同的 关注点分离 与 可测试性 的优势。
+- 视图组件应以 `ViewComponent` 为后缀，或标记为 `[ViewComponent]`。
+- 可以继承 `Microsoft.AspNetCore.Mvc.ViewComponent` 类。
+
 #### 创建项目
 
 ```shell
@@ -3012,3 +3017,55 @@ public async Task<IViewComponentResult> InvokeAsync()
 ```
 
 > `vc` 是 `ViewComponent` 的缩写，`grid` 是视图组件的名称。
+
+### 098. 在视图组件中使用ViewData
+
+`ViewComponent` 类 可以将 `ViewData` 对象共享给 `ViewComponent` 视图。
+
+在`InvokeAsync`方法中，为`ViewData`设置值。
+
+```csharp
+public async Task<IViewComponentResult> InvokeAsync()
+{
+    var model = new PersonGridModel()
+    {
+        GridTitle = "Person Grid",
+        Persons = Enumerable.Range(1, 10).Select(x => new Person
+        {
+            Name = $"ROBOT {58720+x}",
+            JobTitle = x % Random.Shared.Next(2,10) == 0 ? "Manager" : "Employee"
+        }).ToList(),
+    };
+    ViewData["Grid"] = model;
+    return View("Sample");
+}
+```
+
+然后在视图组件中使用。
+
+```csharp
+@{
+    var grid = (PersonGridModel)ViewData["Grid"];
+}
+<h3>@grid.GridTitle</h3>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Job Title</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var person in grid.Persons)
+    {
+        <tr>
+            <td>@person.Name</td>
+            <td>@person.JobTitle</td>
+        </tr>
+    }
+    </tbody>
+</table>
+```
+
+> 在视图组件中使用 `ViewData` 与 普通视图中使用 `ViewData` 没有任何区别。
