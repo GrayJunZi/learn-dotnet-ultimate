@@ -3950,3 +3950,46 @@ dotnet sln add .
     await Html.RenderPartialAsync("_StronglyListPartialView", listModel);
 }
 ```
+
+### 095. PartialViewResult
+
+`PartialViewResult` 可以表示内容的一部分。
+
+通常，从浏览器发出异步请求，用于将分部视图的内容提取到浏览器中很有用。
+
+定义返回分部视图接口。
+
+```csharp
+[Route("programming-languages")]
+public IActionResult ProgrammingLanguages()
+{
+    var model = new ListModel
+    {
+        Title = "Programming Languages",
+        List = new[] { "Java", "C#", "Python", "Go" },
+    };
+    return PartialView("_StronglyListPartialView", model);
+}
+```
+
+前端请求分布式视图接口并加载到页面中。
+
+```csharp
+<div id="programming-languages"></div>
+
+<button id="load" class="btn btn-primary my-2 my-sm-0" type="submit">Load Programming Languages</button>
+
+@section footer_section
+
+{
+    <script>
+        document.querySelector("#load").addEventListener('click', async function () {
+            var response = await fetch('/programming-languages');
+            var languages = await response.text();
+            document.querySelector("#programming-languages").innerHTML = languages;
+        });
+    </script>
+}
+```
+
+> 返回分部视图的接口的响应内容是渲染后的html代码。

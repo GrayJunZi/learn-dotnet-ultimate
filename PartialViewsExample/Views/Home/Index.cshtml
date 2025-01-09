@@ -4,6 +4,27 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<h1>Programming Languages</h1>
+
+<div id="programming-languages"></div>
+
+<button id="load" class="btn btn-primary my-2 my-sm-0" type="submit">Load Programming Languages</button>
+
+@section footer_section
+
+{
+    <script>
+        document.querySelector("#load").addEventListener('click', async function () {
+            var response = await fetch('/programming-languages');
+            var languages = await response.text();
+            document.querySelector("#programming-languages").innerHTML = languages;
+        });
+    </script>
+}
+
+
+<h1>Partial</h1>
+
 <partial name="_ListPartialView"/>
 
 <h1>Partial Async</h1>
@@ -35,7 +56,7 @@
     var listModel = new ListModel()
     {
         Title = "Languages",
-        List = new [] { "zh-CN", "en-US" }
+        List = new[] { "zh-CN", "en-US" }
     };
 
     await Html.RenderPartialAsync("_StronglyListPartialView", listModel);

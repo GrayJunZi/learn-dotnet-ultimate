@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PartialViewsExample.Models;
 
 namespace PartialViewsExample.Controllers;
 
@@ -16,5 +17,16 @@ public class HomeController : Controller
     public IActionResult About()
     {
         return View();
+    }
+
+    [Route("programming-languages")]
+    public IActionResult ProgrammingLanguages()
+    {
+        var model = new ListModel
+        {
+            Title = "Programming Languages",
+            List = new[] { "Java", "C#", "Python", "Go" },
+        };
+        return PartialView("_StronglyListPartialView", model);
     }
 }
