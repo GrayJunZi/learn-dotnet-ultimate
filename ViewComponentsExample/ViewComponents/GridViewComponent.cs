@@ -12,11 +12,10 @@ public class GridViewComponent : ViewComponent
             GridTitle = "Person Grid",
             Persons = Enumerable.Range(1, 10).Select(x => new Person
             {
-                Name = $"ROBOT {58720+x}",
-                JobTitle = x % Random.Shared.Next(2,10) == 0 ? "Manager" : "Employee"
+                Name = $"ROBOT {93498 + x}",
+                JobTitle = x % Random.Shared.Next(2, 10) == 0 ? "Manager" : "Employee"
             }).ToList(),
         };
-        ViewData["Grid"] = model;
-        return View("Sample");
+        return View("Sample", model);
     }
 }

@@ -3069,3 +3069,50 @@ public async Task<IViewComponentResult> InvokeAsync()
 ```
 
 > 在视图组件中使用 `ViewData` 与 普通视图中使用 `ViewData` 没有任何区别。
+
+## 099. 强类型视图组件
+
+强类型视图组件与指定的模型类绑定，因此，它具有强类型视图的所有好处。
+
+在 `ViewComponent` 类中的 `InvokeAsync` 方法里返回模型数据。
+
+```csharp
+public async Task<IViewComponentResult> InvokeAsync()
+{
+    var model = new PersonGridModel()
+    {
+        GridTitle = "Person Grid",
+        Persons = Enumerable.Range(1, 10).Select(x => new Person
+        {
+            Name = $"ROBOT {93498 + x}",
+            JobTitle = x % Random.Shared.Next(2, 10) == 0 ? "Manager" : "Employee"
+        }).ToList(),
+    };
+    return View("Sample", model);
+}
+```
+
+在视图组件中使用模型类。
+
+```csharp
+@model PersonGridModel
+<h3>@Model.GridTitle</h3>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Job Title</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var person in Model.Persons)
+    {
+        <tr>
+            <td>@person.Name</td>
+            <td>@person.JobTitle</td>
+        </tr>
+    }
+    </tbody>
+</table>
+```
