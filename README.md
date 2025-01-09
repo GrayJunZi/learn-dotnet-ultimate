@@ -2973,3 +2973,42 @@ public class GridViewComponent : ViewComponent
    }
 }
 ```
+
+### 097. 创建视图组件
+
+在 `Views\Shared\Components\Grid\` 路径下创建一个 `Default.cshtml` 的视图文件。
+
+```html
+<h1>Grid View Component invoked</h1>
+```
+
+然后，在其他视图中进行调用该视图组件。
+
+```csharp
+@await Component.InvokeAsync("Grid")
+```
+
+也可以返回指定名称的视图。它会去 `Views\Shared\Components\Grid\` 下查找 `Sample.cshtml` 视图文件。
+
+```csharp
+public async Task<IViewComponentResult> InvokeAsync()
+{
+    return View("Sample");
+}
+```
+
+#### 调用视图组件
+
+首先，在 `_ViewImports.cshtml` 中添加 `addTagHelper`，将视图组件引入进来。
+
+```csharp
+@addTagHelper "*, ViewComponentsExample"
+```
+
+然后，在视图中使用标签调用该视图组件。
+
+```html
+<vc:grid></vc:grid>
+```
+
+> `vc` 是 `ViewComponent` 的缩写，`grid` 是视图组件的名称。

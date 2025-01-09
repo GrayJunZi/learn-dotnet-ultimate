@@ -1,1 +1,7 @@
-﻿@{}
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<h1>@ViewBag.Title</h1>
+
+@await Component.InvokeAsync("Grid")

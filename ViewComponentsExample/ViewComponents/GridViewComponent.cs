@@ -4,10 +4,11 @@ namespace ViewComponentsExample.ViewComponents;
 
 public class GridViewComponent : ViewComponent
 {
-   public Task<IViewComponentResult> InvokeAsync()
+   public async Task<IViewComponentResult> InvokeAsync()
    {
-       // 调用分部视图
-       // Views\Shared\Components\Grid\Default.cshtml
-       return View();
+       // 默认视图路径 Views\Shared\Components\Grid\Default.cshtml
+       // return View();
+
+       return View("Sample");
    }
 }
