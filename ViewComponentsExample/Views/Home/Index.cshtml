@@ -4,4 +4,20 @@
 
 <h1>@ViewBag.Title</h1>
 
-@await Component.InvokeAsync("Grid")
+@await Component.InvokeAsync("Grid", new PersonGridModel
+{
+    GridTitle = "Friends",
+    Persons = new List<Person>
+    {
+        new Person()
+        {
+            Name = "Amy",
+            JobTitle = "Employee"
+        },
+        new Person()
+        {
+            Name = "John",
+            JobTitle = "Manager"
+        }
+    }
+})

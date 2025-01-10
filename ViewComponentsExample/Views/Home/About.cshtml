@@ -4,4 +4,18 @@
     atque illo odio earum dolorum magnam laboriosam adipisci enim corrupti voluptas temporibus, fugiat distinctio
     aliquam! </p>
     
-    <vc:grid></vc:grid>
+@{
+    var grid = new PersonGridModel()
+    {
+        GridTitle = "SCP",
+        Persons = new List<Person>
+        {
+            new Person
+            {
+                Name = "SCP-173",
+                JobTitle = "None"
+            }
+        }
+    };
+}
+<vc:grid model="@grid"/>

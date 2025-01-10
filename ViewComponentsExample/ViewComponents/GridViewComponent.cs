@@ -5,9 +5,9 @@ namespace ViewComponentsExample.ViewComponents;
 
 public class GridViewComponent : ViewComponent
 {
-    public async Task<IViewComponentResult> InvokeAsync()
+    public async Task<IViewComponentResult> InvokeAsync(PersonGridModel? model)
     {
-        var model = new PersonGridModel()
+         model ??= new PersonGridModel()
         {
             GridTitle = "Person Grid",
             Persons = Enumerable.Range(1, 10).Select(x => new Person

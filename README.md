@@ -3116,3 +3116,57 @@ public async Task<IViewComponentResult> InvokeAsync()
     </tbody>
 </table>
 ```
+
+### 100. 带参数的视图组件
+
+可以向视图组件传递参数，由视图组件类下`InvokeAsync()`方法接收参数。视图组件的所有参数都是必填的。
+
+在 `InvokeAsync()` 方法中定义接收的参数。
+```csharp
+public async Task<IViewComponentResult> InvokeAsync(PersonGridModel? model)
+{
+    return View("Sample", model);
+}
+```
+
+然后在视图中调用视图组件并传入参数。
+
+```csharp
+@await Component.InvokeAsync("Grid", new PersonGridModel
+{
+    GridTitle = "Friends",
+    Persons = new List<Person>
+    {
+        new Person()
+        {
+            Name = "Amy",
+            JobTitle = "Employee"
+        },
+        new Person()
+        {
+            Name = "John",
+            JobTitle = "Manager"
+        }
+    }
+})
+```
+
+或者使用标签来传递参数，其中传入值的名称是参数的名称。
+
+```csharp
+@{
+    var grid = new PersonGridModel()
+    {
+        GridTitle = "SCP",
+        Persons = new List<Person>
+        {
+            new Person
+            {
+                Name = "SCP-173",
+                JobTitle = "None"
+            }
+        }
+    };
+}
+<vc:grid model="@grid"/>
+```
