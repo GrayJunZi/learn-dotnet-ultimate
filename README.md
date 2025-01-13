@@ -16,7 +16,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 08. Razor 视图 (Razor Views)
 - [x] 09. 布局视图 (Layout Views)
 - [x] 10. 分部视图 (Partial Views)
-- [ ] 11. 视图组件 (View Components)
+- [x] 11. 视图组件 (View Components)
 - [ ] 12. 依赖注入 (Dependency Injection)
 - [ ] 13. 环境 (Environments)
 - [ ] 14. 配置 (Configuration)
@@ -3169,4 +3169,72 @@ public async Task<IViewComponentResult> InvokeAsync(PersonGridModel? model)
     };
 }
 <vc:grid model="@grid"/>
+```
+
+### 101. ViewComponentResult
+
+`ViewComponentResult` 可以表示视图的内容。
+
+通常，从浏览器发出异步请求，用于将视图组件的内容提取到浏览器中很有用。
+
+
+定义 `ViewComponent` 类以及接收参数，并返回到视图中。
+
+```csharp
+
+public class GridViewComponent : ViewComponent
+{
+    public async Task<IViewComponentResult> InvokeAsync(PersonGridModel? grid)
+    {
+        return View("Sample", grid);
+    }
+}
+```
+
+然后，在接口中定义返回 `ViewComponentResult` 的接口，用以调用指定的 `ViewComponent` 并传递参数。
+
+```csharp
+[Route("friends-list")]
+public IActionResult FriendsList()
+{
+    var model = new PersonGridModel()
+    {
+        GridTitle = "Friends List",
+        Persons = new List<Person>()
+        {
+            new Person()
+            {
+                Name = "Mia",
+                JobTitle = "Developer",
+            },
+            new Person()
+            {
+                Name = "Emma",
+                JobTitle = "UI",
+            },
+            new Person()
+            {
+                Name = "Avva",
+                JobTitle = "QA"
+            }
+        }
+    };
+    return ViewComponent("Grid",  new
+    {
+        grid = model
+    });
+}
+```
+
+最后前端调用返回视图组件的接口并将请求的部分结果放置到`html`中即可。
+
+```js
+document.querySelector("#load-friends").addEventListener('click', async function () {
+    var response = await fetch('/friends-list', {
+        method: 'GET',
+    })
+
+    var text = await response.text()
+    document.querySelector('#friends-list').innerHTML = text
+})
 ```

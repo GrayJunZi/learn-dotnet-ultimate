@@ -4,6 +4,13 @@
 
 <h1>@ViewBag.Title</h1>
 
+<button class="btn btn-primary" id="load-friends">Load Friends</button>
+
+<div id="friends-list"></div>
+
+<script src="friends.js"></script>
+
+@*
 @await Component.InvokeAsync("Grid", new PersonGridModel
 {
     GridTitle = "Friends",
@@ -21,3 +28,4 @@
         }
     }
 })
+*@
