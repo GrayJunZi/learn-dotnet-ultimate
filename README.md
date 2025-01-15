@@ -3299,3 +3299,24 @@ public class CitiesService
     }
 }
 ```
+
+### 103. 服务
+
+依赖关系问题
+- 上级模块依赖于下级模块。
+- 高级模块的开发者需要等待下级模块开发者的代码完成。
+- 在较低级别模块中所做的任何修改都会影响较高级别模块中的更改。
+- 很难在不影响另一个模块的情况下测试单个模块。
+
+需要在构造函数中手动实例化服务类。
+
+```csharp
+private readonly CitiesService _citiesService;
+
+public HomeController()
+{
+    _citiesService = new CitiesService();
+}
+```
+
+> 手动维护服务类的生命周期。
