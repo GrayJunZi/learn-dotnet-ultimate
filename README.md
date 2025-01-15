@@ -3070,7 +3070,7 @@ public async Task<IViewComponentResult> InvokeAsync()
 
 > 在视图组件中使用 `ViewData` 与 普通视图中使用 `ViewData` 没有任何区别。
 
-## 099. 强类型视图组件
+### 099. 强类型视图组件
 
 强类型视图组件与指定的模型类绑定，因此，它具有强类型视图的所有好处。
 
@@ -3237,4 +3237,65 @@ document.querySelector("#load-friends").addEventListener('click', async function
     var text = await response.text()
     document.querySelector('#friends-list').innerHTML = text
 })
+```
+
+## 十二、依赖注入
+
+### 102. 服务
+
+Service(服务)是一个包含业务逻辑的类，主要用于处理特定的业务计算、数据验证等操作。它具有以下特点：
+
+- 作为表示层(或应用层)和数据层之间的抽象中间层
+- 将业务逻辑从表示层和数据层中分离出来
+- 便于对业务逻辑进行单元测试
+- 通常由控制器调用来执行具体的业务操作
+
+通过使用Service层可以:
+- 提高代码的可维护性和可测试性
+- 实现关注点分离
+- 降低各层之间的耦合度
+- 使系统架构更加清晰
+
+#### 创建项目
+
+```shell
+# 创建文件夹
+mkdir DIExample
+# 进入文件夹
+cd DIExample
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web -n DIExample
+# 将项目添加至解决方案中
+dotnet sln add DIExample
+# 创建服务项目
+dotnet new classlib -n Services
+# 将服务项目添加至解决方案中
+dotnet sln add Services
+```
+
+#### 添加服务类
+
+```csharp
+public class CitiesService
+{
+    private List<string> _cities;
+
+    public CitiesService()
+    {
+        _cities = new List<string>()
+        {
+            "Beijing",
+            "Shanghai",
+            "Guangzhou",
+            "Shenzhen",
+        };
+    }
+
+    public List<string> GetCities()
+    {
+        return _cities;
+    }
+}
 ```
