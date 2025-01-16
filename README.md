@@ -3508,3 +3508,49 @@ builder.Services.Add(
     )
 );
 ```
+
+### 110. 服务作用域
+
+```mermaid
+flowchart LR
+    Root["Root Scope"]-->|Request 1|Scope1["Request Scope 1"]
+    Root["Root Scope"]-->|Request 2|Scope2["Request Scope 2"]
+    Scope1-->|"IServiceScopeFactory.CreateScope()"|ChildScope1["Child Scope 1"]
+```
+
+声明一个可被释放的类，它是个实现了 `IDisposable` 接口的类，用于表示一个服务作用域。
+
+```csharp
+public class CitiesService : IDisposable
+{
+    public void Dispose()
+    {
+        // 释放资源
+    }
+}
+```
+
+使用 `IServiceScopeFactory` 创建一个服务作用域。当服务作用域被释放时，服务实例也会被释放。
+
+```csharp
+[Route("/")]
+public IActionResult Index([FromServices] ICitiesService citiesService)
+{
+    ViewBag.Instances = new List<Guid>
+    {
+        _citiesService1.InstanceId,
+        _citiesService2.InstanceId,
+        _citiesService3.InstanceId
+    };
+
+    using (var scope = _serviceScopeFactory.CreateScope())
+    {
+        var scopeCitiesService = scope.ServiceProvider.GetService<ICitiesService>();
+        ViewBag.Instances.Add(scopeCitiesService.InstanceId);
+    }
+
+    return View(citiesService.GetCities());
+}
+```
+
+> 在服务作用域中获取到的服务实例，与在根作用域中获取到的服务实例是不同的。因为服务作用域是独立的，它有自己的生命周期。

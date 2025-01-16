@@ -2,7 +2,7 @@
 
 namespace Services;
 
-public class CitiesService : ICitiesService
+public class CitiesService : ICitiesService, IDisposable
 {
     private List<string> _cities;
     
@@ -23,5 +23,10 @@ public class CitiesService : ICitiesService
     public List<string> GetCities()
     {
         return _cities;
+    }
+
+    public void Dispose()
+    {
+        
     }
 }
