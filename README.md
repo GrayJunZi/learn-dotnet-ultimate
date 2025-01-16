@@ -3410,3 +3410,24 @@ public IActionResult Index([FromServices] ICitiesService citiesService)
     return View(citiesService.GetCities());
 }
 ```
+
+### 108. 服务的生命周期
+
+服务的生命周期是用于表示如何由 `IoC / DI` 容器管理服务实例的创建和销毁。
+
+- 瞬时服务(Transient)：每次请求时都会创建一个新的服务实例。
+- 作用域服务(Scoped)：在请求的生命周期内，服务实例是唯一的。
+- 单例服务(Singleton)：在应用程序的生命周期内，服务实例是唯一的。
+
+#### Transient
+
+每次注入对象时，都会创建一个新的服务实例。实例会在请求结束时销毁。
+
+#### Scoped
+
+在一此请求的作用域范围内，只创建一个服务实例。实例会在请求结束时销毁。
+
+#### Singleton
+
+在应用程序的生命周期内，只创建一个服务实例。实例会在应用程序结束时销毁。
+
