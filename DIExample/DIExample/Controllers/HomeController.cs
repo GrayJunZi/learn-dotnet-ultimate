@@ -14,9 +14,9 @@ public class HomeController : Controller
     }
     
     [Route("/")]
-    public IActionResult Index()
+    public IActionResult Index([FromServices] ICitiesService citiesService)
     {
-        return View(_citiesService.GetCities());
+        return View(citiesService.GetCities());
     }
 
     [Route("/about")]

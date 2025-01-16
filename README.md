@@ -3397,3 +3397,16 @@ public class HomeController : Controller
 ```
 
 > 通过构造函数将依赖项注入到类中。
+
+
+### 107. 方法注入 FromService
+
+除了通过构造函数将依赖项注入到类中，还可以通过方法注入 `FromService` 将依赖项注入到方法中。
+
+```csharp   
+[Route("/")]
+public IActionResult Index([FromServices] ICitiesService citiesService)
+{
+    return View(citiesService.GetCities());
+}
+```
