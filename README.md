@@ -3377,4 +3377,23 @@ builder.Services.Add(
 );
 ```
 
+### 106. 依赖注入
 
+依赖关系注入(DI, Dependency Injection)，是一种设计模式，它允许将依赖关系从类中分离出来，并将其传递到类中。
+
+- 它允许将低级组件的具体实现对象注入到高级组件中。
+- 可以通过类的构造函数或方法中接收依赖项作为参数。
+
+```csharp
+public class HomeController : Controller
+{
+    private readonly ICitiesService _citiesService;
+
+    public HomeController(ICitiesService citiesService)
+    {
+        _citiesService = citiesService; 
+    }
+}
+```
+
+> 通过构造函数将依赖项注入到类中。
