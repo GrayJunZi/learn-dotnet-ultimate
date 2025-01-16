@@ -3302,13 +3302,7 @@ public class CitiesService
 
 ### 103. 服务
 
-依赖关系问题
-- 上级模块依赖于下级模块。
-- 高级模块的开发者需要等待下级模块开发者的代码完成。
-- 在较低级别模块中所做的任何修改都会影响较高级别模块中的更改。
-- 很难在不影响另一个模块的情况下测试单个模块。
-
-需要在构造函数中手动实例化服务类。
+使用服务类需要在构造函数中手动进行实例化。
 
 ```csharp
 private readonly CitiesService _citiesService;
@@ -3320,3 +3314,48 @@ public HomeController()
 ```
 
 > 手动维护服务类的生命周期。
+
+### 104. 依赖倒置原则
+
+依赖关系问题
+- 上级模块依赖于下级模块。
+- 高级模块的开发者需要等待下级模块开发者的代码完成。
+- 在较低级别模块中所做的任何修改都会影响较高级别模块中的更改。
+- 很难在不影响另一个模块的情况下测试单个模块。
+
+依赖倒置原则(DIP, Dependency Inversion Principle)，是一种设计原则，是解决依赖问题的方法。
+
+- 更高级别的模块，不应该依赖于低级模块（依赖项）。
+- 两者都应该依赖于抽象（接口或抽象类）。
+- 抽象不应该依赖于细节（客户端和依赖关系）。
+- 细节（客户端和依赖项）应该取决于抽象。
+
+#### 添加类库
+
+```csharp
+dotnet new classlib -n ServiceContracts
+dotnet sln add ServiceContracts
+```
+
+#### 添加接口
+
+```csharp
+public interface ICitiesService
+{
+    List<string> GetCities();
+}
+```
+
+#### 添加实现
+
+```csharp
+public class CitiesService : ICitiesService
+{
+    public List<string> GetCities()
+    {
+        return new List<string>() { "Beijing", "Shanghai", "Guangzhou", "Shenzhen" };
+    }
+}
+```
+
+
