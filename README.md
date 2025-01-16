@@ -3358,4 +3358,23 @@ public class CitiesService : ICitiesService
 }
 ```
 
+### 105. 控制反转
+
+控制反转(IOC, Inversion of Control)，是一种设计模式（常见问题的可重用解决方案），它建议使用“IoC 容器”来实现依赖关系反转原则 （DIP）。
+
+- 它通过将控制权转移到IoC容器来反转控制权。
+- 它通过其他设计模式来实现，比如事件、`Service Locator`、依赖注入等。
+
+所有的依赖项都应添加到 `IServiceCollection` 中，然后通过 `IServiceCollection` 来获取依赖项。
+
+```csharp
+builder.Services.Add(
+    new ServiceDescriptor(
+        typeof(ICitiesService),
+        typeof(CitiesService),
+        ServiceLifetime.Transient  // 服务生命周期, Transient, Scoped, Singleton
+    )
+);
+```
+
 
