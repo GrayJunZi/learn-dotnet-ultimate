@@ -3431,3 +3431,80 @@ public IActionResult Index([FromServices] ICitiesService citiesService)
 
 在应用程序的生命周期内，只创建一个服务实例。实例会在应用程序结束时销毁。
 
+
+### 109. 服务的生命周期
+
+从构造函数中注入多个服务。
+```csharp
+private readonly ICitiesService _citiesService1;
+private readonly ICitiesService _citiesService2;
+private readonly ICitiesService _citiesService3;
+
+public HomeController(
+    ICitiesService citiesService1,
+    ICitiesService citiesService2,
+    ICitiesService citiesService3)
+{
+    _citiesService1 = citiesService1;
+    _citiesService2 = citiesService2;
+    _citiesService3 = citiesService3; 
+}
+```
+
+获取服务的实例Id
+
+```csharp
+[Route("/")]
+public IActionResult Index()
+{
+    ViewBag.Instances = new Guid[] { _citiesService1.InstanceId, _citiesService2.InstanceId, _citiesService3.InstanceId };
+    
+    return View(citiesService.GetCities());
+}
+```
+
+在视图页面展示实例Id
+
+```csharp
+<ul>
+    @foreach (var instanceId in ViewBag.Instances)
+    {
+        <li>@instanceId</li>
+    }
+</ul>
+```
+
+如果服务是瞬时服务，则每个实例Id是不同的。
+
+```csharp
+builder.Services.Add(
+    new ServiceDescriptor(
+        typeof(ICitiesService), 
+        typeof(CitiesService), 
+        ServiceLifetime.Transient
+    )
+);
+```
+
+如果服务是作用域服务，则在一次请求周期内的每个实例Id是相同的。
+```csharp
+builder.Services.Add(
+    new ServiceDescriptor(
+        typeof(ICitiesService), 
+        typeof(CitiesService), 
+        ServiceLifetime.Scoped
+    )
+);
+```
+
+如果服务是单例服务，则每个实例Id是相同的。
+
+```csharp
+builder.Services.Add(
+    new ServiceDescriptor(
+        typeof(ICitiesService), 
+        typeof(CitiesService), 
+        ServiceLifetime.Singleton
+    )
+);
+```
