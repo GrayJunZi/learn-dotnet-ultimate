@@ -3748,3 +3748,70 @@ public class HomeController : Controller
 #### 生产环境 (Production) 
 
 生产环境是真实最终用户访问应用程序的环境。简而言之,这是应用程序对外"上线"的环境。
+
+### 116. 环境设置
+
+在 `launchSettings.json` 中设置环境。
+
+#### 创建项目
+
+```shell
+# 创建文件夹
+mkdir EnvironmentsExample
+# 进入文件夹
+cd EnvironmentsExample
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web
+# 将项目添加至解决方案中
+dotnet sln add .
+```
+
+在 `launchSettings.json` 中的 `ASPNETCORE_ENVIRONMENT` 节点中设置环境变量值。
+
+```json
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5019",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7100;http://localhost:5019",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+```
+
+#### IWebHostEnvironment
+
+- `EnvironmentName` 获取或设置环境的名称。默认情况下，从 `DOTNET_ENVIRONMENT` 或 `ASPNETCORE_ENVIRONMENT` 读取值。
+- `ContentRootPath` 获取或设置应用程序文件夹的绝对路径。
+- `IsDevelopment()` 如果当前环境名称为 `Development`，则返回 `true`。
+- `IsStaging()` 如果当前环境名称为 `Staging`，则返回 `true`。
+- `IsProduction()` 如果当前环境名称为 `Production`，则返回 `true`。
+- `IsEnvironment(string environmentName)` 如果当前环境名称与指定环境名称匹配，则返回 `true`。
+
+#### 显示开发者异常页
+
+如果是开发环境或预生产环境则显示开发者异常页。
+
+```csharp
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
+{
+    app.UseDeveloperExceptionPage();
+}
+```
