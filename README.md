@@ -3591,3 +3591,52 @@ builder.Services.AddSingleton<ICitiesService, CitiesService>();
     }
 </ul>
 ```
+
+### 113. DI的最佳实践
+
+#### 服务中的全局状态
+
+避免使用**静态类**为 所有用户/所有请求 全局存储一些数据。
+
+可以将**单例(Singleton)**服务用于 少量数据或简单场景。在这种情况下首选 `ConcurrentDictionary` 而不是 `Dictionary`，前者可以更好地处理多线程的并发访问。
+
+或者，可以使用 分布式缓存(Redis) 来存储数据，用于任何大量数据或复杂场景。
+
+#### 服务中的请求状态
+
+不要使用**作用域(Scoped)**服务在同一个请求中的服务之间共享数据，因为它们不是线程安全的。可以使用 `HttpContext.Items` 来存储请求状态。
+
+#### 服务定位器模式
+
+避免使用**服务定位器模式(Service Locator Pattern)**，因为它会导致依赖关系不明确，难以测试和维护。
+
+例如，不要在收到请求时创建的默认作用域范围内调用 `GetService()` 方法，但可以使用 `IServiceScopeFactory` 来创建一个作用域，然后通过 `IServiceProvider` 来获取服务实例。
+
+#### 调用Dispose方法
+
+不要为通过DI注入的服务手动调用`Dispose()`方法。因为`IoC`容器会自动处理服务实例的释放，它会在其作用域范围的末尾自动调用`Dispose()`方法。
+
+#### 捕获依赖项
+
+不要在**单例(Singleton)**服务中注入**作用域(Scoped)**服务或**瞬时(Transient)**服务，因为，在这种情况下，瞬时服务或作用域服务会在单例服务中充当单例服务。
+
+#### 存储服务实例的引用
+
+不要存储服务实例的引用，这可能会导致内存泄漏，并且可能会访问已释放的实例。
+
+#### 最佳实践
+
+- Transient
+    - Transient
+    - Scoped
+    - Singleton
+
+- Scoped
+    - Transient
+    - Scoped
+    - Singleton
+
+- Singleton
+    - Singleton
+
+> 单例服务中尽量注入进来的也是单例服务。
