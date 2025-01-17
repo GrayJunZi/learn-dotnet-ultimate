@@ -17,7 +17,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 09. 布局视图 (Layout Views)
 - [x] 10. 分部视图 (Partial Views)
 - [x] 11. 视图组件 (View Components)
-- [ ] 12. 依赖注入 (Dependency Injection)
+- [x] 12. 依赖注入 (Dependency Injection)
 - [ ] 13. 环境 (Environments)
 - [ ] 14. 配置 (Configuration)
 - [ ] 15. 单元测试 (xUnit)
@@ -3730,3 +3730,21 @@ public class HomeController : Controller
     }
 }
 ```
+
+## 十三、环境
+
+### 115. 环境介绍
+
+环境是用于表示部署和执行应用程序的系统。
+
+#### 开发环境 (Development)
+
+开发环境是开发人员进行代码更改并将代码提交到源代码管理的环境。
+
+#### 预生产环境 (Staging)
+
+预生产环境是应用程序在服务器上运行的环境,其他开发人员和质量控制人员可以访问该应用程序。
+
+#### 生产环境 (Production) 
+
+生产环境是真实最终用户访问应用程序的环境。简而言之,这是应用程序对外"上线"的环境。
