@@ -3554,3 +3554,20 @@ public IActionResult Index([FromServices] ICitiesService citiesService)
 ```
 
 > 在服务作用域中获取到的服务实例，与在根作用域中获取到的服务实例是不同的。因为服务作用域是独立的，它有自己的生命周期。
+
+### 111. 服务注册的其他方式
+
+注册成瞬时服务
+```csharp
+builder.Services.AddTransient<ICitiesService, CitiesService>();
+```
+
+注册成作用域服务
+```csharp
+builder.Services.AddScoped<ICitiesService, CitiesService>();
+```
+
+注册成单例服务
+```csharp
+builder.Services.AddSingleton<ICitiesService, CitiesService>();
+```

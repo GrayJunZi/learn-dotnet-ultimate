@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
+/*
 builder.Services.Add(
     new ServiceDescriptor(
         typeof(ICitiesService), 
@@ -12,6 +13,9 @@ builder.Services.Add(
         ServiceLifetime.Scoped
     )
 );
+*/
+
+builder.Services.AddScoped<ICitiesService,CitiesService>();
 
 var app = builder.Build();
 
