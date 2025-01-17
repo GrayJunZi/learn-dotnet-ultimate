@@ -3842,3 +3842,26 @@ public class HomeController : Controller
     }
 }
 ```
+
+### 118. 环境标签帮助类
+
+在 `_ViewImports.cshtml` 中添加 `TagHelper`。
+
+```csharp
+@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
+```
+
+然后在视图中使用 `environment` 标签。
+
+- `include` 属性是只有当环境名称为匹配的值时才显示内容。
+- `exclude` 属性是与当前环境名称不匹配的值时才显示内容。
+
+```html
+<environment include="Development">
+    <h1>Development Environment</h1>
+</environment>
+
+<environment exclude="Development">
+    <h1>Other Environment</h1>
+</environment>
+```

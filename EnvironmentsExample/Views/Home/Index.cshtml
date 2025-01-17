@@ -5,3 +5,11 @@
 <h1>@ViewBag.Title</h1>
 
 Environment: @ViewBag.EnvironmentName
+
+<environment include="Development">
+    <h1>Development Environment</h1>
+</environment>
+
+<environment exclude="Development">
+    <h1>Other Environment</h1>
+</environment>
