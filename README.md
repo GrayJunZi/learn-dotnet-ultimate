@@ -3571,3 +3571,23 @@ builder.Services.AddScoped<ICitiesService, CitiesService>();
 ```csharp
 builder.Services.AddSingleton<ICitiesService, CitiesService>();
 ```
+
+### 112. 视图注入
+
+在视图中使用 `@inject` 指令来注入服务。
+
+```csharp
+@model IEnumerable<string>
+@inject ICitiesService CitiesService
+@{
+    ViewBag.Title = "Home";
+}
+
+<h1>Injection ICitiesService</h1>
+<ul>
+    @foreach (var city in CitiesService.GetCities())
+    {
+        <li>@city</li>
+    }
+</ul>
+```

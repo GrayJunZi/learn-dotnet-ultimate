@@ -1,7 +1,17 @@
 ﻿@model IEnumerable<string>
+@inject ICitiesService CitiesService
 @{
     ViewBag.Title = "Home";
 }
+
+<h1>Inject ICitiesService</h1>
+
+<ul>
+    @foreach (var city in CitiesService.GetCities())
+    {
+        <li>@city</li>
+    }
+</ul>
 
 <h1>Cities</h1>
 
