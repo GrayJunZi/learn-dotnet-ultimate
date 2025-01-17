@@ -3640,3 +3640,93 @@ builder.Services.AddSingleton<ICitiesService, CitiesService>();
     - Singleton
 
 > 单例服务中尽量注入进来的也是单例服务。
+
+### 114. Autofac
+
+- Autofac 是 .NET 中一个流行的 IoC 容器，它提供了更强大的功能和更好的性能。
+
+#### 原生容器与Autofac对比
+
+- `Microsoft.Extensions.DependencyInjection`
+    - ASP.NET Core 内置的 IoC 容器。
+    - 生命周期: Transient, Scoped, Singleton
+    - 服务元数据: 不支持
+    - 装饰器: 不支持
+
+- `Autofac`
+    - `Microsoft.Extensions.DependencyInjection` 的替代品。
+    - 生命周期: InstancePerDependency, InstancePerLifetimeScope, InstancePerRequest, SingleInstance, InstancePerMatchingLifetimeScope
+    - 服务元数据: 支持
+    - 装饰器: 支持
+
+#### 安装Autofac
+
+```bash
+dotnet add package Autofac.Extensions.DependencyInjection
+```
+
+#### 配置Autofac
+
+使用 `AutofacServiceProviderFactory` 来配置 Autofac，用于替换内置容器。
+
+```csharp
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+```
+
+注册服务类
+
+```csharp
+builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+{
+    containerBuilder.RegisterType<CitiesService>().As<ICitiesService>()
+        // 瞬时服务
+        .InstancePerDependency();
+        // 作用域服务
+        .InstancePerLifetimeScope();
+        // 单例服务
+        .SingleInstance();
+});
+```
+
+使用 `ILifetimeScope` 创建子域。
+
+```csharp
+public class HomeController : Controller
+{
+    private readonly ICitiesService _citiesService1;
+    private readonly ICitiesService _citiesService2;
+    private readonly ICitiesService _citiesService3;
+    private readonly ILifetimeScope _lifetimeScope;
+
+    public HomeController(
+        ICitiesService citiesService1,
+        ICitiesService citiesService2,
+        ICitiesService citiesService3,
+        ILifetimeScope lifetimeScope)
+    {
+        _citiesService1 = citiesService1;
+        _citiesService2 = citiesService2;
+        _citiesService3 = citiesService3;
+        _lifetimeScope = lifetimeScope;
+    }
+
+    [Route("/")]
+    public IActionResult Index([FromServices] ICitiesService citiesService)
+    {
+        ViewBag.Instances = new List<Guid>
+        {
+            _citiesService1.InstanceId,
+            _citiesService2.InstanceId,
+            _citiesService3.InstanceId
+        };
+
+        using (var scope = _lifetimeScope.BeginLifetimeScope())
+        {
+            var scopeCitiesService = scope.Resolve<ICitiesService>();
+            ViewBag.Instances.Add(scopeCitiesService.InstanceId);
+        }
+
+        return View(citiesService.GetCities());
+    }
+}
+```

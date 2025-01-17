@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Autofac;
+using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using Services;
 
@@ -9,18 +10,18 @@ public class HomeController : Controller
     private readonly ICitiesService _citiesService1;
     private readonly ICitiesService _citiesService2;
     private readonly ICitiesService _citiesService3;
-    private readonly IServiceScopeFactory _serviceScopeFactory;
+    private readonly ILifetimeScope _lifetimeScope;
 
     public HomeController(
         ICitiesService citiesService1,
         ICitiesService citiesService2,
         ICitiesService citiesService3,
-        IServiceScopeFactory serviceScopeFactory)
+        ILifetimeScope lifetimeScope)
     {
         _citiesService1 = citiesService1;
         _citiesService2 = citiesService2;
         _citiesService3 = citiesService3;
-        _serviceScopeFactory = serviceScopeFactory;
+        _lifetimeScope = lifetimeScope;
     }
 
     [Route("/")]
@@ -33,9 +34,9 @@ public class HomeController : Controller
             _citiesService3.InstanceId
         };
 
-        using (var scope = _serviceScopeFactory.CreateScope())
+        using (var scope = _lifetimeScope.BeginLifetimeScope())
         {
-            var scopeCitiesService = scope.ServiceProvider.GetService<ICitiesService>();
+            var scopeCitiesService = scope.Resolve<ICitiesService>();
             ViewBag.Instances.Add(scopeCitiesService.InstanceId);
         }
 
