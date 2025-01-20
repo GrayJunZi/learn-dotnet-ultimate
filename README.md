@@ -18,7 +18,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 10. 分部视图 (Partial Views)
 - [x] 11. 视图组件 (View Components)
 - [x] 12. 依赖注入 (Dependency Injection)
-- [ ] 13. 环境 (Environments)
+- [x] 13. 环境 (Environments)
 - [ ] 14. 配置 (Configuration)
 - [ ] 15. 单元测试 (xUnit)
 - [ ] 16. 增删改查 (CRUD Operations)
@@ -3661,7 +3661,7 @@ builder.Services.AddSingleton<ICitiesService, CitiesService>();
 
 #### 安装Autofac
 
-```bash
+```shell
 dotnet add package Autofac.Extensions.DependencyInjection
 ```
 
@@ -3874,14 +3874,14 @@ public class HomeController : Controller
 
 在 `PowerShell` 中使用如下命令，设置环境变量：
 
-```bash
+```shell
 $Env:ASPNETCORE_ENVIRONMENT="Production"
 dotnet run --no-launch-profile
 ```
 
 在 `cmd` 命令行中，使用以下命令设置环境变量：
 
-```bash
+```shell
 set ASPNETCORE_ENVIRONMENT && dotnet run --no-launch-profile
 ```
 
@@ -3902,3 +3902,47 @@ set ASPNETCORE_ENVIRONMENT && dotnet run --no-launch-profile
     <h1>Production</h1>
 </environment>
 ```
+
+## 十四、配置
+
+### 120. 配置介绍
+
+`Configuration` 是公共配置的常量键/值对的数据，可以从同一应用中的任何位置读取。
+
+> 例如: 数据库连接字符串、客户端ID、API密钥、域名、电子邮件等。
+
+
+创建项目
+
+```shell
+# 创建文件夹
+mkdir ConfigurationExample
+# 进入文件夹
+cd ConfigurationExample
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web
+# 将项目添加至解决方案中
+dotnet sln add .
+```
+
+从配置文件中读取配置信息。
+
+```csharp
+app.Configuration["myKEY"]
+```
+
+读取配置信息并转换数据类型。
+```csharp
+app.Configuration.GetValue<string>("MYkey")
+app.Configuration.GetValue<int>("x")
+```
+
+当读取的配置不存在时，返会一个默认值。
+
+```csharp
+app.Configuration.GetValue("y", 10)
+```
+
+> 读取的配置文件的KEY是忽略大小写的。
