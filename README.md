@@ -3946,3 +3946,32 @@ app.Configuration.GetValue("y", 10)
 ```
 
 > 读取的配置文件的KEY是忽略大小写的。
+
+### 121. 控制器中读取配置
+
+通过构造函数注入进来 `IConfiguration` 用以读取配置信息。
+
+```csharp
+using Microsoft.AspNetCore.Mvc;
+
+namespace ConfigurationExample.Controllers;
+
+public class HomeController : Controller
+{
+    private readonly IConfiguration _configuration;
+
+    public HomeController(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+    [Route("/")]
+    public IActionResult Index()
+    {
+        ViewBag.MyKey = _configuration["MyKey"];
+        ViewBag.x = _configuration.GetValue<int>("x");
+        ViewBag.apiKey = _configuration.GetValue<string>("apiKey", "the default API Key");
+        return View();
+    }
+}
+```
