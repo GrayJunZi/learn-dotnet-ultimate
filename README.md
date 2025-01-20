@@ -3865,3 +3865,40 @@ public class HomeController : Controller
     <h1>Other Environment</h1>
 </environment>
 ```
+
+### 119. 进程级环境
+
+环境变量仅在同一进程中存储和访问。
+
+#### 在进程中设置环境变量
+
+在 `PowerShell` 中使用如下命令，设置环境变量：
+
+```bash
+$Env:ASPNETCORE_ENVIRONMENT="Production"
+dotnet run --no-launch-profile
+```
+
+在 `cmd` 命令行中，使用以下命令设置环境变量：
+
+```bash
+set ASPNETCORE_ENVIRONMENT && dotnet run --no-launch-profile
+```
+
+#### <environment> 标签助手
+
+当前环境名称与 `include` 中任意一个指定的环境名称匹配时，才会显示内容。
+
+```html
+<environment include="Development,Staging">
+    <h1>Development, Staging</h1>
+</environment>
+```
+
+当前环境名称与 `exclude` 中任何指定的环境名称都不匹配时，才会显示内容。
+
+```html
+<environment exclude="Development,Staging">
+    <h1>Production</h1>
+</environment>
+```
