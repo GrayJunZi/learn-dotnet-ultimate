@@ -3975,3 +3975,42 @@ public class HomeController : Controller
     }
 }
 ```
+
+### 122. 分层配置
+
+在 `appsettings.json` 中增加多层配置信息。
+
+```json
+{
+  "API": {
+    "ClientID": "Client ID from appsettings.json",
+    "ClientSecret": "Client Secret from appsettings.json"
+  }
+}
+```
+
+然后读取配置信息，多层可以使用 `:` 指定哪一级的节点。
+
+```csharp
+using Microsoft.AspNetCore.Mvc;
+
+namespace ConfigurationExample.Controllers;
+
+public class HomeController : Controller
+{
+    private readonly IConfiguration _configuration;
+
+    public HomeController(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+    [Route("/")]
+    public IActionResult Index()
+    {
+        ViewBag.ClientID = _configuration["API:ClientID"];
+        ViewBag.ClientSecret = _configuration.GetValue<string>("API:ClientSecret","the default client secret");
+        return View();
+    }
+}
+```
