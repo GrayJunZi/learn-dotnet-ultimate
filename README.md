@@ -4083,3 +4083,17 @@ public HomeController(IOptions<ApiOptions> options)
 3. User Secrets (Secret Manager)
 4. 环境变量
 5. 命令行参数
+
+### 126. 凭据管理器
+
+`Secrets Manager` 是将用户密钥（敏感数据）存储在开发人员计算机上的单独位置。
+
+在 `PowerShell` 中启用 `Secrets Manager`。
+
+```bash
+dotnet user-secrets init
+dotnet user-secrets set "KEY" "VALUE"
+dotnet user-secrets list
+```
+
+> 凭据管理器只有环境变量为 `Development` 才起效。
