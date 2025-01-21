@@ -4014,3 +4014,40 @@ public class HomeController : Controller
     }
 }
 ```
+
+或者使用 `GetSection` 指定节点。
+
+```csharp
+var api = _configuration.GetSection("API");
+ViewBag.ClientID = api["ClientID"];
+ViewBag.ClientSecret = api["ClientSecret"];
+```
+
+### 123. 选项模式
+
+`Options` 使用自定义类来指定要加载到属性中的配置。
+
+定义自定义选项(配置)类。
+
+```csharp
+public class ApiOptions
+{
+    public string? ClientID { get; set; }
+    public string? ClientSecret { get; set; }
+}
+```
+
+读取配置中的指定节点并映射成自定义的类。
+
+```csharp
+var apiOptions = _configuration.GetSection("API").Get<ApiOptions>();
+ViewBag.ClientID = apiOptions.ClientID;
+ViewBag.ClientSecret = apiOptions.ClientSecret;
+```
+
+或者使用 `Bind()` 方式来读取。
+
+```csharp
+var bindApiOptions = new ApiOptions();
+_configuration.GetSection("API").Bind(bindApiOptions);        
+```
