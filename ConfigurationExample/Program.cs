@@ -1,3 +1,5 @@
+using ConfigurationExample;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
@@ -19,6 +21,9 @@ app.Map("/", async context =>
     await context.Response.WriteAsync(app.Configuration.GetValue<int>("y", 10) + "\n");
 });
 */
+
+builder.Services.Configure<ApiOptions>(builder.Configuration.GetSection("API"));
+
 app.MapControllers();
 
 

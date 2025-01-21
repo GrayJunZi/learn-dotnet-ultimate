@@ -4051,3 +4051,22 @@ ViewBag.ClientSecret = apiOptions.ClientSecret;
 var bindApiOptions = new ApiOptions();
 _configuration.GetSection("API").Bind(bindApiOptions);        
 ```
+
+### 124. 配置为服务
+
+使用 `Configure` 将自定义配置类注册到容器中。
+
+```csharp
+builder.Services.Configure<ApiOptions>(builder.Configuration.GetSection("API"));
+```
+
+将配置类作为服务注入进来。
+
+```csharp
+private readonly ApiOptions _apiOptions;
+
+public HomeController(IOptions<ApiOptions> options)
+{
+    _apiOptions = options.Value;
+}
+```

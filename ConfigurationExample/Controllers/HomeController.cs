@@ -1,14 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace ConfigurationExample.Controllers;
 
 public class HomeController : Controller
 {
     private readonly IConfiguration _configuration;
+    private readonly ApiOptions _apiOptions;
 
-    public HomeController(IConfiguration configuration)
+    public HomeController(
+        IConfiguration configuration,
+        IOptions<ApiOptions> options)
     {
         _configuration = configuration;
+        _apiOptions = options.Value;
     }
 
     [Route("/")]
@@ -38,6 +43,12 @@ public class HomeController : Controller
         // 方式 6
         var bindApiOptions = new ApiOptions();
         _configuration.GetSection("API").Bind(bindApiOptions);
+        ViewBag.ClientID = bindApiOptions.ClientID;
+        ViewBag.ClientSecret = bindApiOptions.ClientSecret;
+        
+        // 方式 7
+        ViewBag.ClientID = _apiOptions.ClientID;
+        ViewBag.ClientSecret = _apiOptions.ClientSecret;
         
         return View();
     }
