@@ -4141,3 +4141,56 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 ```csharp
 builder.Configuration.AddJsonFile("CustomConfig.json", optional: true, reloadOnChange: true);
 ```
+
+### 129. HTTP客户端
+
+`HttpClient` 是一个类，用于向特性HTTP资源(URL)发送HTTP请求并接收来自该资源的HTTP响应。
+
+#### IHttpClientFactory
+
+`IHttpClientFactory` 是一个接口，它提供了一个名为 `CreateClient()` 方法，该方法创建 `HttpClient` 类的新实例，并在使用后立即自动释放实例(关闭连接)。
+
+#### 创建项目
+
+```shell
+# 创建文件夹
+mkdir StocksApp
+# 进入文件夹
+cd StocksApp
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web
+# 将项目添加至解决方案中
+dotnet sln add .
+```
+
+#### 添加服务
+
+注入 `IHttpClientFactory`，并通过 `HttpClient` 实例发起HTTP请求。
+
+```csharp
+namespace StocksApp.Services;
+
+public class MyService
+{
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    public MyService(IHttpClientFactory httpClientFactory)
+    {
+        _httpClientFactory = httpClientFactory;
+    }
+
+    public async Task Run()
+    {
+        using var httpClient = _httpClientFactory.CreateClient();
+        var httpRequestMessage = new HttpRequestMessage
+        {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri("http://localhost:5000"),
+            Headers = { },
+        };
+        await httpClient.SendAsync(httpRequestMessage);
+    }
+}
+```
