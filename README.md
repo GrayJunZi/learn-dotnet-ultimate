@@ -4070,3 +4070,16 @@ public HomeController(IOptions<ApiOptions> options)
     _apiOptions = options.Value;
 }
 ```
+
+### 125. 特定环境的配置
+
+配置源的优先顺序如下：
+
+1. appsettings.json
+2. appsettings.Environment.json
+    1. appsettings.Development.json
+    2. appsettings.Staging.json
+    3. appsettings.Production.json
+3. User Secrets (Secret Manager)
+4. 环境变量
+5. 命令行参数
