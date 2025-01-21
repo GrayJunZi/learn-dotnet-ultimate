@@ -4097,3 +4097,19 @@ dotnet user-secrets list
 ```
 
 > 凭据管理器只有环境变量为 `Development` 才起效。
+
+
+### 127. 环境变量配置
+
+可以将配置值设置为进程内的环境变量。
+
+在 `PowerShell` 中设置环境变量值。
+
+```bash
+$Env:ParentKey__ChildKey="value"
+dotnet run --no-launch-profile
+```
+
+这是在配置中设置敏感值最安全的方式之一。
+
+`__` 两个下划线，用于将父级节点和子级节点分隔开。
