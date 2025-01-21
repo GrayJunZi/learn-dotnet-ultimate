@@ -1,0 +1,6 @@
+﻿{
+  "API": {
+    "ClientID": "client id from CustomConfig.json",
+    "ClientSecret": "client secret from CustomConfig.json"
+  }
+}

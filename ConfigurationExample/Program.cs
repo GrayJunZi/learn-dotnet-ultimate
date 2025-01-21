@@ -24,6 +24,11 @@ app.Map("/", async context =>
 
 builder.Services.Configure<ApiOptions>(builder.Configuration.GetSection("API"));
 
+builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+{
+    config.AddJsonFile("CustomConfig.json", optional: true, reloadOnChange: true);
+});
+
 app.MapControllers();
 
 

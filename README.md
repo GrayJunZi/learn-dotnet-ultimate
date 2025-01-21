@@ -4113,3 +4113,31 @@ dotnet run --no-launch-profile
 这是在配置中设置敏感值最安全的方式之一。
 
 `__` 两个下划线，用于将父级节点和子级节点分隔开。
+
+### 128. 自定义JSON配置
+
+创建自定义配置文件。
+
+```json
+{
+  "API": {
+    "ClientID": "client id from CustomConfig.json",
+    "ClientSecret": "client secret from CustomConfig.json"
+  }
+}
+```
+
+加载自定义配置文件。
+
+```csharp
+builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+{
+    config.AddJsonFile("CustomConfig.json", optional: true, reloadOnChange: true);
+});
+```
+
+或者
+
+```csharp
+builder.Configuration.AddJsonFile("CustomConfig.json", optional: true, reloadOnChange: true);
+```
