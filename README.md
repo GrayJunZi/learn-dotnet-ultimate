@@ -4310,3 +4310,22 @@ public async Task<IActionResult> Index()
     </tbody>
 </table>
 ```
+
+## 十五、单元测试
+
+### 132. 联系人管理项目预览
+
+创建项目
+
+```shell
+# 创建文件夹
+mkdir CRUDExample
+# 进入文件夹
+cd CRUDExample
+# 创建解决方案
+dotnet new sln
+# 创建Web项目
+dotnet new web -n CRUDExample
+# 将项目添加至解决方案中
+dotnet sln add .
+```
