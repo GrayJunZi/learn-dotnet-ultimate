@@ -4389,7 +4389,7 @@ public class UnitTest1
 }
 ```
 
-### 134. 单元测试 2
+### 134. 单元测试 - 实体与DTO
 
 #### 添加实体类库
 
@@ -4434,5 +4434,42 @@ public class CountryAddRequest
     {
         Name = this.CountryName
     };
+}
+```
+
+### 135. 单元测试 - TDD
+
+#### 添加测试类
+
+```csharp
+public class CountriesServiceTest
+{
+    private readonly ICountriesService _countriesService;
+
+    public CountriesServiceTest(ICountriesService countriesService)
+    {
+        _countriesService = countriesService;
+    }
+}
+```
+
+#### 添加服务类库
+
+```bash
+# 创建类库
+dotnet new classlib -n Services
+# 将类库添加至解决方案中
+dotnet sln add .\Services
+```
+
+#### 添加服务并实现接口
+
+```csharp
+public class CountriesService : ICountriesService
+{
+    public CountryResponse AddCountry(CountryAddRequest? countryAddRequest)
+    {
+        throw new NotImplementedException();
+    }
 }
 ```
