@@ -4540,3 +4540,34 @@ public class CountriesServiceTest
     }
 }
 ```
+
+### 137. 单元测试 - 实现服务方法
+
+实现方法并添加验证
+
+```csharp
+public class CountriesService : ICountriesService
+{
+    private readonly List<Country> _countries;
+
+    public CountriesService()
+    {
+        _countries = new();
+    }
+    
+    public CountryResponse AddCountry(CountryAddRequest? countryAddRequest)
+    {
+        if (countryAddRequest?.CountryName == null)
+            throw new ArgumentNullException(nameof(countryAddRequest));
+        
+        if(_countries.Any(x => x.Name == countryAddRequest.CountryName))
+            throw new ArgumentException($"Country {countryAddRequest.CountryName} already exists");
+        
+        var country = countryAddRequest.ToCountry();
+        country.Id = Guid.NewGuid();
+        _countries.Add(country);
+        
+        return country.ToCountryResponse();
+    }
+}
+```
