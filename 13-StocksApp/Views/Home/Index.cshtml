@@ -1,5 +1,26 @@
-﻿@{
+﻿@model IEnumerable<Post>
+@{
     ViewBag.Title = "Home";
 }
 
 <h1>@ViewBag.Title</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Body</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var post in Model)
+    {
+        <tr>
+            <td>@post.id</td>
+            <td>@post.title</td>
+            <td>@post.body</td>
+        </tr>
+    }
+    </tbody>
+</table>

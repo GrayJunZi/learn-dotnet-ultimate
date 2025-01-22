@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StocksApp.Services;
+using StocksApp.ServiceContracts;
 
 namespace StocksApp.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly MyService _myService;
+    private readonly IPostService _postService;
 
-    public HomeController(MyService myService)
+    public HomeController(IPostService postService)
     {
-        _myService = myService;
+        _postService = postService;
     }
 
     [Route("/")]
     public async Task<IActionResult> Index()
     {
-        await _myService.Run();
-        return View();
+        return View(await _postService.GetPosts());
     }
 }

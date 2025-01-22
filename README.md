@@ -19,7 +19,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 11. 视图组件 (View Components)
 - [x] 12. 依赖注入 (Dependency Injection)
 - [x] 13. 环境 (Environments)
-- [ ] 14. 配置 (Configuration)
+- [x] 14. 配置 (Configuration)
 - [ ] 15. 单元测试 (xUnit)
 - [ ] 16. 增删改查 (CRUD Operations)
 - [ ] 17. Tag Helpers
@@ -4218,4 +4218,95 @@ public async Task Run()
     var response = await streamReader.ReadToEndAsync();
     Console.WriteLine(response);
 }
+```
+
+### 131. HTTP客户端
+
+定义并注册配置类。
+
+```csharp
+public class TradingOptions
+{
+    public string Url { get; set; }
+}
+
+builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TradingOptions"));
+```
+
+将返回的数据转换为模型类。
+
+```csharp
+public class PostService : IPostService
+{
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly TradingOptions _options;
+
+    public PostService(IHttpClientFactory httpClientFactory,IOptions<TradingOptions> options)
+    {
+        _httpClientFactory = httpClientFactory;
+        _options = options.Value;
+    }
+
+    public async Task<IEnumerable<Post>> GetPosts()
+    {
+        using var httpClient = _httpClientFactory.CreateClient();
+
+        var httpRequestMessage = new HttpRequestMessage
+        {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(_options.Url),
+            Headers = { },
+        };
+
+        var httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
+
+        var stream = await httpResponseMessage.Content.ReadAsStreamAsync();
+        using var streamReader = new StreamReader(stream);
+        var response = await streamReader.ReadToEndAsync();
+        var data = JsonSerializer.Deserialize<IEnumerable<Post>>(response);
+        return data;
+    }
+}
+```
+
+将数据返回给视图。
+
+```csharp
+[Route("/")]
+public async Task<IActionResult> Index()
+{
+    return View(await _postService.GetPosts());
+}
+```
+
+视图加载模型数据。
+
+```csharp
+@using StocksApp.Models
+@model IEnumerable<Post>
+@{
+    ViewBag.Title = "Home";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Body</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var post in Model)
+    {
+        <tr>
+            <td>@post.id</td>
+            <td>@post.title</td>
+            <td>@post.body</td>
+        </tr>
+    }
+    </tbody>
+</table>
 ```
