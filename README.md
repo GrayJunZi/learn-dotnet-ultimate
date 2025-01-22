@@ -4388,3 +4388,51 @@ public class UnitTest1
     }
 }
 ```
+
+### 134. 单元测试 2
+
+#### 添加实体类库
+
+```bash
+# 创建类库
+dotnet new classlib -n Entities
+# 将类库添加至解决方案中
+dotnet sln add .\Entities
+```
+
+#### 定义实体类
+
+在 `Entities` 类库中定义实体类。
+
+```csharp
+public class Country
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+}
+```
+
+#### 添加服务定义类库
+
+```bash
+# 创建类库
+dotnet new classlib -n ServiceContracts
+# 将类库添加至解决方案中
+dotnet sln add .\ServiceContracts
+```
+
+#### 定义DTO类
+
+在 `ServiceContracts` 类库中定义DTO类，并引用 `Entities` 类库。
+
+```csharp
+public class CountryAddRequest
+{
+    public string CountryName { get; set; }
+
+    public Country ToCountry() => new Country
+    {
+        Name = this.CountryName
+    };
+}
+```
