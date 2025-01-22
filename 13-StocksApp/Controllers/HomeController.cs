@@ -1,26 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StocksApp.Services;
 
 namespace StocksApp.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly MyService _myService;
 
-    public HomeController(IWebHostEnvironment webHostEnvironment)
+    public HomeController(MyService myService)
     {
-        _webHostEnvironment = webHostEnvironment;
+        _myService = myService;
     }
 
     [Route("/")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-       ViewBag.EnvironmentName = _webHostEnvironment.EnvironmentName;
-        return View();
-    }
-
-    [Route("/about")]
-    public IActionResult About()
-    {
+        await _myService.Run();
         return View();
     }
 }
