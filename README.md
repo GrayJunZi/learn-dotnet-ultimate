@@ -4327,5 +4327,64 @@ dotnet new sln
 # 创建Web项目
 dotnet new web -n CRUDExample
 # 将项目添加至解决方案中
-dotnet sln add .
+dotnet sln add .\CRUDExample
+```
+
+### 133. xUnit介绍
+
+`xUnit` 是免费开源单元测试工具。
+
+- 简单且易于扩展。
+- 最好与 `Moq` 模拟框架一起使用。
+
+#### 添加单元测试类库
+
+```bash
+# 创建 xUnit 项目
+dotnet new xunit -n CRUDTests
+# 将项目添加至解决方案中
+dotnet sln add .\CRUDTests
+```
+
+#### 添加计算器类
+
+```csharp
+public class Calculator
+{
+    public int Add(int a, int b)
+    {
+        return a + b;
+    }
+}
+```
+
+#### 单元测试
+
+单元测试分为三个步骤:
+
+1. `Arrange` - 安排，初始化测试所需要的设置。
+2. `Act` - 行动，调用方法得到实际的结果。
+3. `Assert` - 断言，验证实际执行的结果和期待的结果是否一致。
+
+```csharp
+public class UnitTest1
+{
+    [Fact]
+    public void Test1()
+    {
+        // Arrange
+        var calculator = new Calculator();
+
+        int x = 1;
+        int y = 2;
+
+        var expected = 3;
+
+        // Act
+        var actual = calculator.Add(x, y);
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+}
 ```
