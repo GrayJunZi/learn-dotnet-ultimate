@@ -59,9 +59,11 @@ public class CountriesServiceTest
 
         // Act
         var actual = _countriesService.AddCountry(addRequest);
+        var allCountries = _countriesService.GetAllCountries();
 
         // Assert
         Assert.True(actual.CountryId != Guid.Empty);
+        Assert.Contains(actual, allCountries);
     }
 
     // 当数据为空
@@ -90,16 +92,17 @@ public class CountriesServiceTest
                 CountryName = "Russia"
             }
         };
-        
+
         // Act
         var addedCountries = new List<CountryResponse>();
         foreach (var country in countries)
         {
-            addedCountries.Add(_countriesService.AddCountry(country)); ;
+            addedCountries.Add(_countriesService.AddCountry(country));
+            ;
         }
-        
+
         var actual = _countriesService.GetAllCountries();
-        
+
         // Assert
         foreach (var expected in addedCountries)
         {

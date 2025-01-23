@@ -4574,7 +4574,7 @@ public class CountriesService : ICountriesService
 
 ### 138. 单元测试 - GetAllCountries
 
-测试接口
+添加GetAllCountries测试
 
 ```csharp
 // 当数据为空
@@ -4618,5 +4618,14 @@ public void GetAllCountries_AddFewCountries()
     {
         Assert.Contains(expected, actual);
     }
+}
+```
+
+### 139. 单元测试 - GetAllCountries实现
+
+```csharp
+public List<CountryResponse> GetAllCountries()
+{
+    return _countries.Select(x => x.ToCountryResponse()).ToList();
 }
 ```
