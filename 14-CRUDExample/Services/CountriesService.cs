@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using System.Reflection.Metadata.Ecma335;
+using Entities;
 using ServiceContracts;
 using ServiceContracts.DTO;
 
@@ -31,5 +32,10 @@ public class CountriesService : ICountriesService
     public List<CountryResponse> GetAllCountries()
     {
         return _countries.Select(x => x.ToCountryResponse()).ToList();
+    }
+
+    public CountryResponse GetCountryByCountryId(Guid? countryId)
+    {
+        throw new NotImplementedException();
     }
 }

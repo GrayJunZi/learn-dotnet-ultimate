@@ -109,4 +109,34 @@ public class CountriesServiceTest
             Assert.Contains(expected, actual);
         }
     }
+
+    [Fact]
+    public void GetCountryByCountryId_NullCountry()
+    {
+        // Arrange
+        Guid? countryId = null;
+
+        // Act
+        var actual = _countriesService.GetCountryByCountryId(countryId);
+
+        //Assert
+        Assert.Null(actual);
+    }
+
+    [Fact]
+    public void GetCountryByCountryId_ValidCountry()
+    {
+        // Arrange
+        var request = new CountryAddRequest
+        {
+            CountryName = "France"
+        };
+        var addedCountry = _countriesService.AddCountry(request);
+
+        // Act
+        var actual = _countriesService.GetCountryByCountryId(addedCountry.CountryId);
+        
+        // Assert
+        Assert.Equal(addedCountry, actual);
+    }
 }
