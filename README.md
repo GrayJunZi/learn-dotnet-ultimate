@@ -4665,3 +4665,12 @@ public void GetCountryByCountryId_ValidCountry()
     Assert.Equal(addedCountry, actual);
 }
 ```
+
+### 141. 单元测试 - GetCountryByCountryId实现
+
+```csharp
+public CountryResponse? GetCountryByCountryId(Guid? countryId)
+{
+    return _countries?.FirstOrDefault(x => x.Id == countryId)?.ToCountryResponse();
+}
+```

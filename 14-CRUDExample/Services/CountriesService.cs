@@ -34,8 +34,8 @@ public class CountriesService : ICountriesService
         return _countries.Select(x => x.ToCountryResponse()).ToList();
     }
 
-    public CountryResponse GetCountryByCountryId(Guid? countryId)
+    public CountryResponse? GetCountryByCountryId(Guid? countryId)
     {
-        throw new NotImplementedException();
+        return _countries?.FirstOrDefault(x => x.Id == countryId)?.ToCountryResponse();
     }
 }
