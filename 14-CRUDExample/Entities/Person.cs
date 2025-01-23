@@ -8,6 +8,6 @@ public class Person
     public DateTime? DateOfBirth { get; set; }
     public string? Gender { get; set; }
     public Guid? CountryId { get; set; }
-    public string Address { get; set; } 
+    public string Address { get; set; }
     public bool ReceiveNewsletter { get; set; }
 }
