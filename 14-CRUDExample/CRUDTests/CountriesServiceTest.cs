@@ -63,4 +63,47 @@ public class CountriesServiceTest
         // Assert
         Assert.True(actual.CountryId != Guid.Empty);
     }
+
+    // 当数据为空
+    [Fact]
+    public void GetAllCountries_EmptyList()
+    {
+        // Act
+        var actual = _countriesService.GetAllCountries();
+
+        // Assert
+        Assert.Empty(actual);
+    }
+
+    [Fact]
+    public void GetAllCountries_AddFewCountries()
+    {
+        // Arrange
+        var countries = new List<CountryAddRequest>
+        {
+            new CountryAddRequest
+            {
+                CountryName = "China"
+            },
+            new CountryAddRequest
+            {
+                CountryName = "Russia"
+            }
+        };
+        
+        // Act
+        var addedCountries = new List<CountryResponse>();
+        foreach (var country in countries)
+        {
+            addedCountries.Add(_countriesService.AddCountry(country)); ;
+        }
+        
+        var actual = _countriesService.GetAllCountries();
+        
+        // Assert
+        foreach (var expected in addedCountries)
+        {
+            Assert.Contains(expected, actual);
+        }
+    }
 }
