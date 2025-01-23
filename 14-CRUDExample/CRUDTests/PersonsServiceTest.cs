@@ -38,7 +38,7 @@ public class PersonsServiceTest
         };
 
         // Assert
-        Assert.Throws<ArgumentNullException>(() =>
+        Assert.Throws<ArgumentException>(() =>
         {
             // Act
             var actual = _personsService.AddPerson(personAddRequest);

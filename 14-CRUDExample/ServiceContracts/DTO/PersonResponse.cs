@@ -12,6 +12,8 @@ public class PersonResponse
     public Guid? CountryId { get; set; }
     public string Address { get; set; }
     public bool ReceiveNewsletter { get; set; }
+    
+    public string Country { get; set; }
 
     public override bool Equals(object? obj)
     {
