@@ -286,7 +286,7 @@ public class PersonsServiceTest
         }
 
         // Act
-        var actual = _personsService.GetFilteredPersons(nameof(Person.PersonName), "ma");
+        var actual = _personsService.GetFilteredPersons(nameof(Person.PersonName), "Ma");
 
         _testOutputHelper.WriteLine("Actual:");
         foreach (var person in actual)
@@ -297,7 +297,7 @@ public class PersonsServiceTest
         // Assert
         foreach (var person in addedPersons)
         {
-            if (person.PersonName.Contains("ma", StringComparison.OrdinalIgnoreCase))
+            if (person.PersonName.Contains("Ma", StringComparison.OrdinalIgnoreCase))
             {
                 Assert.Contains(person, actual);
             }

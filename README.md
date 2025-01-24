@@ -5192,3 +5192,29 @@ public void GetFilteredPersons_SearchByPersonName()
     }
 }
 ```
+
+### 153. 单元测试 - GetFilteredPersons实现
+
+```csharp
+public IEnumerable<PersonResponse> GetFilteredPersons(string field, string? search)
+{
+    var persons = GetAllPersons();
+
+    if (string.IsNullOrEmpty(field) || string.IsNullOrEmpty(search))
+        return persons;
+
+    switch (field)
+    {
+        case nameof(Person.PersonName):
+            return persons.Where(p => p.PersonName.Contains(search));
+        case nameof(Person.Email):
+            return persons.Where(p => p.Email.Contains(search));
+        case nameof(Person.Gender):
+            return persons.Where(p => p.Gender == search);
+        case nameof(Person.Address):
+            return persons.Where(p => p.Address.Contains(search));
+        default:
+            return persons;
+    }
+}
+```
