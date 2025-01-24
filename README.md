@@ -5218,3 +5218,66 @@ public IEnumerable<PersonResponse> GetFilteredPersons(string field, string? sear
     }
 }
 ```
+
+### 153. 单元测试 - GetSortedPersons
+
+```csharp
+[Fact]
+public void GetSortedPersons()
+{
+    // Arrange
+    var usa = _countriesService.AddCountry(new CountryAddRequest
+    {
+        CountryName = "USA",
+    });
+    var canada = _countriesService.AddCountry(new CountryAddRequest
+    {
+        CountryName = "Canada",
+    });
+
+    var addedPersons = new List<PersonResponse>();
+    var smith = _personsService.AddPerson(new PersonAddRequest
+    {
+        PersonName = "Smith",
+        Email = "Smith@gmail.com",
+        CountryId = usa.CountryId,
+        DateOfBirth = DateTime.Now,
+        Gender = GenderOptions.Male,
+        ReceiveNewsletter = true,
+    });
+    addedPersons.Add(smith);
+
+    var mary = _personsService.AddPerson(new PersonAddRequest
+    {
+        PersonName = "Mary",
+        Email = "Mary@gmail.com",
+        CountryId = canada.CountryId,
+        DateOfBirth = DateTime.Now,
+        Gender = GenderOptions.Female,
+        ReceiveNewsletter = true,
+    });
+    addedPersons.Add(mary);
+    addedPersons = addedPersons.OrderByDescending(p => p.PersonName).ToList();
+
+    _testOutputHelper.WriteLine($"Expected:");
+    foreach (var person in addedPersons)
+    {
+        _testOutputHelper.WriteLine(person.ToString());
+    }
+
+    // Act
+    var actual = _personsService.GetSortedPersons(nameof(Person.PersonName), SortOptions.Desc).ToList();
+
+    _testOutputHelper.WriteLine("Actual:");
+    foreach (var person in actual)
+    {
+        _testOutputHelper.WriteLine(person.ToString());
+    }
+
+    // Assert
+    for(var i = 0; i <addedPersons.Count ; i++)
+    {
+        Assert.Equal(addedPersons[i], actual[i]);
+    }
+}
+```
