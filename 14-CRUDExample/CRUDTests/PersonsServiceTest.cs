@@ -488,6 +488,6 @@ public class PersonsServiceTest
         var isDeleted = _personsService.DeletePerson(Guid.NewGuid());
         
         // Assert
-        Assert.True(isDeleted);
+        Assert.False(isDeleted);
     }
 }

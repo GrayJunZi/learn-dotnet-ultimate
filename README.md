@@ -5493,6 +5493,23 @@ public void DeletePerson_InvalidPersonId()
     var isDeleted = _personsService.DeletePerson(Guid.NewGuid());
     
     // Assert
-    Assert.True(isDeleted);
+    Assert.False(isDeleted);
 }
+```
+
+### 159. 单元测试 - DeletePerson实现
+
+```csharp
+    public bool DeletePerson(Guid? personId)
+    {
+        if (personId == null)
+            throw new ArgumentNullException(nameof(personId));
+
+        var person = _persons.FirstOrDefault(x => x.PersonId == personId);
+        if (person == null)
+            return false;
+
+        _persons.RemoveAll(x => x.PersonId == personId);
+        return true;
+    }
 ```
