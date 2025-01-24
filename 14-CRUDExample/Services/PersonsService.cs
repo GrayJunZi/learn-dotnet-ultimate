@@ -45,4 +45,10 @@ public class PersonsService : IPersonsService
             return null;
         return _persons?.FirstOrDefault(p => p.PersonId == personId)?.ToPersonResponse();
     }
+
+
+    public IEnumerable<PersonResponse> GetFilteredPersons(string field, string? search)
+    {
+        throw new NotImplementedException();
+    }
 }

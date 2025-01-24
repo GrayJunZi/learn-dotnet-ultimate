@@ -5069,3 +5069,126 @@ public class PersonsServiceTest
     }
 }
 ```
+
+### 152. 单元测试 - GetFilteredPersons
+
+```csharp
+[Fact]
+public void GetFilteredPersons_EmptySearchText()
+{
+    // Arrange
+    var usa = _countriesService.AddCountry(new CountryAddRequest
+    {
+        CountryName = "USA",
+    });
+    var canada = _countriesService.AddCountry(new CountryAddRequest
+    {
+        CountryName = "Canada",
+    });
+
+    var addedPersons = new List<PersonResponse>();
+    var smith = _personsService.AddPerson(new PersonAddRequest
+    {
+        PersonName = "Smith",
+        Email = "Smith@gmail.com",
+        CountryId = usa.CountryId,
+        DateOfBirth = DateTime.Now,
+        Gender = GenderOptions.Male,
+        ReceiveNewsletter = true,
+    });
+    addedPersons.Add(smith);
+
+    var mary = _personsService.AddPerson(new PersonAddRequest
+    {
+        PersonName = "Mary",
+        Email = "Mary@gmail.com",
+        CountryId = canada.CountryId,
+        DateOfBirth = DateTime.Now,
+        Gender = GenderOptions.Female,
+        ReceiveNewsletter = true,
+    });
+    addedPersons.Add(mary);
+
+    _testOutputHelper.WriteLine($"Expected:");
+    foreach (var person in addedPersons)
+    {
+        _testOutputHelper.WriteLine(person.ToString());
+    }
+
+    // Act
+    var actual = _personsService.GetFilteredPersons(nameof(Person.PersonName), "");
+
+    _testOutputHelper.WriteLine("Actual:");
+    foreach (var person in actual)
+    {
+        _testOutputHelper.WriteLine(person.ToString());
+    }
+
+    // Assert
+    foreach (var person in addedPersons)
+    {
+        Assert.Contains(person, actual);
+    }
+}
+
+[Fact]
+public void GetFilteredPersons_SearchByPersonName()
+{
+    // Arrange
+    var usa = _countriesService.AddCountry(new CountryAddRequest
+    {
+        CountryName = "USA",
+    });
+    var canada = _countriesService.AddCountry(new CountryAddRequest
+    {
+        CountryName = "Canada",
+    });
+
+    var addedPersons = new List<PersonResponse>();
+    var smith = _personsService.AddPerson(new PersonAddRequest
+    {
+        PersonName = "Smith",
+        Email = "Smith@gmail.com",
+        CountryId = usa.CountryId,
+        DateOfBirth = DateTime.Now,
+        Gender = GenderOptions.Male,
+        ReceiveNewsletter = true,
+    });
+    addedPersons.Add(smith);
+
+    var mary = _personsService.AddPerson(new PersonAddRequest
+    {
+        PersonName = "Mary",
+        Email = "Mary@gmail.com",
+        CountryId = canada.CountryId,
+        DateOfBirth = DateTime.Now,
+        Gender = GenderOptions.Female,
+        ReceiveNewsletter = true,
+    });
+    addedPersons.Add(mary);
+
+    _testOutputHelper.WriteLine($"Expected:");
+    foreach (var person in addedPersons)
+    {
+        _testOutputHelper.WriteLine(person.ToString());
+    }
+
+    // Act
+    var actual = _personsService.GetFilteredPersons(nameof(Person.PersonName), "ma");
+
+    _testOutputHelper.WriteLine("Actual:");
+    foreach (var person in actual)
+    {
+        _testOutputHelper.WriteLine(person.ToString());
+    }
+
+    // Assert
+    foreach (var person in addedPersons)
+    {
+        if (person.PersonName.Contains("ma", StringComparison.OrdinalIgnoreCase))
+        {
+            Assert.Contains(person, actual);
+        }
+    }
+}
+```
