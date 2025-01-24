@@ -5342,3 +5342,96 @@ public class PersonUpdateRequest
     }
 }
 ```
+
+### 156. 单元测试 - UpdatePerson
+
+添加测试方法
+
+```csharp
+[Fact]
+public void UpdatePerson_NullPerson()
+{
+    // Arrange
+    PersonUpdateRequest personUpdateRequest = null;
+
+    // Assert
+    Assert.Throws<ArgumentNullException>(() =>
+    {
+        // Act
+        var actual = _personsService.UpdatePerson(personUpdateRequest);
+    });
+}
+
+[Fact]
+public void UpdatePerson_InvalidPersonId()
+{
+    // Arrange
+    PersonUpdateRequest personUpdateRequest = new PersonUpdateRequest
+    {
+        PersonId = Guid.Empty,
+    };
+
+    // Assert
+    Assert.Throws<ArgumentException>(() =>
+    {
+        // Act
+        var actual = _personsService.UpdatePerson(personUpdateRequest);
+    });
+}
+
+[Fact]
+public void UpdatePerson_PersonNameIsNull()
+{
+    // Arrange
+    var uk = _countriesService.AddCountry(new CountryAddRequest
+    {
+        CountryName = "uk"
+    });
+
+    var addedPerson = _personsService.AddPerson(new PersonAddRequest
+    {
+        PersonName = "John",
+        CountryId = uk.CountryId,
+        DateOfBirth = DateTime.Now,
+    });
+
+    var updatedPerson = addedPerson.ToPersonUpdateRequest();
+    updatedPerson.PersonName = null;
+
+    // Assert
+    Assert.Throws<ArgumentException>(() =>
+    {
+        // Act
+        _personsService.UpdatePerson(updatedPerson);
+    });
+}
+
+[Fact]
+public void UpdatePerson_PersonFullDetailsUpdation()
+{
+    // Arrange
+    var uk = _countriesService.AddCountry(new CountryAddRequest
+    {
+        CountryName = "uk"
+    });
+
+    var addedPerson = _personsService.AddPerson(new PersonAddRequest
+    {
+        PersonName = "John",
+        CountryId = uk.CountryId,
+        DateOfBirth = DateTime.Now,
+    });
+
+    var updatedPerson = addedPerson.ToPersonUpdateRequest();
+    updatedPerson.PersonName = "William";
+    updatedPerson.Email = "William@gmail.com";
+
+    // Act
+    var actual = _personsService.UpdatePerson(updatedPerson);
+
+    var person = _personsService.GetPersonByPersonId(updatedPerson.PersonId);
+
+    // Assert
+    Assert.Equal(actual, person);
+}
+```

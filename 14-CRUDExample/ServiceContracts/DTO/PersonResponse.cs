@@ -30,7 +30,7 @@ public static class PersonResponseExtensions
         Address = person.Address,
         ReceiveNewsletter = person.ReceiveNewsletter
     };
-    public static PersonUpdateRequest ToPersonUpdateRequest(this Person person) => new PersonUpdateRequest
+    public static PersonUpdateRequest ToPersonUpdateRequest(this PersonResponse person) => new PersonUpdateRequest
     {
         PersonId = person.PersonId,
         PersonName = person.PersonName,
