@@ -4944,3 +4944,68 @@ public PersonResponse? GetPersonByPersonId(Guid? personId)
     return _persons?.FirstOrDefault(p => p.PersonId == personId)?.ToPersonResponse();
 }
 ```
+
+### 149. 单元测试 - GetAllPersons
+
+添加测试
+
+```csharp
+[Fact]
+public void GetAllPersons_EmptyList()
+{
+    // Arrange
+
+    // Act
+    var actual = _personsService.GetAllPersons();
+
+
+    // Assert
+    Assert.Empty(actual);
+}
+
+[Fact]
+public void GetAllPersons_AddFewPersons()
+{
+    // Arrange
+    var usa = _countriesService.AddCountry(new CountryAddRequest
+    {
+        CountryName = "USA",
+    });
+    var canada = _countriesService.AddCountry(new CountryAddRequest
+    {
+        CountryName = "Canada",
+    });
+
+    var addedPersons = new List<PersonResponse>();
+    var smith = _personsService.AddPerson(new PersonAddRequest
+    {
+        PersonName = "Smith",
+        Email = "Smith@gmail.com",
+        CountryId = usa.CountryId,
+        DateOfBirth = DateTime.Now,
+        Gender = GenderOptions.Male,
+        ReceiveNewsletter = true,
+    });
+    addedPersons.Add(smith);
+
+    var mary = _personsService.AddPerson(new PersonAddRequest
+    {
+        PersonName = "Mary",
+        Email = "Mary@gmail.com",
+        CountryId = canada.CountryId,
+        DateOfBirth = DateTime.Now,
+        Gender = GenderOptions.Female,
+        ReceiveNewsletter = true,
+    });
+    addedPersons.Add(mary);
+
+    // Act
+    var actual = _personsService.GetAllPersons();
+
+    // Assert
+    foreach (var person in addedPersons)
+    {
+        Assert.Contains(person, actual);
+    }
+}
+```
