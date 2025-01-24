@@ -48,7 +48,7 @@ public class PersonsService : IPersonsService
     }
 
 
-    public IEnumerable<PersonResponse> GetFilteredPersons(string field, string? search)
+    public List<PersonResponse> GetFilteredPersons(string field, string? search)
     {
         var persons = GetAllPersons();
 
@@ -58,20 +58,37 @@ public class PersonsService : IPersonsService
         switch (field)
         {
             case nameof(Person.PersonName):
-                return persons.Where(p => p.PersonName.Contains(search));
+                return persons.Where(p => p.PersonName.Contains(search)).ToList();
             case nameof(Person.Email):
-                return persons.Where(p => p.Email.Contains(search));
+                return persons.Where(p => p.Email.Contains(search)).ToList();
             case nameof(Person.Gender):
-                return persons.Where(p => p.Gender == search);
+                return persons.Where(p => p.Gender == search).ToList();
             case nameof(Person.Address):
-                return persons.Where(p => p.Address.Contains(search));
+                return persons.Where(p => p.Address.Contains(search)).ToList();
             default:
                 return persons;
         }
     }
 
-    public IEnumerable<PersonResponse> GetSortedPersons(string? field, SortOptions sortOptions)
+    public List<PersonResponse> GetSortedPersons(List<PersonResponse> persons, string? field, SortOptions sortOptions)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(field))
+            return persons;
+
+        var sortedPersons = (field, sortOptions) switch
+        {
+            (nameof(PersonResponse.PersonName), SortOptions.Asc) => persons.OrderBy(p => p.PersonName).ToList(),
+            (nameof(PersonResponse.PersonName), SortOptions.Desc) => persons.OrderByDescending(p => p.PersonName)
+                .ToList(),
+            (nameof(PersonResponse.Email), SortOptions.Asc) => persons.OrderBy(p => p.Email).ToList(),
+            (nameof(PersonResponse.Email), SortOptions.Desc) => persons.OrderByDescending(p => p.Email).ToList(),
+            (nameof(PersonResponse.Gender), SortOptions.Asc) => persons.OrderBy(p => p.Gender).ToList(),
+            (nameof(PersonResponse.Gender), SortOptions.Desc) => persons.OrderByDescending(p => p.Gender).ToList(),
+            (nameof(PersonResponse.Country), SortOptions.Asc) => persons.OrderBy(p => p.Country).ToList(),
+            (nameof(PersonResponse.Country), SortOptions.Desc) => persons.OrderByDescending(p => p.Country).ToList(),
+            _ => persons
+        };
+
+        return sortedPersons;
     }
 }

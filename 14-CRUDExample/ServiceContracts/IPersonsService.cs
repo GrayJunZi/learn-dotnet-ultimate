@@ -9,6 +9,6 @@ public interface IPersonsService
     List<PersonResponse> GetAllPersons();
     PersonResponse? GetPersonByPersonId(Guid? personId);
 
-    IEnumerable<PersonResponse> GetFilteredPersons(string field, string? search);
-    IEnumerable<PersonResponse> GetSortedPersons(string? field, SortOptions sortOptions);
+    List<PersonResponse> GetFilteredPersons(string field, string? search);
+    List<PersonResponse> GetSortedPersons(List<PersonResponse> persons, string? field, SortOptions sortOptions);
 }

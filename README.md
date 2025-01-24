@@ -5281,3 +5281,64 @@ public void GetSortedPersons()
     }
 }
 ```
+
+### 154. 单元测试 - GetSortedPersons实现
+
+```csharp
+public List<PersonResponse> GetSortedPersons(List<PersonResponse> persons, string? field, SortOptions sortOptions)
+{
+    if (string.IsNullOrWhiteSpace(field))
+        return persons;
+
+    var sortedPersons = (field, sortOptions) switch
+    {
+        (nameof(PersonResponse.PersonName), SortOptions.Asc) => persons.OrderBy(p => p.PersonName).ToList(),
+        (nameof(PersonResponse.PersonName), SortOptions.Desc) => persons.OrderByDescending(p => p.PersonName)
+            .ToList(),
+        (nameof(PersonResponse.Email), SortOptions.Asc) => persons.OrderBy(p => p.Email).ToList(),
+        (nameof(PersonResponse.Email), SortOptions.Desc) => persons.OrderByDescending(p => p.Email).ToList(),
+        (nameof(PersonResponse.Gender), SortOptions.Asc) => persons.OrderBy(p => p.Gender).ToList(),
+        (nameof(PersonResponse.Gender), SortOptions.Desc) => persons.OrderByDescending(p => p.Gender).ToList(),
+        (nameof(PersonResponse.Country), SortOptions.Asc) => persons.OrderBy(p => p.Country).ToList(),
+        (nameof(PersonResponse.Country), SortOptions.Desc) => persons.OrderByDescending(p => p.Country).ToList(),
+        _ => persons
+    };
+
+    return sortedPersons;
+}
+```
+
+### 155. 单元测试 - UpdatePerson创建模型
+
+添加更新模型
+
+```csharp
+public class PersonUpdateRequest
+{
+    public Guid PersonId { get; set; }
+    [Required(ErrorMessage = "Person name cannot be empty")]
+    public string? PersonName { get; set; }
+    [Required(ErrorMessage = "Email cannot be empty")]
+    [EmailAddress(ErrorMessage = "Invalid email address")]
+    public string? Email { get; set; }
+    public DateTime? DateOfBirth { get; set; }
+    public GenderOptions? Gender { get; set; }
+    public Guid? CountryId { get; set; }
+    public string Address { get; set; } 
+    public bool ReceiveNewsletter { get; set; }
+    
+    public Person ToPerson()
+    {
+        return new Person
+        {
+            PersonName = PersonName,
+            Email = Email,
+            DateOfBirth = DateOfBirth,
+            Gender = Gender.ToString(),
+            CountryId = CountryId,
+            Address = Address,
+            ReceiveNewsletter = ReceiveNewsletter
+        };
+    }
+}
+```

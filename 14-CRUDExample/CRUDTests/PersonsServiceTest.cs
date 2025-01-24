@@ -348,7 +348,8 @@ public class PersonsServiceTest
         }
 
         // Act
-        var actual = _personsService.GetSortedPersons(nameof(Person.PersonName), SortOptions.Desc).ToList();
+        var actual = _personsService
+            .GetSortedPersons(_personsService.GetAllPersons(), nameof(Person.PersonName), SortOptions.Desc).ToList();
 
         _testOutputHelper.WriteLine("Actual:");
         foreach (var person in actual)
@@ -357,7 +358,7 @@ public class PersonsServiceTest
         }
 
         // Assert
-        for(var i = 0; i <addedPersons.Count ; i++)
+        for (var i = 0; i < addedPersons.Count; i++)
         {
             Assert.Equal(addedPersons[i], actual[i]);
         }

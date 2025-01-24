@@ -1,4 +1,5 @@
 ﻿using Entities;
+using ServiceContracts.Enums;
 
 namespace ServiceContracts.DTO;
 
@@ -25,6 +26,17 @@ public static class PersonResponseExtensions
         Email = person.Email,
         DateOfBirth = person.DateOfBirth,
         Gender = person.Gender,
+        CountryId = person.CountryId,
+        Address = person.Address,
+        ReceiveNewsletter = person.ReceiveNewsletter
+    };
+    public static PersonUpdateRequest ToPersonUpdateRequest(this Person person) => new PersonUpdateRequest
+    {
+        PersonId = person.PersonId,
+        PersonName = person.PersonName,
+        Email = person.Email,
+        DateOfBirth = person.DateOfBirth,
+        Gender =  Enum.Parse<GenderOptions>(person.Gender) ,
         CountryId = person.CountryId,
         Address = person.Address,
         ReceiveNewsletter = person.ReceiveNewsletter
