@@ -4888,3 +4888,48 @@ public class ValidationHelper
     }
 }
 ```
+
+### 147. 单元测试 - GetPersonByPersonId
+
+添加单元测试
+
+```csharp
+[Fact]
+public void GetPersonByPersonId_NullPersonId()
+{
+    // Arrange
+    Guid? personId = null;
+
+    // Act
+    var personResponse = _personsService.GetPersonByPersonId(personId);
+
+    // Assert
+    Assert.Null(personResponse);
+}
+
+[Fact]
+public void GetPersonByPersonId_WithPersonId()
+{
+    // Arrange
+    var addedCountry = _countriesService.AddCountry(new CountryAddRequest
+    {
+        CountryName = "United States",
+    });
+
+    var addedPerson = _personsService.AddPerson(new PersonAddRequest
+    {
+        PersonName = "Elyn",
+        Email = "Elyn@gmail.com",
+        CountryId = addedCountry.CountryId,
+        DateOfBirth = DateTime.Now,
+        Gender = GenderOptions.Female,
+        ReceiveNewsletter = true,
+    });
+
+    // Act
+    var actual = _personsService.GetPersonByPersonId(addedPerson.PersonId);
+
+    // Assert
+    Assert.Equal(actual, addedPerson);
+}
+```

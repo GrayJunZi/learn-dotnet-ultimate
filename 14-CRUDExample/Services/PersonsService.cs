@@ -16,7 +16,7 @@ public class PersonsService : IPersonsService
             throw new ArgumentNullException(nameof(personAddRequest));
 
         ValidationHelper.ModelValidation(personAddRequest);
-        
+
         var person = personAddRequest.ToPerson();
 
         person.PersonId = Guid.NewGuid();
@@ -35,6 +35,12 @@ public class PersonsService : IPersonsService
     {
         var personResponse = person.ToPersonResponse();
         personResponse.Country = _countriesService.GetCountryByCountryId(person.CountryId)?.CountryName;
-        return personResponse;          
+        return personResponse;
+    }
+
+
+    public PersonResponse? GetPersonByPersonId(Guid? personId)
+    {
+        throw new NotImplementedException();
     }
 }
