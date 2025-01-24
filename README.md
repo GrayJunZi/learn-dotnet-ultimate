@@ -4933,3 +4933,14 @@ public void GetPersonByPersonId_WithPersonId()
     Assert.Equal(actual, addedPerson);
 }
 ```
+
+### 148. 单元测试 - GetPersonByPersonId实现
+
+```csharp
+public PersonResponse? GetPersonByPersonId(Guid? personId)
+{
+    if (personId == null)
+        return null;
+    return _persons?.FirstOrDefault(p => p.PersonId == personId)?.ToPersonResponse();
+}
+```

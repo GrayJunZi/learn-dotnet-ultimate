@@ -41,6 +41,8 @@ public class PersonsService : IPersonsService
 
     public PersonResponse? GetPersonByPersonId(Guid? personId)
     {
-        throw new NotImplementedException();
+        if (personId == null)
+            return null;
+        return _persons?.FirstOrDefault(p => p.PersonId == personId)?.ToPersonResponse();
     }
 }
