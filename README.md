@@ -5009,3 +5009,20 @@ public void GetAllPersons_AddFewPersons()
     }
 }
 ```
+
+### 150. 单元测试 - GetAllPersons实现
+
+```csharp
+public List<PersonResponse> GetAllPersons()
+{
+    return _persons.Select(convertPersonResponse).ToList();
+}
+
+
+private PersonResponse? convertPersonResponse(Person person)
+{
+    var personResponse = person.ToPersonResponse();
+    personResponse.Country = _countriesService.GetCountryByCountryId(person.CountryId)?.CountryName;
+    return personResponse;
+}
+```

@@ -27,7 +27,7 @@ public class PersonsService : IPersonsService
 
     public List<PersonResponse> GetAllPersons()
     {
-        throw new NotImplementedException();
+        return _persons.Select(convertPersonResponse).ToList();
     }
 
 
