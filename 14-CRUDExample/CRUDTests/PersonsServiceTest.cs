@@ -407,6 +407,8 @@ public class PersonsServiceTest
         var addedPerson = _personsService.AddPerson(new PersonAddRequest
         {
             PersonName = "John",
+            Email = "John@gmail.com",
+            Gender = GenderOptions.Male,
             CountryId = uk.CountryId,
             DateOfBirth = DateTime.Now,
         });
@@ -434,14 +436,16 @@ public class PersonsServiceTest
         var addedPerson = _personsService.AddPerson(new PersonAddRequest
         {
             PersonName = "John",
+            Email = "John@gmail.com",
             CountryId = uk.CountryId,
             DateOfBirth = DateTime.Now,
+            Gender = GenderOptions.Male,
         });
 
         var updatedPerson = addedPerson.ToPersonUpdateRequest();
         updatedPerson.PersonName = "William";
         updatedPerson.Email = "William@gmail.com";
-
+        
         // Act
         var actual = _personsService.UpdatePerson(updatedPerson);
 

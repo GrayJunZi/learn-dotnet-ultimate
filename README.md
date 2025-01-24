@@ -5435,3 +5435,24 @@ public void UpdatePerson_PersonFullDetailsUpdation()
     Assert.Equal(actual, person);
 }
 ```
+
+### 157. 单元测试 - UpdatePerson实现
+
+```csharp
+public PersonResponse? UpdatePerson(PersonUpdateRequest? personUpdateRequest)
+{
+    if(personUpdateRequest == null)
+        throw new ArgumentNullException(nameof(personUpdateRequest));
+    
+    ValidationHelper.ModelValidation(personUpdateRequest);
+
+    var person = _persons.FirstOrDefault(x => x.PersonId == personUpdateRequest.PersonId);
+    if (person ==null)
+        throw new ArgumentException("Given person id is invalid");
+    
+    person.PersonName = personUpdateRequest.PersonName;
+    person.Email = personUpdateRequest.Email;
+    
+    return person.ToPersonResponse();
+}
+```

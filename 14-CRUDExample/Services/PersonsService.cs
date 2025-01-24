@@ -94,6 +94,18 @@ public class PersonsService : IPersonsService
 
     public PersonResponse? UpdatePerson(PersonUpdateRequest? personUpdateRequest)
     {
-        throw new NotImplementedException();
+        if(personUpdateRequest == null)
+            throw new ArgumentNullException(nameof(personUpdateRequest));
+        
+        ValidationHelper.ModelValidation(personUpdateRequest);
+
+        var person = _persons.FirstOrDefault(x => x.PersonId == personUpdateRequest.PersonId);
+        if (person ==null)
+            throw new ArgumentException("Given person id is invalid");
+        
+        person.PersonName = personUpdateRequest.PersonName;
+        person.Email = personUpdateRequest.Email;
+        
+        return person.ToPersonResponse();
     }
 }
