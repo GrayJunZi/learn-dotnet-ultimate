@@ -4855,3 +4855,36 @@ public class PersonsService : IPersonsService
     }
 }
 ```
+
+### 146. 单元测试 - AddPerson验证
+
+为模型增加验证特性
+
+```csharp
+public class PersonAddRequest
+{
+    [Required(ErrorMessage = "Person name cannot be empty")]
+    public string? PersonName { get; set; }
+    [Required(ErrorMessage = "Email cannot be empty")]
+    [EmailAddress(ErrorMessage = "Invalid email address")]
+    public string? Email { get; set; }
+}
+```
+
+验证模型对象
+
+```csharp
+public class ValidationHelper
+{
+    internal static void ModelValidation(object model)
+    {
+        ValidationContext validationContext = new ValidationContext(model);
+        var validationResults = new List<ValidationResult>();
+        bool isValid = Validator.TryValidateObject(model, validationContext, validationResults, true);
+        if (!isValid)
+        {
+            throw new ArgumentException(validationResults?.FirstOrDefault()?.ErrorMessage);
+        }
+    }
+}
+```

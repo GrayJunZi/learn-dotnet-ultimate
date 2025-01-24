@@ -1,6 +1,7 @@
 ﻿using Entities;
 using ServiceContracts;
 using ServiceContracts.DTO;
+using Services.Helpers;
 
 namespace Services;
 
@@ -14,9 +15,8 @@ public class PersonsService : IPersonsService
         if (personAddRequest == null)
             throw new ArgumentNullException(nameof(personAddRequest));
 
-        if (string.IsNullOrWhiteSpace(personAddRequest.PersonName))
-            throw new ArgumentException($"{nameof(personAddRequest.PersonName)} cannot be empty");
-
+        ValidationHelper.ModelValidation(personAddRequest);
+        
         var person = personAddRequest.ToPerson();
 
         person.PersonId = Guid.NewGuid();
