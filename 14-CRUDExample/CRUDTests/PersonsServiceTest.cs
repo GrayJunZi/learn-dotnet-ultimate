@@ -454,4 +454,40 @@ public class PersonsServiceTest
         // Assert
         Assert.Equal(actual, person);
     }
+
+    [Fact]
+    public void DeletePerson_ValidPersonId()
+    {
+        // Arrange
+        var usa = _countriesService.AddCountry(new CountryAddRequest
+        {
+            CountryName = "usa"
+        });
+
+        var person = _personsService.AddPerson(new PersonAddRequest
+        {
+            PersonName = "ellen",
+            Email = "ellen@gmail.com",
+            CountryId = usa.CountryId,
+            DateOfBirth = DateTime.Now,
+            Gender = GenderOptions.Female,
+        });
+        
+        // Act
+        var isDeleted = _personsService.DeletePerson(person.PersonId);
+        
+        // Assert
+        Assert.True(isDeleted);
+    }
+    [Fact]
+    public void DeletePerson_InvalidPersonId()
+    {
+        // Arrange
+        
+        // Act
+        var isDeleted = _personsService.DeletePerson(Guid.NewGuid());
+        
+        // Assert
+        Assert.True(isDeleted);
+    }
 }
