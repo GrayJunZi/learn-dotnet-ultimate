@@ -2,7 +2,7 @@
 
 namespace ServiceContracts.DTO;
 
-public class PersonResponse
+public record PersonResponse
 {
     public Guid PersonId { get; set; }
     public string? PersonName { get; set; }
@@ -14,26 +14,6 @@ public class PersonResponse
     public bool ReceiveNewsletter { get; set; }
     
     public string Country { get; set; }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is not PersonResponse personResponse)
-            return false;
-
-        return personResponse.PersonId == PersonId
-               && personResponse.PersonName == PersonName
-               && personResponse.Email == Email
-               && personResponse.DateOfBirth == DateOfBirth
-               && personResponse.Gender == Gender
-               && personResponse.CountryId == CountryId
-               && personResponse.Address == Address
-               && personResponse.ReceiveNewsletter == ReceiveNewsletter;
-    }
-
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
 }
 
 public static class PersonResponseExtensions

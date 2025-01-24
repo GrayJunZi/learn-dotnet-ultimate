@@ -5026,3 +5026,46 @@ private PersonResponse? convertPersonResponse(Person person)
     return personResponse;
 }
 ```
+
+### 151. TestOutputHelper
+
+我们可以在测试类中注入 `ITestOutputHelper` 用以在测试过程中输出一些必要的数据。
+
+```csharp
+public class PersonsServiceTest
+{
+    private readonly ITestOutputHelper _testOutputHelper;
+    private readonly IPersonsService _personsService;
+    private readonly ICountriesService _countriesService;
+
+    public PersonsServiceTest(ITestOutputHelper testOutputHelper)
+    {
+        _testOutputHelper = testOutputHelper;
+        _personsService = new PersonsService();
+        _countriesService = new CountriesService();
+    }
+    
+    [Fact]
+    public void GetAllPersons_AddFewPersons()
+    {
+        ...
+
+        _testOutputHelper.WriteLine($"Expected:");
+        foreach (var person in addedPersons)
+        {
+            _testOutputHelper.WriteLine(person.ToString());
+        }
+        
+        // Act
+        var actual = _personsService.GetAllPersons();
+
+        _testOutputHelper.WriteLine("Actual:");
+        foreach (var person in actual)
+        {
+            _testOutputHelper.WriteLine(person.ToString());
+        }
+
+        ...
+    }
+}
+```
