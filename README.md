@@ -20,7 +20,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 12. 依赖注入 (Dependency Injection)
 - [x] 13. 环境 (Environments)
 - [x] 14. 配置 (Configuration)
-- [ ] 15. 单元测试 (xUnit)
+- [x] 15. 单元测试 (xUnit)
 - [ ] 16. 增删改查 (CRUD Operations)
 - [ ] 17. Tag Helpers
 - [ ] 18. EntityFrameworkCore
@@ -5500,16 +5500,26 @@ public void DeletePerson_InvalidPersonId()
 ### 159. 单元测试 - DeletePerson实现
 
 ```csharp
-    public bool DeletePerson(Guid? personId)
-    {
-        if (personId == null)
-            throw new ArgumentNullException(nameof(personId));
+public bool DeletePerson(Guid? personId)
+{
+    if (personId == null)
+        throw new ArgumentNullException(nameof(personId));
 
-        var person = _persons.FirstOrDefault(x => x.PersonId == personId);
-        if (person == null)
-            return false;
+    var person = _persons.FirstOrDefault(x => x.PersonId == personId);
+    if (person == null)
+        return false;
 
-        _persons.RemoveAll(x => x.PersonId == personId);
-        return true;
-    }
+    _persons.RemoveAll(x => x.PersonId == personId);
+    return true;
+}
 ```
+
+## 十六、增删改查
+
+### 160. UI
+
+1. 添加 `Views\Shared\_Layout.cshtml` 默认布局页。
+2. 添加 `Views\_ViewImports.cshtml` 导入页。
+3. 添加 `Views\_ViewStart.cshtml` 开始页。
+4. 添加 `PersonsController` 控制器。
+6. 添加 `Persons\Index.cshtml` 视图页。
