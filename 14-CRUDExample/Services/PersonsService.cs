@@ -8,8 +8,29 @@ namespace Services;
 
 public class PersonsService : IPersonsService
 {
-    private readonly List<Person> _persons = new();
-    private readonly ICountriesService _countriesService = new CountriesService();
+    private readonly List<Person> _persons;
+    private readonly ICountriesService _countriesService;
+
+    public PersonsService(bool initialize = true)
+    {
+        _persons = new List<Person>();
+        _countriesService = new CountriesService();
+
+        if (initialize)
+        {
+            var countries = _countriesService.GetAllCountries();
+            _persons = new[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", }.Select(x => new Person
+            {
+                PersonId = Guid.NewGuid(),
+                PersonName = x,
+                Email = $"{x}@email.com",
+                DateOfBirth = DateTime.Now,
+                Gender = Random.Shared.Next(0, 100) % 2 == 0 ? "Male" : "Female",
+                ReceiveNewsletter = Random.Shared.Next(0, 100) % 2 == 0,
+                CountryId = countries[Random.Shared.Next(0, countries.Count)].CountryId,
+            }).ToList();
+        }
+    }
 
     public PersonResponse? AddPerson(PersonAddRequest? personAddRequest)
     {

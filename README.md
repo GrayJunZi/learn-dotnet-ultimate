@@ -5513,8 +5513,8 @@ public bool DeletePerson(Guid? personId)
     return true;
 }
 ```
-
-## 十六、增删改查
+ 
+## 十六、增删改
 
 ### 160. UI
 
@@ -5523,3 +5523,7 @@ public bool DeletePerson(Guid? personId)
 3. 添加 `Views\_ViewStart.cshtml` 开始页。
 4. 添加 `PersonsController` 控制器。
 6. 添加 `Persons\Index.cshtml` 视图页。
+
+### 161. 模拟数据
+
+模拟初始化的数据。可以通过 [Mockaroo](https://mockaroo.com) 网站生成的测试数据。

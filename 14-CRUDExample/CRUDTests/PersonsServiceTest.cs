@@ -17,7 +17,7 @@ public class PersonsServiceTest
     {
         _testOutputHelper = testOutputHelper;
         _personsService = new PersonsService();
-        _countriesService = new CountriesService();
+        _countriesService = new CountriesService(false);
     }
 
     [Fact]
@@ -445,7 +445,7 @@ public class PersonsServiceTest
         var updatedPerson = addedPerson.ToPersonUpdateRequest();
         updatedPerson.PersonName = "William";
         updatedPerson.Email = "William@gmail.com";
-        
+
         // Act
         var actual = _personsService.UpdatePerson(updatedPerson);
 
@@ -472,21 +472,22 @@ public class PersonsServiceTest
             DateOfBirth = DateTime.Now,
             Gender = GenderOptions.Female,
         });
-        
+
         // Act
         var isDeleted = _personsService.DeletePerson(person.PersonId);
-        
+
         // Assert
         Assert.True(isDeleted);
     }
+
     [Fact]
     public void DeletePerson_InvalidPersonId()
     {
         // Arrange
-        
+
         // Act
         var isDeleted = _personsService.DeletePerson(Guid.NewGuid());
-        
+
         // Assert
         Assert.False(isDeleted);
     }

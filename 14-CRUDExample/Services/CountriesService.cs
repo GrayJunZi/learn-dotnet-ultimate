@@ -9,9 +9,18 @@ public class CountriesService : ICountriesService
 {
     private readonly List<Country> _countries;
 
-    public CountriesService()
+    public CountriesService(bool initialize = true)
     {
         _countries = new();
+
+        if (initialize)
+        {
+            _countries = new[] { "Beijing", "Shanghai", "GuangZhou", "ShenZhen" }.Select(x => new Country
+            {
+                Id = Guid.NewGuid(),
+                Name = x,
+            }).ToList();
+        }
     }
 
     public CountryResponse AddCountry(CountryAddRequest? countryAddRequest)
