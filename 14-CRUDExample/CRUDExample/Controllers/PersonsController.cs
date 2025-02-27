@@ -1,22 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServiceContracts;
 
 namespace EnvironmentsExample.Controllers;
 
 public class PersonsController : Controller
 {
-    private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IPersonsService _personsService;
 
-    public PersonsController(IWebHostEnvironment webHostEnvironment)
+    public PersonsController(IPersonsService personsService)
     {
-        _webHostEnvironment = webHostEnvironment;
+        _personsService = personsService;
     }
 
     [Route("/")]
     [Route("persons/index")]
     public IActionResult Index()
     {
-       ViewBag.EnvironmentName = _webHostEnvironment.EnvironmentName;
-        return View();
+        var persons = _personsService.GetAllPersons();
+        return View(persons);
     }
 
     [Route("/about")]

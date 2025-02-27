@@ -5527,3 +5527,70 @@ public bool DeletePerson(Guid? personId)
 ### 161. 模拟数据
 
 模拟初始化的数据。可以通过 [Mockaroo](https://mockaroo.com) 网站生成的测试数据。
+
+### 162. 列表视图
+
+注册服务到容器中。
+
+```csharp
+builder.Services.AddScoped<ICountriesService, CountriesService>();
+builder.Services.AddScoped<IPersonsService, PersonsService>();
+```
+
+在控制器中注入服务，并在接口中调用获取人员信息以及将数据传递给视图。
+```csharp
+private readonly IPersonsService _personsService;
+
+public PersonsController(IPersonsService personsService)
+{
+    _personsService = personsService;
+}
+
+[Route("/")]
+[Route("persons/index")]
+public IActionResult Index()
+{
+    var persons = _personsService.GetAllPersons();
+    return View(persons);
+}
+```
+
+视图界面加载数据。
+```csharp
+@model IEnumerable<PersonResponse>
+@{
+    ViewBag.Title = "Home";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <td>Person Name</td>
+        <td>Email</td>
+        <td>Date of Birth</td>
+        <td>Gender</td>
+        <td>Age</td>
+        <td>Country</td>
+        <td>Address</td>
+        <td>Receive NewsLetters</td>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (PersonResponse person in Model)
+    {
+        <tr>
+            <td>@person.PersonName</td>
+            <td>@person.Email</td>
+            <td>@person.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+            <td>@person.Gender</td>
+            <td>@person.Age</td>
+            <td>@person.Country</td>
+            <td>@person.Address</td>
+            <td>@person.ReceiveNewsletter</td>
+        </tr>
+    }
+    </tbody>
+</table>
+```
