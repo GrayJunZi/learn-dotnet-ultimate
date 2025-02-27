@@ -5594,3 +5594,82 @@ public IActionResult Index()
     </tbody>
 </table>
 ```
+
+### 163. 列表视图搜索
+
+接口中定义接收搜索的参数，以及可筛选的条件列表。
+
+```csharp
+[Route("/")]
+[Route("persons/index")]
+public IActionResult Index(string? field = null, string? value = null)
+{
+    ViewBag.SearchFields = new Dictionary<string, object>
+    {
+        { "", "All" },
+        { nameof(PersonResponse.PersonName), "Person Name" },
+        { nameof(PersonResponse.Email), "Email" },
+        { nameof(PersonResponse.DateOfBirth), "Date Of Birth" },
+        { nameof(PersonResponse.Age), "Age" },
+        { nameof(PersonResponse.Country), "Country" },
+        { nameof(PersonResponse.Address), "Address" },
+        { nameof(PersonResponse.ReceiveNewsletter), "Receive Newsletter" },
+    };
+
+    var persons = _personsService.GetAllPersons();
+    return View(persons);
+}
+```
+
+在列表视图中增加筛选下拉框和文本框来检索内容。
+
+```csharp
+
+<form action="~/persons/index" method="get">
+<h1>@ViewBag.Title</h1>
+
+<div class="row g-2 text-center">
+    <div class="col-6 col-md-4">
+        <select class="form-select" name="field">
+            @foreach (var item in ViewBag.SearchFields)
+            {
+                <option value="@item.Key">@item.Value</option>
+            }
+        </select>
+    </div>
+    <div class="col-sm-6 col-md-8">
+        <input class="form-control" name="value"/>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <td>Person Name</td>
+        <td>Email</td>
+        <td>Date of Birth</td>
+        <td>Gender</td>
+        <td>Age</td>
+        <td>Country</td>
+        <td>Address</td>
+        <td>Receive NewsLetters</td>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (PersonResponse person in Model)
+    {
+        <tr>
+            <td>@person.PersonName</td>
+            <td>@person.Email</td>
+            <td>@person.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+            <td>@person.Gender</td>
+            <td>@person.Age</td>
+            <td>@person.Country</td>
+            <td>@person.Address</td>
+            <td>@person.ReceiveNewsletter</td>
+        </tr>
+    }
+    </tbody>
+</table>
+</form>
+```

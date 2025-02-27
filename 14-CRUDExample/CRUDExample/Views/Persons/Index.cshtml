@@ -3,7 +3,22 @@
     ViewBag.Title = "Home";
 }
 
+<form action="~/persons/index" method="get">
 <h1>@ViewBag.Title</h1>
+
+<div class="row g-2 text-center">
+    <div class="col-6 col-md-4">
+        <select class="form-select" name="field">
+            @foreach (var item in ViewBag.SearchFields)
+            {
+                <option value="@item.Key">@item.Value</option>
+            }
+        </select>
+    </div>
+    <div class="col-sm-6 col-md-8">
+        <input class="form-control" name="value"/>
+    </div>
+</div>
 
 <table class="table">
     <thead>
@@ -34,3 +49,4 @@
     }
     </tbody>
 </table>
+</form>
