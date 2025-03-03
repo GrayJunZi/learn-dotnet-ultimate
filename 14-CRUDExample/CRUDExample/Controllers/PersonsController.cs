@@ -26,10 +26,11 @@ public class PersonsController : Controller
             { nameof(PersonResponse.Age), "Age" },
             { nameof(PersonResponse.Country), "Country" },
             { nameof(PersonResponse.Address), "Address" },
-            { nameof(PersonResponse.ReceiveNewsletter), "Receive Newsletter" },
         };
+        ViewBag.CurrentField = field;
+        ViewBag.CurrentValue = value;
 
-        var persons = _personsService.GetAllPersons();
+        var persons = _personsService.GetFilteredPersons(field, value);
         return View(persons);
     }
 

@@ -5673,3 +5673,48 @@ public IActionResult Index(string? field = null, string? value = null)
 </table>
 </form>
 ```
+
+### 164. 列表视图搜索功能完善
+
+根据传入的字段和值来筛选数据。
+
+```csharp
+[Route("/")]
+[Route("persons/index")]
+public IActionResult Index(string? field = null, string? value = null)
+{
+    ViewBag.SearchFields = new Dictionary<string, object>
+    {
+        { "", "All" },
+        { nameof(PersonResponse.PersonName), "Person Name" },
+        { nameof(PersonResponse.Email), "Email" },
+        { nameof(PersonResponse.DateOfBirth), "Date Of Birth" },
+        { nameof(PersonResponse.Age), "Age" },
+        { nameof(PersonResponse.Country), "Country" },
+        { nameof(PersonResponse.Address), "Address" },
+    };
+    ViewBag.CurrentField = field;
+    ViewBag.CurrentValue = value;
+
+    var persons = _personsService.GetFilteredPersons(field, value);
+    return View(persons);
+}
+```
+
+判断传入的字段值是否等于某一项，如果相等则选中该项。
+
+```csharp
+<select class="form-select" name="field">
+    @foreach (var item in ViewBag.SearchFields)
+    {
+        if (ViewBag.CurrentField == item.Key)
+        {
+            <option value="@item.Key" selected>@item.Value</option>
+        }
+        else
+        {
+            <option value="@item.Key">@item.Value</option>
+        }
+    }
+</select>
+```

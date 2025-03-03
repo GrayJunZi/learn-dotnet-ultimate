@@ -69,7 +69,7 @@ public class PersonsService : IPersonsService
     }
 
 
-    public List<PersonResponse> GetFilteredPersons(string field, string? search)
+    public List<PersonResponse> GetFilteredPersons(string? field, string? search)
     {
         var persons = GetAllPersons();
 
@@ -78,13 +78,15 @@ public class PersonsService : IPersonsService
 
         switch (field)
         {
-            case nameof(Person.PersonName):
+            case nameof(PersonResponse.PersonName):
                 return persons.Where(p => p.PersonName.Contains(search)).ToList();
-            case nameof(Person.Email):
+            case nameof(PersonResponse.Email):
                 return persons.Where(p => p.Email.Contains(search)).ToList();
-            case nameof(Person.Gender):
+            case nameof(PersonResponse.Gender):
                 return persons.Where(p => p.Gender == search).ToList();
-            case nameof(Person.Address):
+            case nameof(PersonResponse.Country):
+                return persons.Where(p => p.Country == search).ToList();
+            case nameof(PersonResponse.Address):
                 return persons.Where(p => p.Address.Contains(search)).ToList();
             default:
                 return persons;
