@@ -30,7 +30,28 @@
     <table class="table">
         <thead>
         <tr>
-            <td>Person Name</td>
+            <td>
+                @if (ViewBag.CurrentSortBy == nameof(PersonResponse.PersonName))
+                {
+                    var reverseSort = @ViewBag.CurrentSortOrder == SortOptions.Asc ? SortOptions.Desc : SortOptions.Asc;
+                    
+                    <a href="~/persons/index?field=@ViewBag.CurrentField&value=@ViewBag.CurrentValue&sortBy=@ViewBag.CurrentSortBy&sortOrder=@(reverseSort)">
+                        Person Name
+                        @if (reverseSort == SortOptions.Desc)
+                        {
+                            <i class="fa-solid fa-sort-up"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-sort-down"></i>
+                        }
+                    </a>
+                }
+                else
+                {
+                    <a href="~/persons/index?field=@ViewBag.CurrentField&value=@ViewBag.CurrentValue&sortBy=@ViewBag.CurrentSortBy&sortOrder=@(SortOptions.Asc)">Person Name</a>
+                }
+            </td>
             <td>Email</td>
             <td>Date of Birth</td>
             <td>Gender</td>

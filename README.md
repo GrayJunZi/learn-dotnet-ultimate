@@ -5718,3 +5718,93 @@ public IActionResult Index(string? field = null, string? value = null)
     }
 </select>
 ```
+
+### 165. 列表视图排序
+
+将检索后的信息进行排序。
+
+```csharp
+[Route("/")]
+[Route("persons/index")]
+public IActionResult Index(
+    string? field = null,
+    string? value = null,
+    string sortBy = nameof(PersonResponse.PersonName),
+    SortOptions? sortOrder = SortOptions.Asc)
+{
+    ViewBag.SearchFields = new Dictionary<string, object>
+    {
+        { "", "All" },
+        { nameof(PersonResponse.PersonName), "Person Name" },
+        { nameof(PersonResponse.Email), "Email" },
+        { nameof(PersonResponse.DateOfBirth), "Date Of Birth" },
+        { nameof(PersonResponse.Age), "Age" },
+        { nameof(PersonResponse.Country), "Country" },
+        { nameof(PersonResponse.Address), "Address" },
+    };
+    ViewBag.CurrentField = field;
+    ViewBag.CurrentValue = value;
+
+    var persons = _personsService.GetFilteredPersons(field, value);
+    persons = _personsService.GetSortedPersons(persons, sortBy, sortOrder);
+    ViewBag.CurrentSortBy = sortBy;
+    ViewBag.CurrentSortOrder = sortOrder;
+    
+    return View(persons);
+}
+```
+
+显示当前排序的字段，并实现排序的切换。
+
+```csharp
+<table class="table">
+    <thead>
+    <tr>
+        <td>
+            @if (ViewBag.CurrentSortBy == nameof(PersonResponse.PersonName))
+            {
+                var reverseSort = @ViewBag.CurrentSortOrder == SortOptions.Asc ? SortOptions.Desc : SortOptions.Asc;
+                
+                <a href="~/persons/index?field=@ViewBag.CurrentField&value=@ViewBag.CurrentValue&sortBy=@ViewBag.CurrentSortBy&sortOrder=@(reverseSort)">
+                    Person Name
+                    @if (reverseSort == SortOptions.Desc)
+                    {
+                        <i class="fa-solid fa-sort-up"></i>
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-sort-down"></i>
+                    }
+                </a>
+            }
+            else
+            {
+                <a href="~/persons/index?field=@ViewBag.CurrentField&value=@ViewBag.CurrentValue&sortBy=@ViewBag.CurrentSortBy&sortOrder=@(SortOptions.Asc)">Person Name</a>
+            }
+        </td>
+        <td>Email</td>
+        <td>Date of Birth</td>
+        <td>Gender</td>
+        <td>Age</td>
+        <td>Country</td>
+        <td>Address</td>
+        <td>Receive NewsLetters</td>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (PersonResponse person in Model)
+    {
+        <tr>
+            <td>@person.PersonName</td>
+            <td>@person.Email</td>
+            <td>@person.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+            <td>@person.Gender</td>
+            <td>@person.Age</td>
+            <td>@person.Country</td>
+            <td>@person.Address</td>
+            <td>@person.ReceiveNewsletter</td>
+        </tr>
+    }
+    </tbody>
+</table>
+```

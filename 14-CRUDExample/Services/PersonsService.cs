@@ -93,7 +93,7 @@ public class PersonsService : IPersonsService
         }
     }
 
-    public List<PersonResponse> GetSortedPersons(List<PersonResponse> persons, string? field, SortOptions sortOptions)
+    public List<PersonResponse> GetSortedPersons(List<PersonResponse> persons, string? field, SortOptions? sortOptions)
     {
         if (string.IsNullOrWhiteSpace(field))
             return persons;
