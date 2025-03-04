@@ -5808,3 +5808,94 @@ public IActionResult Index(
     </tbody>
 </table>
 ```
+
+### 166. 列表视图排序功能完善
+
+定义一个分部视图将表格中的排序逻辑分开。
+
+```csharp
+<td>
+@if (ViewBag.CurrentSortBy == ViewBag.ColumnName)
+{
+    var reverseSort = @ViewBag.CurrentSortOrder == SortOptions.Asc ? SortOptions.Desc : SortOptions.Asc;
+
+    <a href="~/persons/index?field=@ViewBag.CurrentField&value=@ViewBag.CurrentValue&sortBy=@ViewBag.ColumnName&sortOrder=@(reverseSort)">
+        @ViewBag.DisplayName
+        @if (reverseSort == SortOptions.Desc)
+        {
+            <i class="fa-solid fa-sort-up"></i>
+        }
+        else
+        {
+            <i class="fa-solid fa-sort-down"></i>
+        }
+    </a>
+}
+else
+{
+    <a href="~/persons/index?field=@ViewBag.CurrentField&value=@ViewBag.CurrentValue&sortBy=@ViewBag.ColumnName&sortOrder=@(SortOptions.Asc)">
+        @ViewBag.DisplayName
+    </a>
+}
+</td>
+```
+
+在表格中调用该分部视图。
+
+```csharp
+<table class="table">
+    <thead>
+    <tr>
+        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+        {
+            { "ColumnName", nameof(PersonResponse.PersonName) },
+            { "DisplayName", "Person Name" }
+        })
+        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+        {
+            { "ColumnName", nameof(PersonResponse.Email) },
+            { "DisplayName", "Email" }
+        })
+        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+        {
+            { "ColumnName", nameof(PersonResponse.DateOfBirth) },
+            { "DisplayName", "Date of Birth" }
+        })
+        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+        {
+            { "ColumnName", nameof(PersonResponse.Gender) },
+            { "DisplayName", "Gender" }
+        })
+        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+        {
+            { "ColumnName", nameof(PersonResponse.Age) },
+            { "DisplayName", "Age" }
+        })
+        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+        {
+            { "ColumnName", nameof(PersonResponse.Country) },
+            { "DisplayName", "Country" }
+        })
+        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+        {
+            { "ColumnName", nameof(PersonResponse.Address) },
+            { "DisplayName", "Address" }
+        })
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (PersonResponse person in Model)
+    {
+        <tr>
+            <td>@person.PersonName</td>
+            <td>@person.Email</td>
+            <td>@person.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+            <td>@person.Gender</td>
+            <td>@person.Age</td>
+            <td>@person.Country</td>
+            <td>@person.Address</td>
+        </tr>
+    }
+    </tbody>
+</table>
+```

@@ -30,35 +30,41 @@
     <table class="table">
         <thead>
         <tr>
-            <td>
-                @if (ViewBag.CurrentSortBy == nameof(PersonResponse.PersonName))
-                {
-                    var reverseSort = @ViewBag.CurrentSortOrder == SortOptions.Asc ? SortOptions.Desc : SortOptions.Asc;
-                    
-                    <a href="~/persons/index?field=@ViewBag.CurrentField&value=@ViewBag.CurrentValue&sortBy=@ViewBag.CurrentSortBy&sortOrder=@(reverseSort)">
-                        Person Name
-                        @if (reverseSort == SortOptions.Desc)
-                        {
-                            <i class="fa-solid fa-sort-up"></i>
-                        }
-                        else
-                        {
-                            <i class="fa-solid fa-sort-down"></i>
-                        }
-                    </a>
-                }
-                else
-                {
-                    <a href="~/persons/index?field=@ViewBag.CurrentField&value=@ViewBag.CurrentValue&sortBy=@ViewBag.CurrentSortBy&sortOrder=@(SortOptions.Asc)">Person Name</a>
-                }
-            </td>
-            <td>Email</td>
-            <td>Date of Birth</td>
-            <td>Gender</td>
-            <td>Age</td>
-            <td>Country</td>
-            <td>Address</td>
-            <td>Receive NewsLetters</td>
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.PersonName) },
+                { "DisplayName", "Person Name" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.Email) },
+                { "DisplayName", "Email" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.DateOfBirth) },
+                { "DisplayName", "Date of Birth" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.Gender) },
+                { "DisplayName", "Gender" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.Age) },
+                { "DisplayName", "Age" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.Country) },
+                { "DisplayName", "Country" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.Address) },
+                { "DisplayName", "Address" }
+            })
         </tr>
         </thead>
         <tbody>
@@ -72,7 +78,6 @@
                 <td>@person.Age</td>
                 <td>@person.Country</td>
                 <td>@person.Address</td>
-                <td>@person.ReceiveNewsletter</td>
             </tr>
         }
         </tbody>

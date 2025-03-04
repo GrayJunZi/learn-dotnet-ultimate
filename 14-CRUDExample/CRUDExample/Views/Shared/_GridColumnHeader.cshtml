@@ -1,0 +1,24 @@
+﻿<td>
+@if (ViewBag.CurrentSortBy == ViewBag.ColumnName)
+{
+    var reverseSort = @ViewBag.CurrentSortOrder == SortOptions.Asc ? SortOptions.Desc : SortOptions.Asc;
+
+    <a href="~/persons/index?field=@ViewBag.CurrentField&value=@ViewBag.CurrentValue&sortBy=@ViewBag.ColumnName&sortOrder=@(reverseSort)">
+        @ViewBag.DisplayName
+        @if (reverseSort == SortOptions.Desc)
+        {
+            <i class="fa-solid fa-sort-up"></i>
+        }
+        else
+        {
+            <i class="fa-solid fa-sort-down"></i>
+        }
+    </a>
+}
+else
+{
+    <a href="~/persons/index?field=@ViewBag.CurrentField&value=@ViewBag.CurrentValue&sortBy=@ViewBag.ColumnName&sortOrder=@(SortOptions.Asc)">
+        @ViewBag.DisplayName
+    </a>
+}
+</td>
