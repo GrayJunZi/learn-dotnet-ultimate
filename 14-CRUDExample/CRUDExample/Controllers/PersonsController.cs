@@ -8,10 +8,14 @@ namespace EnvironmentsExample.Controllers;
 public class PersonsController : Controller
 {
     private readonly IPersonsService _personsService;
+    private readonly ICountriesService _countriesService;
 
-    public PersonsController(IPersonsService personsService)
+    public PersonsController(
+        IPersonsService personsService,
+        ICountriesService countriesService)
     {
         _personsService = personsService;
+        _countriesService = countriesService;
     }
 
     [Route("/")]
@@ -43,9 +47,11 @@ public class PersonsController : Controller
         return View(persons);
     }
 
-    [Route("/about")]
-    public IActionResult About()
+    [Route("/persons/create")]
+    [HttpGet]
+    public IActionResult Create()
     {
+       ViewBag.Countries = _countriesService.GetAllCountries();
         return View();
     }
 }
