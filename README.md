@@ -5983,3 +5983,98 @@ public IActionResult Create()
     </div>
 </form>
 ```
+
+### 168. 创建视图功能完善
+
+添加人员并验证请求参数。
+
+```csharp
+[Route("/persons/create")]
+[HttpPost]
+public IActionResult Create(PersonAddRequest personAddRequest)
+{
+    if (!ModelState.IsValid)
+    {
+        ViewBag.Countries = _countriesService.GetAllCountries();
+        ViewBag.Errors  = ModelState.Values.SelectMany(v => v.Errors).Select(e=>e.ErrorMessage).ToList();
+        return View();
+    }
+    
+    _personsService.AddPerson(personAddRequest);
+    return RedirectToAction("Index","Persons");
+}
+```
+
+修改表单并提交。
+
+```csharp
+<form action="~/persons/create" method="post">
+    <div class="mb-3 row">
+        <label for="PersonName" class="col-sm-2 col-form-label">Person Name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="PersonName" name="PersonName">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="Email" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="Email" name="Email">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="DateOfBirth" class="col-sm-2 col-form-label">Date of Birth</label>
+        <div class="col-sm-10">
+            <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Gender</label>
+        <div class="col-sm-10">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="Gender" id="GenderMale" checked value="Male">
+                <label class="form-check-label" for="GenderMale">
+                    Male
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="Gender" id="GenderFemale" value="Female">
+                <label class="form-check-label" for="GenderFemale">
+                    Female
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="CountryId" class="col-sm-2 col-form-label">Country</label>
+        <div class="col-sm-10">
+            <select class="form-select" id="CountryId" name="CountryId">
+                <option selected>-</option>
+                @foreach (var country in ViewBag.Countries)
+                {
+                    <option value="@country.CountryId">@country.CountryName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="Address" class="col-sm-2 col-form-label">Address</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" id="Address" name="Address" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="ReceiveNewsletters" id="ReceiveNewsletters" checked value="true">
+                <label class="form-check-label" for="ReceiveNewsletters">
+                    Receive Newsletters
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="submit">Save</button>
+    </div>
+</form>
+```
