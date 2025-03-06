@@ -5,6 +5,7 @@ using ServiceContracts.Enums;
 
 namespace EnvironmentsExample.Controllers;
 
+[Route("persons")]
 public class PersonsController : Controller
 {
     private readonly IPersonsService _personsService;
@@ -19,7 +20,7 @@ public class PersonsController : Controller
     }
 
     [Route("/")]
-    [Route("persons/index")]
+    [Route("index")]
     public IActionResult Index(
         string? field = null,
         string? value = null,
@@ -47,7 +48,7 @@ public class PersonsController : Controller
         return View(persons);
     }
 
-    [Route("/persons/create")]
+    [Route("create")]
     [HttpGet]
     public IActionResult Create()
     {
@@ -55,7 +56,7 @@ public class PersonsController : Controller
         return View();
     }
 
-    [Route("/persons/create")]
+    [Route("create")]
     [HttpPost]
     public IActionResult Create(PersonAddRequest personAddRequest)
     {

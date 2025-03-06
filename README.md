@@ -6078,3 +6078,45 @@ public IActionResult Create(PersonAddRequest personAddRequest)
     </div>
 </form>
 ```
+
+### 169. 路由特性
+
+#### 路由标记
+
+`[controller]`、`[action]` 可用于为所有动作方法应用通用模式路由。
+
+- `[controller]` - 用于匹配控制器名称。
+- `[action]` - 用于匹配动作方法名称。
+
+```csharp
+[Route("[controller]/[action]")]
+```
+
+在控制器上标记路由特性，可作为动作方法的路由前缀。
+
+请求路由为：`/my/profile`
+```csharp
+[Route("my")]
+public class HomeController : Controller
+{
+    [Route("profile")]
+    public IActionResult Profile()
+    {
+
+    }
+}
+```
+
+在动作方法上面标记的路由如果前面带`/`，那么请求的路由将变为：`/index`。
+
+```csharp
+[Route("my")]
+public class HomeController : Controller
+{
+    [Route("/index")]
+    public IActionResult Index()
+    {
+
+    }
+}
+```
