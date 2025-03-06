@@ -21,7 +21,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 13. 环境 (Environments)
 - [x] 14. 配置 (Configuration)
 - [x] 15. 单元测试 (xUnit)
-- [ ] 16. 增删改查 (CRUD Operations)
+- [x] 16. 增删改查 (CRUD Operations)
 - [ ] 17. Tag Helpers
 - [ ] 18. EntityFrameworkCore
 - [ ] 19. 高级单元测试 (Advanced Unit Testing [Moq & Repository Pattern])
@@ -5514,7 +5514,7 @@ public bool DeletePerson(Guid? personId)
 }
 ```
  
-## 十六、增删改
+## 十六、增删改查
 
 ### 160. UI
 
@@ -6120,3 +6120,63 @@ public class HomeController : Controller
     }
 }
 ```
+
+## 十七、Tag Helpers
+
+### 170. Tag Helpers 介绍
+
+`Tag Helpers` 是可以作为html标签或html属性调用的类。它们生成html标签或将值添加至现有html标签的属性中。
+
+如下 `asp-for` 标签：
+
+```html
+<input asp-for="ModelProperty">
+```
+
+将会生成如下标签：
+
+```html
+<input type="text" name="ModelProperty" id="ModelProperty" value="ModelValue">
+```
+
+#### 应用在 `<a>`, `<form>` 标签下的 Tag Helpers
+
+- `asp-controller`
+- `asp-action`
+- `asp-route-x`
+- `asp-route`
+- `asp-area`
+
+#### 应用在 `<input>`, `<textarea>`, `<label>` 标签下的 Tag Helpers
+
+- `asp-for`
+
+#### 应用在 `<select>` 标签下的 Tag Helpers
+
+- `asp-for`
+- `asp-items`
+
+#### 应用在 `<img>` 标签下的 Tag Helpers
+
+- `asp-append-version`
+
+#### 应用在 `<span>` 标签下的 Tag Helpers
+
+- `asp-validation-for`
+
+#### 应用在 `<script>` 标签下的 Tag Helpers
+
+- `asp-fallback-src`
+- `asp-fallback-test`
+
+#### 应用在 `<div>` 标签下的 Tag Helpers
+
+- `asp-validation-summary`
+
+#### 绑定
+
+表单标签(如 `<input>`、`<label>`、`<textarea>`、`<select>` 可以与特定的模型属性绑定)，它将模型属性名称用于 `<input>` 标签的 `id` 和 `name` 属性上。
+
+#### URL生成
+
+`<a>` 和 `<form>` 标签中的路由地址将会重新生成，它将url生成为 `controller/action` 模式。
