@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -44,7 +45,7 @@ public class PersonsController : Controller
         persons = _personsService.GetSortedPersons(persons, sortBy, sortOrder);
         ViewBag.CurrentSortBy = sortBy;
         ViewBag.CurrentSortOrder = sortOrder;
-        
+
         return View(persons);
     }
 
@@ -52,7 +53,13 @@ public class PersonsController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-       ViewBag.Countries = _countriesService.GetAllCountries();
+        ViewBag.Countries = _countriesService.GetAllCountries()
+            .Select(x => new SelectListItem
+            {
+                Text = x.CountryName,
+                Value = x.CountryId.ToString()
+            });
+        
         return View();
     }
 
@@ -63,11 +70,11 @@ public class PersonsController : Controller
         if (!ModelState.IsValid)
         {
             ViewBag.Countries = _countriesService.GetAllCountries();
-            ViewBag.Errors  = ModelState.Values.SelectMany(v => v.Errors).Select(e=>e.ErrorMessage).ToList();
+            ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
             return View();
         }
-        
+
         _personsService.AddPerson(personAddRequest);
-        return RedirectToAction("Index","Persons");
+        return RedirectToAction("Index", "Persons");
     }
 }

@@ -6229,7 +6229,8 @@ public class HomeController : Controller
 <input type="text" name="ModelProperty" id="ModelProperty" value="ModelValue" data-val-rule="ErrorMessage"/>
 ```
 
-> `asp-for` 会为 `<input>`、`<textarea>`、`<select>` 等标签生成 `type`、`name`、`id`、`data-validation` 等属性。
+> - `asp-for` 会为 `<input>`、`<textarea>`、`<select>` 等标签生成 `type`、`name`、`id`、`data-validation` 等属性。
+> - 需要为视图指定模型类，这样 `asp-for` 就可以智能提示需要选择的属性了。
 
 修改后的视图内容如下：
 
@@ -6309,4 +6310,27 @@ public class HomeController : Controller
         <button class="btn btn-primary" type="submit">Save</button>
     </div>
 </form>
+```
+
+### 173. `<input>` 标签下的 Tag Helpers 完善
+
+可以为 `<select>` 设置 `asp-items` 属性，用于自动渲染所有的选项值，这样就可以无需使用for循环来添加了。
+
+而 `asp-items` 属性值的要求是使用 `SelectListItem` 类。
+
+```csharp
+ViewBag.Countries = _countriesService.GetAllCountries()
+    .Select(x => new SelectListItem
+    {
+        Text = x.CountryName,
+        Value = x.CountryId.ToString()
+    });
+```
+
+在视图中就可以指定 `asp-items` 了。
+
+```html
+<select asp-for="CountryId" asp-items="@ViewBag.Countries" class="form-select">
+    <option selected>Please Select</option>
+</select>
 ```
