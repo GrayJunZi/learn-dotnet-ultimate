@@ -6201,94 +6201,112 @@ public class HomeController : Controller
 <form action="~/ControllerName/ActionName"></form>
 ```
 
-修改之后的视图代码如下：
+修改后的视图内容如下：
 
-```csharp
-@model IEnumerable<PersonResponse>
-@{
-    ViewBag.Title = "Persons";
-}
-
+```html
 <form asp-controller="Persons" asp-action="Index" method="get">
-    <h1>@ViewBag.Title</h1>
+    
+    ...    
     
     <a asp-controller="Persons" asp-action="Create">Create Person</a>
-    <div class="row g-2 text-center">
-        <div class="col-6 col-md-4">
-            <select class="form-select" name="field">
-                @foreach (var item in ViewBag.SearchFields)
+    
+    ...
+
+</form>
+```
+
+### 172. `<input>` 标签下的 Tag Helpers
+
+在input标签中可以使用的Tag Helpers 为：`asp-for`。
+
+```html
+<input asp-for="ModelProperty" />
+```
+
+它将会被转换为如下标签：
+
+```html
+<input type="text" name="ModelProperty" id="ModelProperty" value="ModelValue" data-val-rule="ErrorMessage"/>
+```
+
+> `asp-for` 会为 `<input>`、`<textarea>`、`<select>` 等标签生成 `type`、`name`、`id`、`data-validation` 等属性。
+
+修改后的视图内容如下：
+
+```html
+@model PersonAddRequest
+@{
+    ViewBag.Title = "Create Person";
+}
+
+<a asp-controller="Persons" asp-action="Index" class="link-hover">Back to Persons List</a>
+<h2>Create Person</h2>
+
+<form asp-controller="Persons" asp-action="Create" method="post">
+    <div class="mb-3 row">
+        <label asp-for="PersonName" class="col-sm-2 col-form-label">Person Name</label>
+        <div class="col-sm-10">
+            
+            <input asp-for="PersonName" type="text" class="form-control">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="Email" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+            <input asp-for="Email" class="fo--rm-control">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="DateOfBirth" class="col-sm-2 col-form-label">Date of Birth</label>
+        <div class="col-sm-10">
+            <input asp-for="DateOfBirth" class="form-control">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label">Gender</label>
+        <div class="col-sm-10">
+            @foreach (var gender in Enum.GetNames(typeof(GenderOptions)))
+            {
+                <div class="form-check">
+                    <input asp-for="Gender" class="form-check-input" type="radio" value="@gender">
+                    <label class="form-check-label" for="@gender">
+                        @gender
+                    </label>
+                </div>   
+            }
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="CountryId" class="col-sm-2 col-form-label">Country</label>
+        <div class="col-sm-10">
+            <select asp-for="CountryId" class="form-select">
+                <option selected>-</option>
+                @foreach (var country in ViewBag.Countries)
                 {
-                    if (ViewBag.CurrentField == item.Key)
-                    {
-                        <option value="@item.Key" selected>@item.Value</option>
-                    }
-                    else
-                    {
-                        <option value="@item.Key">@item.Value</option>
-                    }
+                    <option value="@country.CountryId">@country.CountryName</option>
                 }
             </select>
         </div>
-        <div class="col-sm-6 col-md-8">
-            <input class="form-control" name="value" value="@(ViewBag.CurrentValue)"/>
-            <a asp-controller="Persons" asp-action="Index">Clear All</a>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="Address" class="col-sm-2 col-form-label">Address</label>
+        <div class="col-sm-10">
+            <textarea asp-for="Address" class="form-control" rows="3"></textarea>
         </div>
     </div>
-
-    <table class="table">
-        <thead>
-        <tr>
-            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
-            {
-                { "ColumnName", nameof(PersonResponse.PersonName) },
-                { "DisplayName", "Person Name" }
-            })
-            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
-            {
-                { "ColumnName", nameof(PersonResponse.Email) },
-                { "DisplayName", "Email" }
-            })
-            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
-            {
-                { "ColumnName", nameof(PersonResponse.DateOfBirth) },
-                { "DisplayName", "Date of Birth" }
-            })
-            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
-            {
-                { "ColumnName", nameof(PersonResponse.Gender) },
-                { "DisplayName", "Gender" }
-            })
-            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
-            {
-                { "ColumnName", nameof(PersonResponse.Age) },
-                { "DisplayName", "Age" }
-            })
-            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
-            {
-                { "ColumnName", nameof(PersonResponse.Country) },
-                { "DisplayName", "Country" }
-            })
-            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
-            {
-                { "ColumnName", nameof(PersonResponse.Address) },
-                { "DisplayName", "Address" }
-            })
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (PersonResponse person in Model)
-        {
-            <tr>
-                <td>@person.PersonName</td>
-                <td>@person.Email</td>
-                <td>@person.DateOfBirth?.ToString("yyyy-MM-dd")</td>
-                <td>@person.Gender</td>
-                <td>@person.Age</td>
-                <td>@person.Country</td>
-                <td>@person.Address</td>
-            </tr>
-        }
-        </tbody>
-    </table>
+    <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <div class="form-check">
+                <input asp-for="ReceiveNewsletter" class="form-check-input" type="checkbox" checked value="true">
+                <label asp-for="ReceiveNewsletter" class="form-check-label">
+                    Receive Newsletters
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="submit">Save</button>
+    </div>
 </form>
 ```

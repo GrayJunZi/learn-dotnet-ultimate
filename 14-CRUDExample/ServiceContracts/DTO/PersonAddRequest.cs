@@ -10,7 +10,9 @@ public class PersonAddRequest
     public string? PersonName { get; set; }
     [Required(ErrorMessage = "Email cannot be empty")]
     [EmailAddress(ErrorMessage = "Invalid email address")]
+    [DataType(DataType.EmailAddress)]
     public string? Email { get; set; }
+    [DataType(DataType.Date)]
     public DateTime? DateOfBirth { get; set; }
     public GenderOptions? Gender { get; set; }
     public Guid? CountryId { get; set; }
