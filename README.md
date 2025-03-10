@@ -6180,3 +6180,115 @@ public class HomeController : Controller
 #### URL生成
 
 `<a>` 和 `<form>` 标签中的路由地址将会重新生成，它将url生成为 `controller/action` 模式。
+
+### 171. `<form>` 标签的 Tag Helpers
+
+在 `_ViewImports.cshtml` 文件中引入 `TagHelpers` 视图才会进行支持。
+
+```csharp
+@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
+```
+
+在html标签中使用 `asp-controller` 和 `asp-action` Tag Helpers。
+
+```html
+<form asp-controller="ControllerName" asp-action="ActionName"></form>
+```
+
+它会被转换成具体的路由地址。
+
+```csharp
+<form action="~/ControllerName/ActionName"></form>
+```
+
+修改之后的视图代码如下：
+
+```csharp
+@model IEnumerable<PersonResponse>
+@{
+    ViewBag.Title = "Persons";
+}
+
+<form asp-controller="Persons" asp-action="Index" method="get">
+    <h1>@ViewBag.Title</h1>
+    
+    <a asp-controller="Persons" asp-action="Create">Create Person</a>
+    <div class="row g-2 text-center">
+        <div class="col-6 col-md-4">
+            <select class="form-select" name="field">
+                @foreach (var item in ViewBag.SearchFields)
+                {
+                    if (ViewBag.CurrentField == item.Key)
+                    {
+                        <option value="@item.Key" selected>@item.Value</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Key">@item.Value</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-sm-6 col-md-8">
+            <input class="form-control" name="value" value="@(ViewBag.CurrentValue)"/>
+            <a asp-controller="Persons" asp-action="Index">Clear All</a>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.PersonName) },
+                { "DisplayName", "Person Name" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.Email) },
+                { "DisplayName", "Email" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.DateOfBirth) },
+                { "DisplayName", "Date of Birth" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.Gender) },
+                { "DisplayName", "Gender" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.Age) },
+                { "DisplayName", "Age" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.Country) },
+                { "DisplayName", "Country" }
+            })
+            @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
+            {
+                { "ColumnName", nameof(PersonResponse.Address) },
+                { "DisplayName", "Address" }
+            })
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (PersonResponse person in Model)
+        {
+            <tr>
+                <td>@person.PersonName</td>
+                <td>@person.Email</td>
+                <td>@person.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+                <td>@person.Gender</td>
+                <td>@person.Age</td>
+                <td>@person.Country</td>
+                <td>@person.Address</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</form>
+```
