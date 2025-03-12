@@ -6369,3 +6369,14 @@ https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jque
 ```html
 <div asp-validation-summary="All"></div>
 ```
+
+### 175. `<script>` 标签下的 Tag Helpers
+
+#### asp-fallback-src
+
+```html
+<script src="CDNUrl" asp-fallback-src="~/LocalUrl" asp-fallback-test="object"> </script>
+```
+
+1. 标签将会先向 `src` 属性中指定的 `CDRUrl` 发出请求。
+2. `asp-fallback-test` 会检查脚本是否存在指定的值，如果指定的值为 `null` 或 `undefined`（意味着加载 `CDNUrl` 处的脚本文件失败了），则它会通过 `asp-fallback-src` 中指定的 `LocalUrl` 发出请求。
