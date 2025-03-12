@@ -6334,3 +6334,38 @@ ViewBag.Countries = _countriesService.GetAllCountries()
     <option selected>Please Select</option>
 </select>
 ```
+
+### 174. 客户端验证
+
+标注在模型属性的验证特性。
+
+```csharp
+[Required]
+public DataType PropertyName { get; set; }
+```
+
+使用 `asp-for` Tag Helpers 之后，它将会在html标签上增加 `data-*` 属性。
+
+```html
+<input data-val="true" data-required="ErrorMessage" />
+```
+
+导入 `jQuery Validation` 脚本。
+
+```
+https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js
+https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js
+https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js
+```
+
+使用 `asp-validation-for` Tag Helpers 之后，当提交表单时指定属性的校验失败，将在此标签中显示错误内容。
+
+```html
+<span asp-validation-for="CountryId" class="invalid-feedback"></span>
+```
+
+使用 `asp-validation-summary` Tag Helpers 后，当提交表单时出现校验失败，都会在此标签中显示其内容。
+
+```html
+<div asp-validation-summary="All"></div>
+```

@@ -24,7 +24,7 @@ public class PersonsService : IPersonsService
                 PersonId = Guid.NewGuid(),
                 PersonName = x,
                 Email = $"{x}@email.com",
-                DateOfBirth = DateTime.Now,
+                DateOfBirth = DateTime.Now.AddYears(Random.Shared.Next(-20, 0)),
                 Gender = Random.Shared.Next(0, 100) % 2 == 0 ? "Male" : "Female",
                 ReceiveNewsletter = Random.Shared.Next(0, 100) % 2 == 0,
                 CountryId = countries[Random.Shared.Next(0, countries.Count)].CountryId,
