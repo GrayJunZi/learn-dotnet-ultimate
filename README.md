@@ -6378,5 +6378,29 @@ https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jque
 <script src="CDNUrl" asp-fallback-src="~/LocalUrl" asp-fallback-test="object"> </script>
 ```
 
+生成后的标签如下：
+
+```html
+<script src="CDNUrl"> </script>
+<script> object || document.write("<script src='/LocalUrl'></script>"); </script>
+```
+
 1. 标签将会先向 `src` 属性中指定的 `CDRUrl` 发出请求。
 2. `asp-fallback-test` 会检查脚本是否存在指定的值，如果指定的值为 `null` 或 `undefined`（意味着加载 `CDNUrl` 处的脚本文件失败了），则它会通过 `asp-fallback-src` 中指定的 `LocalUrl` 发出请求。
+
+### 176. `<img>` 标签下的 Tag Helpers
+
+#### asp-append-version
+
+```html
+<img src="~/FilePath" asp-append-version="true" />
+```
+
+生成后的标签如下：
+
+```html
+<img src="/FilePath?v=HashOfImageFile" />
+```
+
+- 生成图像文件的 `SHA256` 哈希值，作为附加到文件路径的查询字符串参数。
+- 每次在服务器上更改文件时，都会重新生成一个新的哈希值。如果多次请求同一个文件，则不会重新生成文件哈希。
