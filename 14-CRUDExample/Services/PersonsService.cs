@@ -128,6 +128,9 @@ public class PersonsService : IPersonsService
 
         person.PersonName = personUpdateRequest.PersonName;
         person.Email = personUpdateRequest.Email;
+        person.Gender = personUpdateRequest.Gender.ToString();
+        person.DateOfBirth = personUpdateRequest.DateOfBirth;
+        person.Address = personUpdateRequest.Address;
 
         return person.ToPersonResponse();
     }

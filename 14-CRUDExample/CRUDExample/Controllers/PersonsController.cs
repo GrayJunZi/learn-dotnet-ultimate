@@ -59,7 +59,7 @@ public class PersonsController : Controller
                 Text = x.CountryName,
                 Value = x.CountryId.ToString()
             });
-        
+
         return View();
     }
 
@@ -75,6 +75,48 @@ public class PersonsController : Controller
         }
 
         _personsService.AddPerson(personAddRequest);
+        return RedirectToAction("Index", "Persons");
+    }
+    
+    [Route("edit/{personId}")]
+    [HttpGet]
+    public IActionResult Edit(Guid personId)
+    {
+        var response = _personsService.GetPersonByPersonId(personId);
+        if (response == null)
+        {
+            return RedirectToAction("Index");
+        }
+
+        ViewBag.Countries = _countriesService.GetAllCountries()
+            .Select(x => new SelectListItem
+            {
+                Text = x.CountryName,
+                Value = x.CountryId.ToString()
+            });
+
+        var personUpdateRequest = response.ToPersonUpdateRequest();
+        return View(personUpdateRequest);
+    }
+
+    [Route("edit/{personId}")]
+    [HttpPost]
+    public IActionResult Edit(PersonUpdateRequest personUpdateRequest)
+    {
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Countries = _countriesService.GetAllCountries();
+            ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            return View();
+        }
+
+        var person = _personsService.GetPersonByPersonId(personUpdateRequest.PersonId);
+        if (person == null)
+        {
+            return RedirectToAction("Index");
+        }
+
+        var updatePerson = _personsService.UpdatePerson(personUpdateRequest);
         return RedirectToAction("Index", "Persons");
     }
 }

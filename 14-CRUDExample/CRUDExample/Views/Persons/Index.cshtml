@@ -79,6 +79,9 @@
                 <td>@person.Age</td>
                 <td>@person.Country</td>
                 <td>@person.Address</td>
+                <td>
+                    <a asp-controller="Persons" asp-action="Edit" asp-route-personId="@person.PersonId">Edit</a>
+                </td>
             </tr>
         }
         </tbody>
