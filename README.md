@@ -6543,7 +6543,7 @@ https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jque
 }
 ```
 
-添加编辑控制器。
+添加编辑方法。
 
 ```csharp
 [Route("edit/{personId}")]
@@ -6587,4 +6587,71 @@ https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jque
         var updatePerson = _personsService.UpdatePerson(personUpdateRequest);
         return RedirectToAction("Index", "Persons");
     }
+```
+
+### 178. 删除视图
+
+添加删除视图 `Delete.cshtml`。
+
+```html
+@model PersonResponse
+@{
+    ViewBag.Title = "Delete Person";
+}
+
+<a asp-controller="Persons" asp-action="Index" class="link-hover">Back to Persons List</a>
+<h2>Delete Person</h2>
+<h3>Are you sure to delete this person?</h3>
+
+<form asp-controller="Persons" asp-action="Delete" method="post" class="needs-validation" novalidate>
+    <input hidden asp-for="PersonId"/>
+    <div class="mb-3 row">
+        <label asp-for="PersonName" class="col-sm-2 col-form-label">Person Name</label>
+        <div class="col-sm-10 has-validation">
+            <input asp-for="PersonName" type="text" class="form-control" disabled>
+            <div asp-validation-for="PersonName" class="invalid-feedback"></div>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="Email" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10 has-validation">
+            <input asp-for="Email" class="form-control" disabled>
+            <span asp-validation-for="Email" class="invalid-feedback"></span>
+        </div>
+    </div>
+    <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="submit">Delete</button>
+    </div>
+</form>
+```
+
+添加删除方法。
+
+```csharp
+[Route("delete/{personId}")]
+[HttpGet]
+public IActionResult Delete(Guid? personId)
+{
+    var response = _personsService.GetPersonByPersonId(personId);
+    if (response == null)
+    {
+        return RedirectToAction("Index");
+    }
+    
+    return View(response);
+}
+
+[Route("delete/{personId}")]
+[HttpPost]
+public IActionResult Delete(PersonUpdateRequest personUpdateRequest)
+{
+    var person = _personsService.GetPersonByPersonId(personUpdateRequest.PersonId);
+    if (person == null)
+    {
+        return RedirectToAction("Index");
+    }
+
+    _personsService.DeletePerson(personUpdateRequest.PersonId);
+    return RedirectToAction("Index", "Persons");
+}
 ```

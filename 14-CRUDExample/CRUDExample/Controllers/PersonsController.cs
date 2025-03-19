@@ -116,7 +116,34 @@ public class PersonsController : Controller
             return RedirectToAction("Index");
         }
 
-        var updatePerson = _personsService.UpdatePerson(personUpdateRequest);
+        _personsService.UpdatePerson(personUpdateRequest);
+        return RedirectToAction("Index", "Persons");
+    }
+    
+    [Route("delete/{personId}")]
+    [HttpGet]
+    public IActionResult Delete(Guid? personId)
+    {
+        var response = _personsService.GetPersonByPersonId(personId);
+        if (response == null)
+        {
+            return RedirectToAction("Index");
+        }
+        
+        return View(response);
+    }
+
+    [Route("delete/{personId}")]
+    [HttpPost]
+    public IActionResult Delete(PersonUpdateRequest personUpdateRequest)
+    {
+        var person = _personsService.GetPersonByPersonId(personUpdateRequest.PersonId);
+        if (person == null)
+        {
+            return RedirectToAction("Index");
+        }
+
+        _personsService.DeletePerson(personUpdateRequest.PersonId);
         return RedirectToAction("Index", "Persons");
     }
 }

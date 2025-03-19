@@ -81,6 +81,7 @@
                 <td>@person.Address</td>
                 <td>
                     <a asp-controller="Persons" asp-action="Edit" asp-route-personId="@person.PersonId">Edit</a>
+                    <a asp-controller="Persons" asp-action="Delete" asp-route-personId="@person.PersonId">Delete</a>
                 </td>
             </tr>
         }
