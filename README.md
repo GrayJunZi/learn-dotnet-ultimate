@@ -6659,3 +6659,53 @@ public IActionResult Delete(PersonUpdateRequest personUpdateRequest)
 ## 十八、EntityFrameworkCore
 
 ### 179. EntityFrameworkCore 介绍
+
+`EntityFrameworkCore` 是轻量级、可扩展的跨平台框架，用于访问 .NET 应用程序中的数据库。
+
+它是 `Asp.Net Core` 应用最常用的数据库框架。
+
+#### EFCore 模型
+
+```csharp
+public class Model
+{
+    public DataType PropertyName1 { get; set; }
+    public DataType PropertyName2 { get; set; }
+}
+```
+C# 中的 模型类以及属性对应到数据库中的表和字段。
+
+```
+Table
+    ColumnName1
+    ColumnName2
+```
+
+#### EntityFrameworkCore 的优点与缺点
+
+- 更少的代码量
+    - 增删改查以及调用存储过程等等操作使用的代码量比 `ADO.NET` 少很多。
+- 性能
+    - EFCore的执行速度比 `ADO.NET` 慢。因此，`ADO.NET` 或它的替代品（例如Dapper）被推荐于更大和高流量的应用中。
+- 强类型
+    - EFCore会将表中的字段，映射到模型类的属性中。
+    - 开发人员不需要转换值的数据类型，由EFCore本身来完成。
+
+### 180. EntityFrmaeworkCore 方法
+
+#### DbFirst 方法
+
+DbFirst 是一种从数据库中生成模型类的方法。然后可以使用这些模型类来访问数据库。
+
+- 适用于已有数据库。
+- 适用于大型应用程序和高数据密集型应用程序。
+- 可以手动更改数据库、存储过程、索引、触发器等T-SQL创建的内容。
+
+#### CodeFirst 方法
+
+CodeFirst 方法是一种从模型类中生成数据库的方法。然后可以使用这些模型类来访问数据库。
+
+- 适用于较新的数据库。
+- 对数据库手动更改的内容可能会丢失，因为是由代码生成的数据库。
+- 存储过程将作为代码的一部分编写。
+- 仅适用于较小的应用程序或原型级应用程序，但不适用于大型或高数据密集型应用程序。
