@@ -22,7 +22,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 14. 配置 (Configuration)
 - [x] 15. 单元测试 (xUnit)
 - [x] 16. 增删改查 (CRUD Operations)
-- [ ] 17. Tag Helpers
+- [x] 17. Tag Helpers
 - [ ] 18. EntityFrameworkCore
 - [ ] 19. 高级单元测试 (Advanced Unit Testing [Moq & Repository Pattern])
 - [ ] 20. 日志 (Logging and Serilog)
@@ -6655,3 +6655,7 @@ public IActionResult Delete(PersonUpdateRequest personUpdateRequest)
     return RedirectToAction("Index", "Persons");
 }
 ```
+
+## 十八、EntityFrameworkCore
+
+### 179. EntityFrameworkCore 介绍
