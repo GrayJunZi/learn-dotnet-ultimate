@@ -6745,3 +6745,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")))   ;
 ```
+
+### 183. 种子数据
+
+在 `DbContext` 中的 `OnModelCreating` 方法里添加以下代码。
+
+```csharp
+modelBuilder.Entity<Country>().HasData(new Country
+{
+    Id = Guid.NewGuid(),
+    Name = "Sample"
+});
+```
+
+当数据库被创建时，将自动添加种子数据。

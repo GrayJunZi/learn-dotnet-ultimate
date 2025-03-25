@@ -13,6 +13,11 @@ public class PersonsDbContext : DbContext
 
         modelBuilder.Entity<Country>().ToTable("Countries");
         modelBuilder.Entity<Person>().ToTable("Persons");
-        
+
+        modelBuilder.Entity<Country>().HasData(new Country
+        {
+            Id = Guid.NewGuid(),
+            Name = "Sample"
+        });
     }
 }
