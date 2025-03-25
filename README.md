@@ -6721,3 +6721,27 @@ CodeFirst 方法是一种从模型类中生成数据库的方法。然后可以�
 `DbSet` 表示数据库中的表，它是一个实体类型的集合。它可以用于查询和保存实体对象。
 
 #### 添加 DbContext 服务
+
+```csharp
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")))   ;
+```
+
+### 182. 连接字符串
+
+在 `appsettings.json` 中添加连接字符串。
+
+```json
+{  
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=.;Initial Catalog=PersonsDatabase;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite"
+  }
+}
+```
+
+在 `Program.cs` 中添加以下代码。
+
+```csharp
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")))   ;
+```
