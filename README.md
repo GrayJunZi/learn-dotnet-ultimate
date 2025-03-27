@@ -6759,3 +6759,75 @@ modelBuilder.Entity<Country>().HasData(new Country
 ```
 
 当数据库被创建时，将自动添加种子数据。
+
+### 184. 数据库迁移
+
+`迁移` 是根据模型类的更改，创建或更新数据库的过程。
+
+全局安装迁移工具 `dotnet-ef`。
+
+```bash
+dotnet tool install --global dotnet-ef
+```
+
+在 `Entities` 类库中安装迁移工具包 `Microsoft.EntityFrameworkCore.Tools`。
+
+```bash
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+```
+
+或在 **Package Manager Console(PMC)** 中执行以下命令：
+
+```bash
+Install-Package Microsoft.EntityFrameworkCore.Tools
+```
+
+在 `CRUDExample` 项目中安装迁移工具包 `Microsoft.EntityFrameworkCore.Design`。
+
+```bash
+dotnet add package Microsoft.EntityFrameworkCore.Design
+```
+
+或在 **Package Manager Console(PMC)** 中执行以下命令：
+
+```bash
+Install-Package Microsoft.EntityFrameworkCore.Design
+```
+
+在 `PersonDbContext` 类中添加构造函数。
+
+```csharp
+public class PersonsDbContext : DbContext
+{
+    public PersonsDbContext(DbContextOptions<PersonsDbContext> options) : base(options)
+    {
+        
+    }
+}
+```
+
+执行迁移命令，它会自动根据模型类的变更来创建迁移文件。
+
+```bash
+dotnet ef migrations add Initial
+```
+
+或在 **Package Manager Console(PMC)** 中执行以下命令：
+
+```bash
+Add-Migration Initial
+```
+
+将迁移文件应用到数据库中。
+
+```bash
+dotnet ef database update
+```
+
+或在 **Package Manager Console(PMC)** 中执行以下命令：
+
+```bash
+Update-Database -Verbose
+```
+
+执行迁移，将迁移文件中的更改应用到数据库中，它会创建数据库或更新表架构。
