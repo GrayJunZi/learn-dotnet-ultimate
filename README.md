@@ -6911,3 +6911,14 @@ VALUES (value1, value2);
 _dbContext.DbSetName
   .Add(new EntityName { Column1 = value1, Column2 = value2 });
 ```
+
+### 186. EFCore 查询过程
+
+#### EFCore 中查询处理的过程
+
+1. 编写LINQ语句。
+2. 执行具体的数据库Provider。
+3. 执行SQL语句。
+4. 从数据库中获取数据。
+5. 将数据映射到实体对象。
+6. 返回实体对象。
