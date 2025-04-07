@@ -6831,3 +6831,83 @@ Update-Database -Verbose
 ```
 
 执行迁移，将迁移文件中的更改应用到数据库中，它会创建数据库或更新表架构。
+
+### 185. 增删改查操作
+
+#### 查询
+
+使用 SQL 语句进行查询：
+
+```sql
+SELECT Column1, Column2
+FROM TableName
+WHERE Column1 = value
+ORDER BY Column1 ASC/DESC
+```
+
+使用 LINQ 进行查询：
+
+```csharp
+_dbContext.DbSetName
+    .Where(x => x.Column1 == value)
+    .OrderBy(x => x.Column1)
+    .Select(x => x);
+```
+
+#### 删除
+
+使用 SQL 语句进行删除：
+
+```sql
+DELETE FROM TableName
+WHERE Column1 = value;
+```
+
+使用 LINQ 进行删除：
+
+```csharp
+_dbContext.DbSetName
+   .Where(x => x.Column1 == value)
+   .Remove();
+
+_dbContext.SaveChanges();
+```
+
+#### 更新
+
+使用 SQL 语句进行更新：
+
+```sql
+UPDATE TableName
+SET Column1 = value1, Column2 = value2
+WHERE Column1 = value;
+```
+
+使用 LINQ 进行更新：
+
+```csharp
+entity.Column1 = value1;
+```
+
+保存变更：
+
+```csharp
+_dbContext.SaveChanges();
+```
+
+
+#### 新增
+
+使用 SQL 语句进行新增：
+
+```sql
+INSERT INTO TableName (Column1, Column2)
+VALUES (value1, value2);
+```
+
+使用 LINQ 进行新增：
+
+```csharp
+_dbContext.DbSetName
+  .Add(new EntityName { Column1 = value1, Column2 = value2 });
+```

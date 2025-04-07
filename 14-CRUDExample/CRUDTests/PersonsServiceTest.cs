@@ -13,11 +13,11 @@ public class PersonsServiceTest
     private readonly IPersonsService _personsService;
     private readonly ICountriesService _countriesService;
 
-    public PersonsServiceTest(ITestOutputHelper testOutputHelper)
+    public PersonsServiceTest(ITestOutputHelper testOutputHelper, IPersonsService personsService, ICountriesService countriesService)
     {
         _testOutputHelper = testOutputHelper;
-        _personsService = new PersonsService();
-        _countriesService = new CountriesService(false);
+        _personsService = personsService;
+        _countriesService = countriesService;
     }
 
     [Fact]

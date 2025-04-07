@@ -8,28 +8,12 @@ namespace Services;
 
 public class PersonsService : IPersonsService
 {
-    private readonly List<Person> _persons;
+    private readonly PersonsDbContext _db;
     private readonly ICountriesService _countriesService;
 
-    public PersonsService(bool initialize = true)
+    public PersonsService(PersonsDbContext db)
     {
-        _persons = new List<Person>();
-        _countriesService = new CountriesService();
-
-        if (initialize)
-        {
-            var countries = _countriesService.GetAllCountries();
-            _persons = new[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", }.Select(x => new Person
-            {
-                PersonId = Guid.NewGuid(),
-                PersonName = x,
-                Email = $"{x}@email.com",
-                DateOfBirth = DateTime.Now.AddYears(Random.Shared.Next(-20, 0)),
-                Gender = Random.Shared.Next(0, 100) % 2 == 0 ? "Male" : "Female",
-                ReceiveNewsletter = Random.Shared.Next(0, 100) % 2 == 0,
-                CountryId = countries[Random.Shared.Next(0, countries.Count)].CountryId,
-            }).ToList();
-        }
+        _db = db;
     }
 
     public PersonResponse? AddPerson(PersonAddRequest? personAddRequest)
@@ -42,16 +26,16 @@ public class PersonsService : IPersonsService
         var person = personAddRequest.ToPerson();
 
         person.PersonId = Guid.NewGuid();
-        _persons.Add(person);
-
+        _db.Persons.Add(person);
+        _db.SaveChanges();
+        
         return convertPersonResponse(person);
     }
 
     public List<PersonResponse> GetAllPersons()
     {
-        return _persons.Select(convertPersonResponse).ToList();
+        return _db.Persons.Select(convertPersonResponse).ToList();
     }
-
 
     private PersonResponse? convertPersonResponse(Person person)
     {
@@ -65,7 +49,7 @@ public class PersonsService : IPersonsService
     {
         if (personId == null)
             return null;
-        return _persons?.FirstOrDefault(p => p.PersonId == personId)?.ToPersonResponse();
+        return _db.Persons?.FirstOrDefault(p => p.PersonId == personId)?.ToPersonResponse();
     }
 
 
@@ -122,7 +106,7 @@ public class PersonsService : IPersonsService
 
         ValidationHelper.ModelValidation(personUpdateRequest);
 
-        var person = _persons.FirstOrDefault(x => x.PersonId == personUpdateRequest.PersonId);
+        var person = _db.Persons.FirstOrDefault(x => x.PersonId == personUpdateRequest.PersonId);
         if (person == null)
             throw new ArgumentException("Given person id is invalid");
 
@@ -140,11 +124,11 @@ public class PersonsService : IPersonsService
         if (personId == null)
             throw new ArgumentNullException(nameof(personId));
 
-        var person = _persons.FirstOrDefault(x => x.PersonId == personId);
+        var person = _db.Persons.FirstOrDefault(x => x.PersonId == personId);
         if (person == null)
             return false;
 
-        _persons.RemoveAll(x => x.PersonId == personId);
+        _db.Persons.Remove(person);
         return true;
     }
 }

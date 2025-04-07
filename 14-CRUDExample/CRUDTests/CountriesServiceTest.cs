@@ -8,9 +8,9 @@ public class CountriesServiceTest
 {
     private readonly ICountriesService _countriesService;
 
-    public CountriesServiceTest()
+    public CountriesServiceTest(ICountriesService countriesService)
     {
-        _countriesService = new CountriesService();
+        _countriesService = countriesService;
     }
 
     // 当 CountryAddRequest 为空，则应该抛异常
