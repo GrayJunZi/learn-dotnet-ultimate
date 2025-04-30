@@ -11,9 +11,10 @@ public class PersonsService : IPersonsService
     private readonly PersonsDbContext _db;
     private readonly ICountriesService _countriesService;
 
-    public PersonsService(PersonsDbContext db)
+    public PersonsService(PersonsDbContext db,ICountriesService countriesService)
     {
         _db = db;
+        _countriesService = countriesService;
     }
 
     public PersonResponse? AddPerson(PersonAddRequest? personAddRequest)
@@ -34,7 +35,8 @@ public class PersonsService : IPersonsService
 
     public List<PersonResponse> GetAllPersons()
     {
-        return _db.Persons.Select(convertPersonResponse).ToList();
+        //return _db.Persons.Select(convertPersonResponse).ToList();
+        return _db.sp_GetAllPersons().Select(convertPersonResponse).ToList();
     }
 
     private PersonResponse? convertPersonResponse(Person person)

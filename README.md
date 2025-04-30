@@ -6895,7 +6895,6 @@ entity.Column1 = value1;
 _dbContext.SaveChanges();
 ```
 
-
 #### 新增
 
 使用 SQL 语句进行新增：
@@ -6922,3 +6921,66 @@ _dbContext.DbSetName
 4. 从数据库中获取数据。
 5. 将数据映射到实体对象。
 6. 返回实体对象。
+
+### 187. EFCore 调用存储过程
+
+#### 创建存储过程迁移
+
+```bash
+dotnet ef migrations add GetPersons_StoreProcedre
+```
+
+添加迁移命令。
+
+```csharp
+protected override void Up(MigrationBuilder migrationBuilder)
+{
+    var sp_GetAllPersons = @"
+CREATE PROCEDURE [dbo].[sp_GetAllPersons]
+AS BEGIN
+    SELECT * FROM [dbo].[Persons]
+END
+";
+    migrationBuilder.Sql(sp_GetAllPersons);
+}
+
+protected override void Down(MigrationBuilder migrationBuilder)
+{
+    var sp_GetAllPersons = @"DROP PROCEDURE [dbo].[sp_GetAllPersons]";
+    migrationBuilder.Sql(sp_GetAllPersons);
+}
+```
+
+更新数据库。
+
+```bash
+dotnet ef database update
+```
+
+#### 调用增删改的存储过程
+
+```csharp
+_dbContext.Database.ExecuteSqlRaw("EXECUTE ProcedureName @param1, @param2", param1, param2);
+
+int DbContext.Database.ExecuteSqlRaw(
+ string sql,
+ params object[] parameters)
+
+//Eg: "EXECUTE [dbo].[StoredProcName] @Param1 @Parm2
+//A list of objects of SqlParameter type
+```
+
+#### 调用查询的存储过程
+
+```csharp
+var result = _dbContext.Database.SqlQuery<EntityName>(
+    "EXECUTE [dbo].[StoredProcName] @Param1, @Param2", param1, param2)
+    .ToList();
+
+IQueryable<Model> DbSetName.FromSqlRaw(
+ string sql,
+ paramsobject[] parameters)
+
+//Eg: "EXECUTE [dbo].[StoredProcName] @Param1 @Parm2"
+//A list of objects of SqlParameter type
+```

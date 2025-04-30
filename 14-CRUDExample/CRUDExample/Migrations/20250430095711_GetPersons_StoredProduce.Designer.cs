@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRUDExample.Migrations
 {
     [DbContext(typeof(PersonsDbContext))]
-    [Migration("20250327004845_Initial")]
-    partial class Initial
+    [Migration("20250430095711_GetPersons_StoredProduce")]
+    partial class GetPersons_StoredProduce
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,28 @@ namespace CRUDExample.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("fec019fc-4008-4c62-9485-96a7d38299ca"),
+                            Name = "Beijing"
+                        },
+                        new
+                        {
+                            Id = new Guid("209038d2-b47b-4528-b34b-e1e5ba80ad35"),
+                            Name = "Shanghai"
+                        },
+                        new
+                        {
+                            Id = new Guid("d99dea01-7cff-49c0-a878-12f799f6b2bc"),
+                            Name = "Guangzhou"
+                        },
+                        new
+                        {
+                            Id = new Guid("1bcfea14-2ec5-4f8f-a870-22f07bb3d893"),
+                            Name = "Shenzhen"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Person", b =>
@@ -75,6 +97,17 @@ namespace CRUDExample.Migrations
                     b.HasKey("PersonId");
 
                     b.ToTable("Persons", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            PersonId = new Guid("32859a69-4bdd-489d-9912-f2dab6b64270"),
+                            Address = "123 Main Street",
+                            DateOfBirth = new DateTime(2005, 4, 30, 17, 57, 10, 876, DateTimeKind.Local).AddTicks(7920),
+                            Email = "john@doe.com",
+                            PersonName = "John Doe",
+                            ReceiveNewsletter = false
+                        });
                 });
 #pragma warning restore 612, 618
         }

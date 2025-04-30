@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRUDExample.Migrations
 {
     [DbContext(typeof(PersonsDbContext))]
-    partial class PersonsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250430094851_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,7 +103,7 @@ namespace CRUDExample.Migrations
                         {
                             PersonId = new Guid("32859a69-4bdd-489d-9912-f2dab6b64270"),
                             Address = "123 Main Street",
-                            DateOfBirth = new DateTime(2005, 4, 30, 17, 57, 10, 876, DateTimeKind.Local).AddTicks(7920),
+                            DateOfBirth = new DateTime(2005, 4, 30, 17, 48, 51, 244, DateTimeKind.Local).AddTicks(3762),
                             Email = "john@doe.com",
                             PersonName = "John Doe",
                             ReceiveNewsletter = false
