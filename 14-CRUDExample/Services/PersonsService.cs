@@ -27,8 +27,11 @@ public class PersonsService : IPersonsService
         var person = personAddRequest.ToPerson();
 
         person.PersonId = Guid.NewGuid();
-        _db.Persons.Add(person);
-        _db.SaveChanges();
+        
+        // _db.Persons.Add(person);
+        // _db.SaveChanges();
+        
+        _db.sp_InsertPerson(person);
         
         return convertPersonResponse(person);
     }

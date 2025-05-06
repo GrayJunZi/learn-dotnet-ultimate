@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CRUDExample.Migrations
 {
     /// <inheritdoc />
-    public partial class GetPersons_StoredProduce : Migration
+    public partial class GetPersons_StoredProcedure : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

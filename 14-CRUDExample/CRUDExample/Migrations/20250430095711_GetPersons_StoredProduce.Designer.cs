@@ -13,7 +13,7 @@ namespace CRUDExample.Migrations
 {
     [DbContext(typeof(PersonsDbContext))]
     [Migration("20250430095711_GetPersons_StoredProduce")]
-    partial class GetPersons_StoredProduce
+    partial class GetPersons_StoredProcedure
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Entities;
@@ -7,13 +8,12 @@ public class PersonsDbContext : DbContext
 {
     public PersonsDbContext(DbContextOptions options) : base(options)
     {
-        
     }
 
     public DbSet<Country> Countries { get; set; }
     public DbSet<Person> Persons { get; set; }
-    
-    private static List<Country> _countries=new List<Country>
+
+    private static List<Country> _countries = new List<Country>
     {
         new Country()
         {
@@ -46,7 +46,6 @@ public class PersonsDbContext : DbContext
             Address = "123 Main Street",
             DateOfBirth = DateTime.Now.AddYears(-20),
             Email = "john@doe.com",
-
         }
     };
 
@@ -56,9 +55,9 @@ public class PersonsDbContext : DbContext
 
         modelBuilder.Entity<Country>().ToTable("Countries");
         modelBuilder.Entity<Person>().ToTable("Persons");
-        
+
         modelBuilder.Entity<Country>().HasData(_countries);
-        
+
         modelBuilder.Entity<Person>().HasData(_persons);
     }
 
@@ -67,12 +66,29 @@ public class PersonsDbContext : DbContext
         base.OnConfiguring(optionsBuilder);
 
         // 忽略警告，否则将无法执行迁移
-        optionsBuilder.ConfigureWarnings(warning => 
+        optionsBuilder.ConfigureWarnings(warning =>
             warning.Ignore(RelationalEventId.PendingModelChangesWarning));
     }
 
     public List<Person> sp_GetAllPersons()
     {
         return Persons.FromSqlRaw("EXECUTE [dbo].[sp_GetAllPersons]").ToList();
+    }
+
+    public int sp_InsertPerson(Person person)
+    {
+        var parameters = new SqlParameter[]
+        {
+            new SqlParameter("@PersonId", person.PersonId),
+            new SqlParameter("@PersonName", person.PersonName),
+            new SqlParameter("@Email", person.Email),
+            new SqlParameter("@DateOfBirth", person.DateOfBirth),
+            new SqlParameter("@Gender", person.Gender),
+            new SqlParameter("@CountryId", person.CountryId),
+            new SqlParameter("@Address", person.Address),
+            new SqlParameter("@ReceiveNewsletter", person.ReceiveNewsletter),
+        };
+
+        return Database.ExecuteSqlRaw("EXECUTE [dbo].[sp_InsertPerson] @PersonId, @PersonName, @Email, @DateOfBirth, @Gender, @CountryId, @Address, @ReceiveNewsletter", parameters);
     }
 }

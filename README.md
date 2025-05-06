@@ -6961,26 +6961,24 @@ dotnet ef database update
 
 ```csharp
 _dbContext.Database.ExecuteSqlRaw("EXECUTE ProcedureName @param1, @param2", param1, param2);
-
-int DbContext.Database.ExecuteSqlRaw(
- string sql,
- params object[] parameters)
-
-//Eg: "EXECUTE [dbo].[StoredProcName] @Param1 @Parm2
-//A list of objects of SqlParameter type
 ```
 
-#### 调用查询的存储过程
+### 188. EFCore 调用带参数的存储过程
+
+#### 调用带参数的存储过程
+
+调用存储过程进行添加、修改，删除等操作：
 
 ```csharp
-var result = _dbContext.Database.SqlQuery<EntityName>(
-    "EXECUTE [dbo].[StoredProcName] @Param1, @Param2", param1, param2)
-    .ToList();
+int DbContext.Database.ExecuteSqlRaw(
+ string sql,                    //Eg: "EXECUTE [dbo].[StoredProcName] @Param1 @Param2
+ params object[] parameters)    //A list of objects of SqlParameter type
+```
 
+调用存储过程进行查询操作：
+
+```csharp
 IQueryable<Model> DbSetName.FromSqlRaw(
- string sql,
- paramsobject[] parameters)
-
-//Eg: "EXECUTE [dbo].[StoredProcName] @Param1 @Parm2"
-//A list of objects of SqlParameter type
+ string sql,                    //Eg: "EXECUTE [dbo].[StoredProcName] @Param1 @Param2"
+ params object[] parameters)    //A list of objects of SqlParameter type
 ```
