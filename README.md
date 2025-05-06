@@ -7022,3 +7022,57 @@ protected override void Down(MigrationBuilder migrationBuilder)
 ```bash
 dotnet ef database update
 ```
+
+### 190. Fluent API 配置
+
+#### DbContext 类
+
+可以为模型类指定表名、视图名、默认`schema`名称等信息。
+
+```csharp
+public class CustomDbContext : DbContext
+{
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    //Specify table name (and schema name optionally) to be mapped to the model class
+    modelBuilder.Entity<ModelClass>( ).ToTable("table_name", schema: "schema_name");
+
+    //Specify view name (and schema name optionally) to be mapped to the model class
+    modelBuilder.Entity<ModelClass>( ).ToView("view_name", schema: "schema_name");
+
+    //Specify default schema name applicable for all tables in the DbContext
+    modelBuilder.HasDefaultSchema("schema_name");
+  }
+}
+```
+
+可以为模型类的属性指定列名、数据类型、默认值等信息。
+
+```csharp
+public class CustomDbContext : DbContext
+{
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    modelBuilder.Entity<ModelClass>( ).Property(temp => temp.PropertyName)
+      .HasColumnName("column_name") //Specifies column name in table
+      .HasColumnType("data_type") //Specifies column data type in table
+      .HasDefaultValue("default_value") //Specifies default value of the column
+  }
+}
+```
+
+可以为模型类的属性指定索引、约束等信息。
+
+```csharp
+public class CustomDbContext : DbContext
+{
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    //Adds database index for the specified column for faster searches
+    modelBuilder.Entity<ModelClass>( ).HasIndex("column_name").IsUnique();
+
+    //Adds check constraint for the specified column - that executes for insert & update
+    modelBuilder.Entity<ModelClass>( ).HasCheckConstraint("constraint_name", "condition");
+ }
+}
+```

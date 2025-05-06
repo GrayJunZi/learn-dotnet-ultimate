@@ -44,7 +44,7 @@ public class PersonsDbContext : DbContext
             PersonId = Guid.Parse("32859A69-4BDD-489D-9912-F2DAB6B64270"),
             PersonName = "John Doe",
             Address = "123 Main Street",
-            DateOfBirth = DateTime.Now.AddYears(-20),
+            DateOfBirth = DateTime.Parse("2004-05-06 07:08:09"),
             Email = "john@doe.com",
         }
     };
@@ -57,8 +57,14 @@ public class PersonsDbContext : DbContext
         modelBuilder.Entity<Person>().ToTable("Persons");
 
         modelBuilder.Entity<Country>().HasData(_countries);
-
         modelBuilder.Entity<Person>().HasData(_persons);
+
+        
+        // Fluent API
+        modelBuilder.Entity<Person>().Property(x => x.TIN)
+            .HasColumnName("TaxIdentificationNumber")
+            .HasColumnType("varchar(8)")
+            .HasDefaultValue("ABC12345");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
