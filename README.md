@@ -6982,3 +6982,43 @@ IQueryable<Model> DbSetName.FromSqlRaw(
  string sql,                    //Eg: "EXECUTE [dbo].[StoredProcName] @Param1 @Param2"
  params object[] parameters)    //A list of objects of SqlParameter type
 ```
+
+### 189. EFCore 修改表结构
+
+在 `Person` 模型中增加字段。
+
+```csharp
+public string? TIN { get; set; }
+```
+
+在 `PersonDbContext` 中添加迁移命令。
+
+```bash
+dotnet ef migrations add AddTINColumnToPersonTable
+```
+
+添加迁移命令。
+
+```csharp
+protected override void Up(MigrationBuilder migrationBuilder)
+{
+    migrationBuilder.AddColumn<string>(
+        name: "TIN",
+        table: "Persons",
+        type: "nvarchar(max)",
+        nullable: true);
+}
+
+protected override void Down(MigrationBuilder migrationBuilder)
+{
+    migrationBuilder.DropColumn(
+        name: "TIN",
+        table: "Persons");
+}
+```
+
+更新数据库。
+
+```bash
+dotnet ef database update
+```

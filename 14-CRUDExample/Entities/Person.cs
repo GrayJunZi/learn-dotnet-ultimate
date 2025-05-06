@@ -17,4 +17,6 @@ public class Person
     [StringLength(200)]
     public string Address { get; set; }
     public bool ReceiveNewsletter { get; set; }
+    
+    public string? TIN { get; set; }
 }
