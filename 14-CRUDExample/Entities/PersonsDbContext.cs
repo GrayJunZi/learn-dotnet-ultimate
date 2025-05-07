@@ -65,6 +65,13 @@ public class PersonsDbContext : DbContext
             .HasColumnName("TaxIdentificationNumber")
             .HasColumnType("varchar(8)")
             .HasDefaultValue("ABC12345");
+
+        modelBuilder.Entity<Person>()
+            .HasIndex(x => x.TIN)
+            .IsUnique();
+
+        modelBuilder.Entity<Person>()
+            .HasCheckConstraint("CHK_TIN","len([TaxIdentificationNumber]) = 8");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
