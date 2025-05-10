@@ -7162,3 +7162,38 @@ public async Task<CountryResponse?> GetCountryByCountryId(Guid? countryId)
     return (await _db.Countries?.FirstOrDefaultAsync(x => x.Id == countryId))?.ToCountryResponse();
 }
 ```
+
+### 194. 控制器异步
+
+将控制器方法声明为异步。
+
+```csharp
+[Route("/")]
+[Route("index")]
+public async Task<IActionResult> Index(
+    string? field = null,
+    string? value = null,
+    string sortBy = nameof(PersonResponse.PersonName),
+    SortOptions? sortOrder = SortOptions.Asc)
+{
+    ViewBag.SearchFields = new Dictionary<string, object>
+    {
+        { "", "All" },
+        { nameof(PersonResponse.PersonName), "Person Name" },
+        { nameof(PersonResponse.Email), "Email" },
+        { nameof(PersonResponse.DateOfBirth), "Date Of Birth" },
+        { nameof(PersonResponse.Age), "Age" },
+        { nameof(PersonResponse.Country), "Country" },
+        { nameof(PersonResponse.Address), "Address" },
+    };
+    ViewBag.CurrentField = field;
+    ViewBag.CurrentValue = value;
+
+    var persons = await _personsService.GetFilteredPersons(field, value);
+    persons = await _personsService.GetSortedPersons(persons, sortBy, sortOrder);
+    ViewBag.CurrentSortBy = sortBy;
+    ViewBag.CurrentSortOrder = sortOrder;
+
+    return View(persons);
+}
+```
