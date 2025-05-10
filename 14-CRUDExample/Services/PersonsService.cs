@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -33,22 +34,16 @@ public class PersonsService : IPersonsService
         
         _db.sp_InsertPerson(person);
         
-        return convertPersonResponse(person);
+        return person.ToPersonResponse();
     }
 
     public List<PersonResponse> GetAllPersons()
     {
+        // var person = _db.Persons.Include("Country").ToList();
+        
         //return _db.Persons.Select(convertPersonResponse).ToList();
-        return _db.sp_GetAllPersons().Select(convertPersonResponse).ToList();
+        return _db.sp_GetAllPersons().Select(x=>x.ToPersonResponse()).ToList();
     }
-
-    private PersonResponse? convertPersonResponse(Person person)
-    {
-        var personResponse = person.ToPersonResponse();
-        personResponse.Country = _countriesService.GetCountryByCountryId(person.CountryId)?.CountryName;
-        return personResponse;
-    }
-
 
     public PersonResponse? GetPersonByPersonId(Guid? personId)
     {

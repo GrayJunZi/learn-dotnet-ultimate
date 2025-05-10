@@ -66,12 +66,19 @@ public class PersonsDbContext : DbContext
             .HasColumnType("varchar(8)")
             .HasDefaultValue("ABC12345");
 
+        /*
         modelBuilder.Entity<Person>()
             .HasIndex(x => x.TIN)
             .IsUnique();
 
         modelBuilder.Entity<Person>()
             .HasCheckConstraint("CHK_TIN","len([TaxIdentificationNumber]) = 8");
+        */
+
+        modelBuilder.Entity<Person>(x=>
+            x.HasOne<Country>(c => c.Country)
+                .WithMany(c=>c.Persons)
+                .HasForeignKey(c => c.CountryId));
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

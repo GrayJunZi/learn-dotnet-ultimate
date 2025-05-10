@@ -7078,3 +7078,44 @@ public class CustomDbContext : DbContext
  }
 }
 ```
+
+### 192. EFCore 表关系
+
+#### 具有导航属性的表关系
+
+父模型类
+
+```csharp
+public class MasterModelClass
+{
+  public int Id { get; set; }
+  public string Name { get; set; }
+  public ICollection<ChildModelClass> ChildModelClasses { get; set; }   
+}
+```
+
+子模型类
+
+```csharp
+public class ChildModelClass
+{
+  public int Id { get; set; }
+  public string Name { get; set; }
+  public virtual MasterModelClass MasterModelClass { get; set; }
+}
+```
+
+### 使用 Fluent API 配置表关系
+
+```csharp
+public class CustomDbContext : DbContext
+{
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    modelBuilder.Entity<ChildModelClass>()
+        .HasOne()
+        .WithMany()
+        .HasForeignKey();
+  }
+}
+```
