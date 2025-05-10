@@ -7119,3 +7119,46 @@ public class CustomDbContext : DbContext
   }
 }
 ```
+
+### 193. EF异步操作
+
+将接口方法声明为异步。
+
+```csharp
+public interface ICountriesService
+{
+    Task<CountryResponse> AddCountry(CountryAddRequest? countryAddRequest);
+    Task<List<CountryResponse>> GetAllCountries();
+    Task<CountryResponse?> GetCountryByCountryId(Guid? countryId);
+}
+```
+
+将方法实现为异步。
+
+```csharp
+public async Task<CountryResponse> AddCountry(CountryAddRequest? countryAddRequest)
+{
+    if (countryAddRequest?.CountryName == null)
+        throw new ArgumentNullException(nameof(countryAddRequest));
+
+    if (_db.Countries.Any(x => x.Name == countryAddRequest.CountryName))
+        throw new ArgumentException($"Country {countryAddRequest.CountryName} already exists");
+
+    var country = countryAddRequest.ToCountry();
+    country.Id = Guid.NewGuid();
+    _db.Countries.Add(country);
+    await _db.SaveChangesAsync();
+
+    return country.ToCountryResponse();
+}
+
+public async Task<List<CountryResponse>> GetAllCountries()
+{
+    return await _db.Countries.Select(x => x.ToCountryResponse()).ToListAsync();
+}
+
+public async Task<CountryResponse?> GetCountryByCountryId(Guid? countryId)
+{
+    return (await _db.Countries?.FirstOrDefaultAsync(x => x.Id == countryId))?.ToCountryResponse();
+}
+```

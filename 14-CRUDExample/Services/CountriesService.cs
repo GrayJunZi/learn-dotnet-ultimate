@@ -1,5 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
 
@@ -14,7 +15,7 @@ public class CountriesService : ICountriesService
         _db = db;
     }
 
-    public CountryResponse AddCountry(CountryAddRequest? countryAddRequest)
+    public async Task<CountryResponse> AddCountry(CountryAddRequest? countryAddRequest)
     {
         if (countryAddRequest?.CountryName == null)
             throw new ArgumentNullException(nameof(countryAddRequest));
@@ -25,18 +26,18 @@ public class CountriesService : ICountriesService
         var country = countryAddRequest.ToCountry();
         country.Id = Guid.NewGuid();
         _db.Countries.Add(country);
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
 
         return country.ToCountryResponse();
     }
 
-    public List<CountryResponse> GetAllCountries()
+    public async Task<List<CountryResponse>> GetAllCountries()
     {
-        return _db.Countries.Select(x => x.ToCountryResponse()).ToList();
+        return await _db.Countries.Select(x => x.ToCountryResponse()).ToListAsync();
     }
 
-    public CountryResponse? GetCountryByCountryId(Guid? countryId)
+    public async Task<CountryResponse?> GetCountryByCountryId(Guid? countryId)
     {
-        return _db.Countries?.FirstOrDefault(x => x.Id == countryId)?.ToCountryResponse();
+        return (await _db.Countries?.FirstOrDefaultAsync(x => x.Id == countryId))?.ToCountryResponse();
     }
 }
