@@ -7197,3 +7197,23 @@ public async Task<IActionResult> Index(
     return View(persons);
 }
 ```
+
+### 195. 单元测试方法异步
+
+使用异步方法编写单元测试。
+
+```csharp
+[Fact]
+public async Task AddCountry_NullCountry()
+{
+    // Arrange
+    CountryAddRequest? addRequest = null;
+
+    // Assert
+    await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+    {
+        // Act
+        await _countriesService.AddCountry(addRequest);
+    });
+}
+```
