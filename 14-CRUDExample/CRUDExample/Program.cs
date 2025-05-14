@@ -1,5 +1,6 @@
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Rotativa.AspNetCore;
 using ServiceContracts;
 using Services;
 
@@ -10,11 +11,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICountriesService, CountriesService>();
 builder.Services.AddScoped<IPersonsService, PersonsService>();
 
-builder.Services.AddDbContext<PersonsDbContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), 
-        b=> b.MigrationsAssembly("CRUDExample")));
+builder.Services.AddDbContext<PersonsDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("CRUDExample")));
 
 var app = builder.Build();
+
+// app.UseRotativa();
+Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
+
 
 app.UseStaticFiles();
 app.UseRouting();

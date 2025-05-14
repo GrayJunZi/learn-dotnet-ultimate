@@ -23,7 +23,7 @@ ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Q
 - [x] 15. 单元测试 (xUnit)
 - [x] 16. 增删改查 (CRUD Operations)
 - [x] 17. Tag Helpers
-- [ ] 18. EntityFrameworkCore
+- [x] 18. EntityFrameworkCore
 - [ ] 19. 高级单元测试 (Advanced Unit Testing [Moq & Repository Pattern])
 - [ ] 20. 日志 (Logging and Serilog)
 - [ ] 21. 过滤器 (Filters)
@@ -7215,5 +7215,58 @@ public async Task AddCountry_NullCountry()
         // Act
         await _countriesService.AddCountry(addRequest);
     });
+}
+```
+
+### 196. 生成PDF文件
+
+#### 安装 `Rotativa.AspNetCore` 包。
+
+```bash
+dotnet add package Rotativa.AspNetCore
+```
+
+在 `Startup.cs` 中添加以下代码。
+
+```csharp
+builder.Services.AddRotativa();
+```
+
+#### 下载 `wkhtmltopdf` 工具。
+
+下载地址：[wkhtmltopdf](https://wkhtmltopdf.org/downloads.html)
+
+将 `wkhtmltopdf` 工具添加到 `wwwroot` 文件夹中。
+
+#### 配置工具路径
+
+在 `Startup.cs` 中添加以下代码。
+```csharp
+Rotativa.AspNetCore.RotativaConfiguration
+    .Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
+```
+
+#### 使用 Rotativa 生成 PDF 文件。
+
+```csharp
+public class PdfController : Controller
+{
+    [Route("PersonsPdf")]
+    public async Task<IActionResult> PersonsPdf()
+    {
+        var persons = await _personsService.GetAllPersons();
+        
+        return new ViewAsPdf("PersonsPdf", persons, ViewData)
+        {
+            PageMargins = new Margins
+            {
+                Top = 20,
+                Left = 20,
+                Right = 20,
+                Bottom = 20,
+            },
+            PageOrientation = Orientation.Landscape
+        };
+    }
 }
 ```
