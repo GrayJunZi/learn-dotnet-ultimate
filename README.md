@@ -7310,3 +7310,77 @@ NextRecord()
 ```csharp
 WriteRecords(records)
 ```
+
+### 198. 生成CSV文件
+
+#### CsvWriter
+
+写入给定的值。
+
+```csharp
+WriteField(value)
+```
+
+移动到下一行。
+
+```csharp
+NextRecord()
+```
+
+写入当前数据到流中。
+
+```csharp
+Flush()
+```
+
+写入CSV数据。
+
+```csharp
+public async Task<MemoryStream> GetPersonsCSV()
+{
+    var ms = new MemoryStream();
+    var sw = new StreamWriter(ms);
+
+    CsvConfiguration csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture);
+
+    var csvWriter = new CsvWriter(sw, csvConfiguration);
+
+    // csvWriter.WriteHeader<PersonResponse>();
+
+    csvWriter.WriteField(nameof(PersonResponse.PersonName));
+    csvWriter.WriteField(nameof(PersonResponse.Email));
+    csvWriter.WriteField(nameof(PersonResponse.DateOfBirth));
+    csvWriter.WriteField(nameof(PersonResponse.Age));
+    csvWriter.WriteField(nameof(PersonResponse.Gender));
+    csvWriter.WriteField(nameof(PersonResponse.Country));
+    csvWriter.WriteField(nameof(PersonResponse.Address));
+    csvWriter.WriteField(nameof(PersonResponse.ReceiveNewsletter));
+
+    await csvWriter.NextRecordAsync();
+
+    var persons = await _db
+        .Persons
+        .Include("Country")
+        .Select(x => x.ToPersonResponse())
+        .ToListAsync();
+    
+    // await csvWriter.WriteRecordsAsync(persons);
+
+    foreach (var person in persons)
+    {
+        csvWriter.WriteField(person.PersonName);
+        csvWriter.WriteField(person.Email);
+        csvWriter.WriteField(person.DateOfBirth.Value.ToString("yyyy-MM-dd"));
+        csvWriter.WriteField(person.Age);
+        csvWriter.WriteField(person.Gender);
+        csvWriter.WriteField(person.Country);
+        csvWriter.WriteField(person.Address);
+        csvWriter.WriteField(person.ReceiveNewsletter);
+        await csvWriter.NextRecordAsync();
+        await csvWriter.FlushAsync();
+    }
+    
+    ms.Position = 0;
+    return ms;
+}
+```

@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using CsvHelper;
+using CsvHelper.Configuration;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
@@ -139,17 +140,46 @@ public class PersonsService : IPersonsService
     {
         var ms = new MemoryStream();
         var sw = new StreamWriter(ms);
-        var csvWriter = new CsvWriter(sw, CultureInfo.InvariantCulture, leaveOpen: true);
-        csvWriter.WriteHeader<PersonResponse>();
-        csvWriter.NextRecord();
+
+        CsvConfiguration csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture);
+
+        var csvWriter = new CsvWriter(sw, csvConfiguration);
+
+        // csvWriter.WriteHeader<PersonResponse>();
+
+        csvWriter.WriteField(nameof(PersonResponse.PersonName));
+        csvWriter.WriteField(nameof(PersonResponse.Email));
+        csvWriter.WriteField(nameof(PersonResponse.DateOfBirth));
+        csvWriter.WriteField(nameof(PersonResponse.Age));
+        csvWriter.WriteField(nameof(PersonResponse.Gender));
+        csvWriter.WriteField(nameof(PersonResponse.Country));
+        csvWriter.WriteField(nameof(PersonResponse.Address));
+        csvWriter.WriteField(nameof(PersonResponse.ReceiveNewsletter));
+
+        await csvWriter.NextRecordAsync();
 
         var persons = await _db
             .Persons
             .Include("Country")
             .Select(x => x.ToPersonResponse())
             .ToListAsync();
-        await csvWriter.WriteRecordsAsync(persons);
+        
+        // await csvWriter.WriteRecordsAsync(persons);
 
+        foreach (var person in persons)
+        {
+            csvWriter.WriteField(person.PersonName);
+            csvWriter.WriteField(person.Email);
+            csvWriter.WriteField(person.DateOfBirth.Value.ToString("yyyy-MM-dd"));
+            csvWriter.WriteField(person.Age);
+            csvWriter.WriteField(person.Gender);
+            csvWriter.WriteField(person.Country);
+            csvWriter.WriteField(person.Address);
+            csvWriter.WriteField(person.ReceiveNewsletter);
+            await csvWriter.NextRecordAsync();
+            await csvWriter.FlushAsync();
+        }
+        
         ms.Position = 0;
         return ms;
     }
