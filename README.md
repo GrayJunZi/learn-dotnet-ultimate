@@ -7270,3 +7270,43 @@ public class PdfController : Controller
     }
 }
 ```
+
+### 197. 生成CSV文件
+
+#### 安装 `CsvHelper` 包。
+
+```bash
+dotnet add package CsvHelper
+```
+
+#### 生成CSV文件。
+
+```csharp
+public class CsvController : Controller
+{
+    [Route("PersonsCsv")]
+    public async Task<IActionResult> PersonsCsv()
+    {
+
+    }
+}
+```
+
+#### CsvWriter
+
+将所有属性名称写入CSV文件的第一行。
+
+```csharp
+WriteHeader()
+```
+
+
+```csharp
+NextRecord()
+```
+
+写入给定集合中的所有对象。
+
+```csharp
+WriteRecords(records)
+```

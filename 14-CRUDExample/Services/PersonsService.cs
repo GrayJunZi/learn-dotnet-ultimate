@@ -1,4 +1,6 @@
-﻿using Entities;
+﻿using System.Globalization;
+using CsvHelper;
+using Entities;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
@@ -131,5 +133,24 @@ public class PersonsService : IPersonsService
 
         _db.Persons.Remove(person);
         return true;
+    }
+
+    public async Task<MemoryStream> GetPersonsCSV()
+    {
+        var ms = new MemoryStream();
+        var sw = new StreamWriter(ms);
+        var csvWriter = new CsvWriter(sw, CultureInfo.InvariantCulture, leaveOpen: true);
+        csvWriter.WriteHeader<PersonResponse>();
+        csvWriter.NextRecord();
+
+        var persons = await _db
+            .Persons
+            .Include("Country")
+            .Select(x => x.ToPersonResponse())
+            .ToListAsync();
+        await csvWriter.WriteRecordsAsync(persons);
+
+        ms.Position = 0;
+        return ms;
     }
 }

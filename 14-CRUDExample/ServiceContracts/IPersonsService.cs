@@ -13,4 +13,5 @@ public interface IPersonsService
     Task<List<PersonResponse>> GetSortedPersons(List<PersonResponse> persons, string? field, SortOptions? sortOptions);
     Task<PersonResponse?> UpdatePerson(PersonUpdateRequest? personUpdateRequest);
     Task<bool> DeletePerson(Guid? personId);
+    Task<MemoryStream> GetPersonsCSV();
 }

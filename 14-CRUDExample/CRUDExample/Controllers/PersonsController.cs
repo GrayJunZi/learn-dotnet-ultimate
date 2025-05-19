@@ -153,8 +153,8 @@ public class PersonsController : Controller
     public async Task<IActionResult> PersonsPdf()
     {
         var persons = await _personsService.GetAllPersons();
-        
-        return new ViewAsPdf("PersonsPdf", persons,ViewData)
+
+        return new ViewAsPdf("PersonsPdf", persons, ViewData)
         {
             PageMargins = new Margins
             {
@@ -165,5 +165,12 @@ public class PersonsController : Controller
             },
             PageOrientation = Orientation.Landscape
         };
+    }
+
+    [Route("PersonsCsv")]
+    public async Task<IActionResult> PersonsCsv()
+    {
+        var ms = await _personsService.GetPersonsCSV();
+        return File(ms, "application/octet-stream", "persons.csv");
     }
 }
