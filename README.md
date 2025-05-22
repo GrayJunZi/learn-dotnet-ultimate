@@ -7384,3 +7384,66 @@ public async Task<MemoryStream> GetPersonsCSV()
     return ms;
 }
 ```
+
+### 199. 生成Excel文件
+
+#### 安装 `EPPlus` 包。
+
+```bash
+dotnet add package EPPlus
+```
+
+#### 生成Excel文件。
+
+```csharp
+public async Task<MemoryStream> GetPersonsExcel()
+{
+    ExcelPackage.License.SetNonCommercialPersonal("crud");
+    var ms = new MemoryStream();
+    using var excelPackage = new ExcelPackage(ms);
+
+    var worksheet = excelPackage.Workbook.Worksheets.Add("Persons");
+
+    worksheet.Cells["A1"].Value = "Person Name";
+    worksheet.Cells["B1"].Value = "Email";
+    worksheet.Cells["C1"].Value = "DateOfBirth";
+    worksheet.Cells["D1"].Value = "Age";
+    worksheet.Cells["E1"].Value = "Gender";
+    worksheet.Cells["F1"].Value = "Country";
+    worksheet.Cells["G1"].Value = "Address";
+    worksheet.Cells["H1"].Value = "ReceiveNewsletter";
+
+    using var headerCells = worksheet.Cells["A1:H1"];
+    headerCells.Style.Fill.PatternType = ExcelFillStyle.Solid;
+    headerCells.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+    headerCells.Style.Font.Bold = true;
+
+    var row = 2;
+    var persons = await _db.Persons
+        .Include("Country")
+        .Select(x => x.ToPersonResponse())
+        .ToListAsync();
+
+    foreach (var person in persons)
+    {
+        worksheet.Cells[row, 1].Value = person.PersonName;
+        worksheet.Cells[row, 2].Value = person.Email;
+        if (person.DateOfBirth.HasValue)
+            worksheet.Cells[row, 3].Value = person.DateOfBirth;
+        worksheet.Cells[row, 4].Value = person.Age;
+        worksheet.Cells[row, 5].Value = person.Gender;
+        worksheet.Cells[row, 6].Value = person.Country;
+        worksheet.Cells[row, 7].Value = person.Address;
+        worksheet.Cells[row, 8].Value = person.ReceiveNewsletter;
+
+        row++;
+    }
+
+    worksheet.Cells[$"A1:H{row}"].AutoFitColumns();
+
+    await excelPackage.SaveAsync();
+
+    ms.Position = 0;
+    return ms;
+}
+```
