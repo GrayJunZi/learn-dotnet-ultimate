@@ -7447,3 +7447,43 @@ public async Task<MemoryStream> GetPersonsExcel()
     return ms;
 }
 ```
+
+### 200. 上传Excel到数据库中
+
+使用 EPPlus 读取Excel文件内容并存储至数据库中。
+
+```csharp
+public async Task<int> UploadCountriesFromExcelFile(IFormFile file)
+{
+    var ms = new MemoryStream();
+    await file.CopyToAsync(ms);
+
+    var inserted = 0;
+
+    using var excelPackage = new ExcelPackage(ms);
+    var worksheet = excelPackage.Workbook.Worksheets.Add("Countries");
+
+    var rows = worksheet.Dimension.Rows;
+
+    for (var row = 2; row <= rows; row++)
+    {
+        var cellValue = worksheet.Cells[row, 1].Value?.ToString();
+
+        if (!string.IsNullOrEmpty(cellValue))
+        {
+            if (!await _db.Countries.AnyAsync(x => x.Name == cellValue))
+            {
+                _db.Countries.Add(new Country
+                {
+                    Name = cellValue,
+                });
+                await _db.SaveChangesAsync();
+
+                inserted++;
+            }
+        }
+    }
+
+    return inserted;
+}
+```

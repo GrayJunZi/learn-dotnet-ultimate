@@ -1,6 +1,8 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using ServiceContracts;
 using ServiceContracts.DTO;
 
@@ -39,5 +41,39 @@ public class CountriesService : ICountriesService
     public async Task<CountryResponse?> GetCountryByCountryId(Guid? countryId)
     {
         return (await _db.Countries?.FirstOrDefaultAsync(x => x.Id == countryId))?.ToCountryResponse();
+    }
+
+    public async Task<int> UploadCountriesFromExcelFile(IFormFile file)
+    {
+        var ms = new MemoryStream();
+        await file.CopyToAsync(ms);
+
+        var inserted = 0;
+
+        using var excelPackage = new ExcelPackage(ms);
+        var worksheet = excelPackage.Workbook.Worksheets.Add("Countries");
+
+        var rows = worksheet.Dimension.Rows;
+
+        for (var row = 2; row <= rows; row++)
+        {
+            var cellValue = worksheet.Cells[row, 1].Value?.ToString();
+
+            if (!string.IsNullOrEmpty(cellValue))
+            {
+                if (!await _db.Countries.AnyAsync(x => x.Name == cellValue))
+                {
+                    _db.Countries.Add(new Country
+                    {
+                        Name = cellValue,
+                    });
+                    await _db.SaveChangesAsync();
+
+                    inserted++;
+                }
+            }
+        }
+
+        return inserted;
     }
 }
