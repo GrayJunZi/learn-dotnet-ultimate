@@ -7529,3 +7529,31 @@ public async Task<IActionResult> UploadFromExcel(IFormFile file)
     </form>
 </div>
 ```
+
+### 202. 上传Excel到数据库中
+
+完成控制器方法
+
+```csharp
+[HttpPost]
+[Route("UploadFromExcel")]
+public async Task<IActionResult> UploadFromExcel(IFormFile file)
+{
+    if (file == null || file.Length == 0)
+    {
+        ViewBag.ErrorMessage = "Please select an xlsx file";
+        return View();
+    }
+
+    if (Path.GetExtension(file.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+    {
+        ViewBag.ErrorMessage = "Unsupported file. 'xlsx' file is expected";
+        return View();
+    }
+
+    var countriesCountInserted = await _countriesService.UploadCountriesFromExcelFile(file);
+
+        ViewBag.Message = $"{countriesCountInserted} Countries Uploaded";
+    return View();
+}
+```
