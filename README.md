@@ -7487,3 +7487,45 @@ public async Task<int> UploadCountriesFromExcelFile(IFormFile file)
     return inserted;
 }
 ```
+
+### 201. 上传Excel到数据库中
+
+添加控制器
+
+```csharp
+[Route("UploadFromExcel")]
+public async Task<IActionResult> UploadFromExcel(IFormFile file)
+{
+    return View();
+}
+```
+
+添加视图
+
+```html
+@{
+    ViewBag.Title = "Upload Countries from Excel";
+}
+
+<h2>Upload Countries from Excel</h2>
+
+<div class="w-50">
+    <form asp-controller="Countries" asp-action="UploadFromExcel" method="post" enctype="multipart/form-data">
+        <div class="form-field flex">
+            <div class="w-25">
+                <label class="form-label pt">Choose an xlsx file</label>
+            </div>
+            <div class="flex-1">
+                <input type="file" name="excelFile" class="form-input"/>
+                <div class="text-red">@ViewBag.ErrorMessage</div>
+            </div>
+        </div>
+        <div class="form-field flex">
+            <div class="w-25"></div>
+            <div class="flex-1">
+                <button type="submit" class="button button-green-block">Upload</button>
+            </div>
+        </div>
+    </form>
+</div>
+```

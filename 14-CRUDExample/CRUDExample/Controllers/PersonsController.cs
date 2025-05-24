@@ -6,7 +6,7 @@ using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
 
-namespace EnvironmentsExample.Controllers;
+namespace CRUDExample.Controllers;
 
 [Route("persons")]
 public class PersonsController : Controller
