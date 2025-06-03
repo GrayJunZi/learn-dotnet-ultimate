@@ -7612,3 +7612,26 @@ dotnet add package Moq
 ```bash
 dotnet add package Moq.EntityFrameworkCore
 ```
+
+### 205. AutoFixture
+
+`AutoFixture` 是一个用于生成测试数据的库。
+
+安装 `AutoFixture` 包。
+
+```bash
+dotnet add package AutoFixture
+```
+
+使用 `AutoFixture` 生成测试数据。
+
+```csharp
+var fixture = new Fixture();
+
+var obj1 = fixture.Create<Person>();
+
+var obj2 = fixture.Build<Person>()
+    .With(temp => temp.PersonName, "John")
+    .With(temp => temp.Age, 18)
+    .Create();
+```

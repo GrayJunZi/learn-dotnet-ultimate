@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using AutoFixture;
+using Entities;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
@@ -13,6 +14,7 @@ public class PersonsServiceTest
     private readonly ITestOutputHelper _testOutputHelper;
     private readonly IPersonsService _personsService;
     private readonly ICountriesService _countriesService;
+    private readonly IFixture _fixture;
 
     public PersonsServiceTest(ITestOutputHelper testOutputHelper)
     {
@@ -22,6 +24,8 @@ public class PersonsServiceTest
         _personsService =
             new PersonsService(new PersonsDbContext(new DbContextOptionsBuilder<PersonsDbContext>().Options),
                 _countriesService);
+        
+        _fixture = new Fixture();
     }
 
     [Fact]
@@ -59,6 +63,7 @@ public class PersonsServiceTest
     public async Task AddPerson_ProperPersonDetails()
     {
         // Arrange
+        /*
         PersonAddRequest? personAddRequest = new PersonAddRequest
         {
             PersonName = "hudson",
@@ -69,6 +74,9 @@ public class PersonsServiceTest
             Gender = GenderOptions.Male,
             ReceiveNewsletter = true,
         };
+        */
+
+        var personAddRequest = _fixture.Create<PersonAddRequest>();
 
         // Act
         var addedPerson = await _personsService.AddPerson(personAddRequest);
