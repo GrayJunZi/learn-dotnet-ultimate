@@ -46,10 +46,10 @@ public class PersonsServiceTest
     public async Task AddPerson_PersonNameIsNull()
     {
         // Arrange
-        PersonAddRequest? personAddRequest = new PersonAddRequest
-        {
-            PersonName = null
-        };
+        PersonAddRequest? personAddRequest = _fixture
+            .Build<PersonAddRequest>()
+            .With(x => x.PersonName, null as string)
+            .Create();
 
         // Assert
         await Assert.ThrowsAsync<ArgumentException>(async () =>
@@ -143,25 +143,14 @@ public class PersonsServiceTest
     public async Task GetAllPersons_AddFewPersons()
     {
         // Arrange
-        var usa = await _countriesService.AddCountry(new CountryAddRequest
-        {
-            CountryName = "USA",
-        });
-        var canada = await _countriesService.AddCountry(new CountryAddRequest
-        {
-            CountryName = "Canada",
-        });
+        var usa = await _countriesService.AddCountry(_fixture.Create<CountryAddRequest>());
+        var canada = await _countriesService.AddCountry(_fixture.Create<CountryAddRequest>());
 
         var addedPersons = new List<PersonResponse>();
-        var smith = await _personsService.AddPerson(new PersonAddRequest
-        {
-            PersonName = "Smith",
-            Email = "Smith@gmail.com",
-            CountryId = usa.CountryId,
-            DateOfBirth = DateTime.Now,
-            Gender = GenderOptions.Male,
-            ReceiveNewsletter = true,
-        });
+        var smith = await _personsService.AddPerson(_fixture
+            .Build<PersonAddRequest>()
+            .With(x => x.Email,"smith@gmail.com")
+            .Create());
         addedPersons.Add(smith);
 
         var mary = await _personsService.AddPerson(new PersonAddRequest

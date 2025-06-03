@@ -7635,3 +7635,19 @@ var obj2 = fixture.Build<Person>()
     .With(temp => temp.Age, 18)
     .Create();
 ```
+
+### 206. AutoFixture
+
+使用 `AutoFixture` 生成测试数据。
+
+```csharp
+var usa = await _countriesService.AddCountry(_fixture.Create<CountryAddRequest>());
+var canada = await _countriesService.AddCountry(_fixture.Create<CountryAddRequest>());
+
+var addedPersons = new List<PersonResponse>();
+var smith = await _personsService.AddPerson(_fixture
+    .Build<PersonAddRequest>()
+    .With(x => x.Email,"smith@gmail.com")
+    .Create());
+addedPersons.Add(smith);
+```
