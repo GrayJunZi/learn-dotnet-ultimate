@@ -1,4 +1,7 @@
-﻿using ServiceContracts;
+﻿using Entities;
+using Moq;
+using Moq.EntityFrameworkCore;
+using ServiceContracts;
 using ServiceContracts.DTO;
 using Services;
 
@@ -8,9 +11,12 @@ public class CountriesServiceTest
 {
     private readonly ICountriesService _countriesService;
 
-    public CountriesServiceTest(ICountriesService countriesService)
+    public CountriesServiceTest()
     {
-        _countriesService = countriesService;
+        var dbContextMock = new Mock<PersonsDbContext>();
+        var countries = new List<Country>();
+        dbContextMock.Setup(x => x.Countries).ReturnsDbSet(countries);
+        _countriesService = new CountriesService(dbContextMock.Object);
     }
 
     // 当 CountryAddRequest 为空，则应该抛异常

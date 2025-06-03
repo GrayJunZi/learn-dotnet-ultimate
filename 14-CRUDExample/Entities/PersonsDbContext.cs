@@ -10,8 +10,13 @@ public class PersonsDbContext : DbContext
     {
     }
 
-    public DbSet<Country> Countries { get; set; }
-    public DbSet<Person> Persons { get; set; }
+    protected PersonsDbContext()
+    {
+        
+    }
+    
+    public virtual DbSet<Country> Countries { get; set; }
+    public virtual DbSet<Person> Persons { get; set; }
 
     private static List<Country> _countries = new List<Country>
     {

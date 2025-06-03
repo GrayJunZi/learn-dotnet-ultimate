@@ -7571,7 +7571,7 @@ public async Task<IActionResult> UploadFromExcel(IFormFile file)
 **无序**
 可以按照任何顺序运行测试用例。
 
-**快速**
+**快速**     
 测试用例应快速运行。
 
 **可重复**
@@ -7587,3 +7587,28 @@ public async Task<IActionResult> UploadFromExcel(IFormFile file)
 - **可扩展** 测试用例应可扩展。
 - **自包含** 测试用例应包含所有必要的测试数据。
 - **可预测** 测试用例应产生可预测的结果。
+
+### 204. Mock 数据库上下文对象
+
+#### Test Double
+
+`Test Double` 是一种测试用例中使用的对象，用于替换真实对象，以便在测试用例中模拟真实对象的行为。
+
+`Test Double` 有以下两种方式：
+
+- **Fake** 它提供了一个真实对象的替代实现。
+- **Mock** 可以为每个独立的方法或属性设置固定的返回值，而无需实际完整地实现它。
+
+#### 模拟 DbContext
+
+安装 `Moq` 包。
+
+```bash
+dotnet add package Moq
+```
+
+安装 `Moq.EntityFrameworkCore` 包。
+
+```bash
+dotnet add package Moq.EntityFrameworkCore
+```
