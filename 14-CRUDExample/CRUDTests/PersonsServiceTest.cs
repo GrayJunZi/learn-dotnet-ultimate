@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using Entities;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
@@ -24,7 +25,7 @@ public class PersonsServiceTest
         _personsService =
             new PersonsService(new PersonsDbContext(new DbContextOptionsBuilder<PersonsDbContext>().Options),
                 _countriesService);
-        
+
         _fixture = new Fixture();
     }
 
@@ -35,11 +36,16 @@ public class PersonsServiceTest
         PersonAddRequest? personAddRequest = null;
 
         // Assert
+        /*
         await Assert.ThrowsAnyAsync<ArgumentNullException>(async () =>
         {
             // Act
             var actual = await _personsService.AddPerson(personAddRequest);
         });
+        */
+
+        Func<Task> action = async () => await _personsService.AddPerson(personAddRequest);
+        await action.Should().ThrowAsync<ArgumentNullException>();
     }
 
     [Fact]
@@ -52,11 +58,16 @@ public class PersonsServiceTest
             .Create();
 
         // Assert
+        /*
         await Assert.ThrowsAsync<ArgumentException>(async () =>
         {
             // Act
             var actual = await _personsService.AddPerson(personAddRequest);
         });
+        */
+
+        Func<Task> action = async () => await _personsService.AddPerson(personAddRequest);
+        await action.Should().ThrowAsync<ArgumentNullException>();
     }
 
     [Fact]
@@ -83,8 +94,11 @@ public class PersonsServiceTest
         var allPersons = await _personsService.GetAllPersons();
 
         // Assert
-        Assert.True(addedPerson.PersonId != Guid.Empty);
-        Assert.Contains(addedPerson, allPersons);
+        // Assert.True(addedPerson.PersonId != Guid.Empty);
+        // Assert.Contains(addedPerson, allPersons);
+
+        addedPerson.PersonId.Should().NotBe(Guid.Empty);
+        allPersons.Should().Contain(addedPerson);
     }
 
     [Fact]
@@ -97,7 +111,8 @@ public class PersonsServiceTest
         var personResponse = await _personsService.GetPersonByPersonId(personId);
 
         // Assert
-        Assert.Null(personResponse);
+        // Assert.Null(personResponse);
+        personResponse.Should().BeNull();
     }
 
     [Fact]
@@ -123,7 +138,8 @@ public class PersonsServiceTest
         var actual = await _personsService.GetPersonByPersonId(addedPerson.PersonId);
 
         // Assert
-        Assert.Equal(actual, addedPerson);
+        // Assert.Equal(actual, addedPerson);
+        actual.Should().Be(addedPerson);
     }
 
     [Fact]
@@ -136,7 +152,8 @@ public class PersonsServiceTest
 
 
         // Assert
-        Assert.Empty(actual);
+        // Assert.Empty(actual);
+        actual.Should().BeEmpty();
     }
 
     [Fact]
@@ -149,7 +166,7 @@ public class PersonsServiceTest
         var addedPersons = new List<PersonResponse>();
         var smith = await _personsService.AddPerson(_fixture
             .Build<PersonAddRequest>()
-            .With(x => x.Email,"smith@gmail.com")
+            .With(x => x.Email, "smith@gmail.com")
             .Create());
         addedPersons.Add(smith);
 
@@ -180,10 +197,14 @@ public class PersonsServiceTest
         }
 
         // Assert
+        /*
         foreach (var person in addedPersons)
         {
             Assert.Contains(person, actual);
         }
+        */
+
+        actual.Should().BeEquivalentTo(addedPersons);
     }
 
     [Fact]

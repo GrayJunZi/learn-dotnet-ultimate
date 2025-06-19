@@ -7651,3 +7651,106 @@ var smith = await _personsService.AddPerson(_fixture
     .Create());
 addedPersons.Add(smith);
 ```
+
+### 207. FluentAssertions 流式断言库
+
+流式断言是一组扩展方法，用于使单元测试中的断言更具可读性和人性化。
+
+Assert
+```csharp
+Assert.ThrowsAsync<ArgumentNullException>(async () => { await _countriesService.AddCountry(null); });
+```
+
+FluentAssertions
+
+```csharp
+await Assert.ThrowsAsync<ArgumentNullException>()
+   .WithMessage("*country*")
+   .WhenAsync(() => _countriesService.AddCountry(null));
+```
+
+#### 安装 FluentAssertions
+
+```bash
+dotnet add package FluentAssertions
+``` 
+
+#### 使用 FluentAssertions
+
+(1). 断言异常。
+
+```csharp
+// xUnit 方式
+await Assert.ThrowsAnyAsync<ArgumentNullException>(async () =>
+{
+    // Act
+    var actual = await _personsService.AddPerson(personAddRequest);
+});
+
+// FluentAssertions 方式
+Func<Task> action = async () => await _personsService.AddPerson(personAddRequest);
+await action.Should().ThrowAsync<ArgumentNullException>();
+```
+
+(2). 断言布尔。
+
+```csharp
+// xUnit 方式
+Assert.True(addedPerson.PersonId != Guid.Empty);
+
+// FluentAssertions 方式
+addedPerson.PersonId.Should().NotBe(Guid.Empty);
+```
+
+(3). 断言包含。
+
+```csharp
+// xUnit 方式        
+Assert.Contains(addedPerson, allPersons);
+
+// FluentAssertions 方式
+allPersons.Should().Contain(addedPerson);
+```
+
+(4). 断言 null。
+
+```csharp
+// xUnit 方式
+Assert.Null(personResponse);
+
+// FluentAssertions 方式
+personResponse.Should().BeNull();
+```
+
+(5). 断言相等。
+
+```csharp
+// xUnit 方式
+Assert.Equal(actual, addedPerson);
+
+// FluentAssertions 方式
+actual.Should().Be(addedPerson);
+```
+
+(6). 断言空。
+
+```csharp
+// xUnit 方式
+Assert.Empty(actual);
+        
+// FluentAssertions 方式
+actual.Should().BeEmpty();
+```
+
+(7). 断言列表项。
+
+```csharp
+// xUnit 方式
+foreach (var person in addedPersons)
+{
+    Assert.Contains(person, actual);
+}
+
+// FluentAssertions 方式
+actual.Should().BeEquivalentTo(addedPersons);
+```
