@@ -7692,7 +7692,7 @@ Func<Task> action = async () => await _personsService.AddPerson(personAddRequest
 await action.Should().ThrowAsync<ArgumentNullException>();
 ```
 
-(2). 断言布尔。
+(2). 断言不相等。
 
 ```csharp
 // xUnit 方式
@@ -7753,4 +7753,45 @@ foreach (var person in addedPersons)
 
 // FluentAssertions 方式
 actual.Should().BeEquivalentTo(addedPersons);
+```
+
+### 208. FluentAssertions 流式断言库
+
+(8). 断言部分包含。
+
+```csharp
+// xUnit 方式
+foreach (var person in addedPersons)
+{
+    if (person.PersonName.Contains("Ma", StringComparison.OrdinalIgnoreCase))
+    {
+        Assert.Contains(person, actual);
+    }
+}
+
+// FluentAssertions 方式
+actual.Should().OnlyContain(temp => temp.PersonName.Contains("Ma", StringComparison.OrdinalIgnoreCase));
+```
+
+(9). 断言是否倒序排序。
+
+```csharp
+// xUnit 方式
+for (var i = 0; i < addedPersons.Count; i++)
+{
+    Assert.Equal(addedPersons[i], actual[i]);
+}
+
+// FluentAssertions 方式
+actual.Should().BeInDescendingOrder(temp => temp.PersonName);
+```
+
+(10). 断言布尔。
+
+```csharp
+// xUnit 方式
+Assert.True(isDeleted);
+
+// FluentAssertions 方式
+isDeleted.Should().BeTrue();
 ```

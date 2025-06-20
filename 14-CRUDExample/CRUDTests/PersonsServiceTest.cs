@@ -67,7 +67,7 @@ public class PersonsServiceTest
         */
 
         Func<Task> action = async () => await _personsService.AddPerson(personAddRequest);
-        await action.Should().ThrowAsync<ArgumentNullException>();
+        await action.Should().ThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -87,7 +87,10 @@ public class PersonsServiceTest
         };
         */
 
-        var personAddRequest = _fixture.Create<PersonAddRequest>();
+        var personAddRequest = _fixture
+            .Build<PersonAddRequest>()
+            .With(x => x.Email,"example@test.com")
+            .Create();
 
         // Act
         var addedPerson = await _personsService.AddPerson(personAddRequest);
@@ -259,10 +262,14 @@ public class PersonsServiceTest
         }
 
         // Assert
+        /*
         foreach (var person in addedPersons)
         {
             Assert.Contains(person, actual);
         }
+        */
+
+        actual.Should().BeEquivalentTo(addedPersons);
     }
 
     [Fact]
@@ -317,6 +324,7 @@ public class PersonsServiceTest
         }
 
         // Assert
+        /*
         foreach (var person in addedPersons)
         {
             if (person.PersonName.Contains("Ma", StringComparison.OrdinalIgnoreCase))
@@ -324,6 +332,9 @@ public class PersonsServiceTest
                 Assert.Contains(person, actual);
             }
         }
+        */
+
+        actual.Should().OnlyContain(temp => temp.PersonName.Contains("Ma", StringComparison.OrdinalIgnoreCase));
     }
 
     [Fact]
@@ -380,10 +391,13 @@ public class PersonsServiceTest
         }
 
         // Assert
+        /*
         for (var i = 0; i < addedPersons.Count; i++)
         {
             Assert.Equal(addedPersons[i], actual[i]);
         }
+        */
+        actual.Should().BeInDescendingOrder(temp => temp.PersonName);
     }
 
     [Fact]
@@ -393,11 +407,16 @@ public class PersonsServiceTest
         PersonUpdateRequest personUpdateRequest = null;
 
         // Assert
+        /*
         await Assert.ThrowsAsync<ArgumentNullException>(async () =>
         {
             // Act
             var actual = await _personsService.UpdatePerson(personUpdateRequest);
         });
+        */
+
+        Func<Task> action = async () => await _personsService.UpdatePerson(personUpdateRequest);
+        await action.Should().ThrowAsync<ArgumentNullException>();
     }
 
     [Fact]
@@ -410,11 +429,15 @@ public class PersonsServiceTest
         };
 
         // Assert
+        /*
         await Assert.ThrowsAsync<ArgumentException>(async () =>
         {
             // Act
             var actual = await _personsService.UpdatePerson(personUpdateRequest);
         });
+        */
+        Func<Task> action = async () => await _personsService.UpdatePerson(personUpdateRequest);
+        await action.Should().ThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -439,11 +462,16 @@ public class PersonsServiceTest
         updatedPerson.PersonName = null;
 
         // Assert
+        /*
         await Assert.ThrowsAsync<ArgumentException>(async () =>
         {
             // Act
             await _personsService.UpdatePerson(updatedPerson);
         });
+        */
+        
+        Func<Task> action = async () => await _personsService.UpdatePerson(updatedPerson);
+        await action.Should().ThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -474,7 +502,9 @@ public class PersonsServiceTest
         var person = await _personsService.GetPersonByPersonId(updatedPerson.PersonId);
 
         // Assert
-        Assert.Equal(actual, person);
+        // Assert.Equal(actual, person);
+
+        actual.Should().Be(person);
     }
 
     [Fact]
@@ -499,7 +529,8 @@ public class PersonsServiceTest
         var isDeleted = await _personsService.DeletePerson(person.PersonId);
 
         // Assert
-        Assert.True(isDeleted);
+        // Assert.True(isDeleted);
+        isDeleted.Should().BeTrue();
     }
 
     [Fact]
@@ -511,6 +542,7 @@ public class PersonsServiceTest
         var isDeleted = await _personsService.DeletePerson(Guid.NewGuid());
 
         // Assert
-        Assert.False(isDeleted);
+        // Assert.False(isDeleted);
+        isDeleted.Should().BeFalse();
     }
 }
