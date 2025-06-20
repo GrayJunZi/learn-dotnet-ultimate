@@ -7795,3 +7795,69 @@ Assert.True(isDeleted);
 // FluentAssertions 方式
 isDeleted.Should().BeTrue();
 ```
+
+### 209. FluentAssertions 备忘录
+
+| Type | Assert | Fluent Assertion |
+| ---- | ------ | ---------------- |
+| Equal | Assert.Equal(expected, actual) | actual.Should().Be(expected) |
+| Not Equal | Assert.NotEqual(expected, actual) | actual.Should().NotBe(expected) |
+| Equal | Assert.Equal(expected, actual) | actual.Should().BeEquivalentTo(expected) |
+| Not Equal | Assert.NotEqual(expected, actual) | actual.Should().NotBeEquivalentTo(expected) |
+| Null | Assert.Null(actual) | actual.Should().BeNull() |
+| Not Null | Assert.NotNull(actual) | actual.Should().NotBeNull() |
+| True | Assert.True(actual) | actual.Should().BeTrue() |
+| False | Assert.True(actual) | actual.Should().BeFalse() |
+| Empty | Assert.Empty(actual) | actual.Should().BeEmpty() |
+| Not Empty | Assert.NotEmpty(actual) | actual.Should().NotBeEmpty() |
+| Null or empty | Assert.True(string.IsNullOrEmpty(actual)) | actual.Should().BeNullOrEmpty() |
+| Not null or empty | Assert.False(string.IsNullOrEmpty(actual)) | actual.Should().NotBeNullOrEmpty() |
+| Positive | Assert.True(actual > 0) | actual.Should().Positive() |
+| Negative | Assert.True(actual < 0) | actual.Should().Negative() |
+| Greater than or equal | Assert.True(actual >= expected) | actual.Should().BeGreaterThanOrEqualTo(expected) |
+| Less than or equal | Assert.True(actual <= expected) | actual.Should().BeLessThanOrEqualTo(expected) |
+| In given range | Assert.True(actual >= minimum && actual <= maximum) | actual.Should().BeInRange(minimum, maxmum) |
+| In given range | Assert.True(actual < minimum || actual > maximum) | actual.Should().NotBeInRange(minimum, maxmum) |
+| Check data type | Assert.IsType<ExpectedType>(actual) | actual.Should().BeOfType<ExpectedType>() |
+| Check data type | Assert.IsType<ExpectedType>(actual) | actual.Should().BeAssignableTo<ExpectedType>() |
+
+#### 集合
+
+```csharp
+actualCollection.Should().BeEmpty()
+actualCollection.Should().NotBeEmpty()
+
+actualCollection.Should().HaveCount(expectedCount)
+actualCollection.Should().NotHaveCount(expectedCount)
+
+actualCollection.Should().HaveCountGreaterThanOrEqualTo(expectedCount)
+actualCollection.Should().HaveCountLessThanOrEqualTo(expectedCount)
+
+actualCollection.Should().HaveSameCount(expectedCollection)
+actualCollection.Should().NotHaveSameCount(expectedCollection)
+
+actualCollection.Should().BeEquivalentTo(expectedCollection)
+actualCollection.Should().NotBeEquivalentTo(expectedCollection)
+
+actualCollection.Should().ContainInOrder(expectedCollection)
+actualCollection.Should().NotContainInOrder(expectedCollection)
+
+actualCollection.Should().OnlyHaveUniqueItems(expectedCollection)
+actualCollection.Should().OnlyContain(expectedCollection)
+
+actualCollection.Should().BeInAscendingOrder(temp => temp.Property)
+actualCollection.Should().NotBeInAscendingOrder(temp => temp.Property)
+
+actualCollection.Should().BeInDescendingOrder(temp => temp.Property)
+actualCollection.Should().NotBeInDescendingOrder(temp => temp.Property)
+```
+
+#### 异常
+
+```csharp
+actual.Should().Throw<ExceptionType>()
+actual.Should().NotThrow<ExceptionType>()
+
+await actual.Should().ThrowAsync<ExceptionType>()
+await actual.Should().NotThrowAsync<ExceptionType>()
+```
