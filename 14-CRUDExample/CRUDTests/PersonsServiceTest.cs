@@ -21,9 +21,9 @@ public class PersonsServiceTest
     {
         _testOutputHelper = testOutputHelper;
         _countriesService =
-            new CountriesService(new PersonsDbContext(new DbContextOptionsBuilder<PersonsDbContext>().Options));
+            new CountriesService(new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>().Options));
         _personsService =
-            new PersonsService(new PersonsDbContext(new DbContextOptionsBuilder<PersonsDbContext>().Options),
+            new PersonsService(new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>().Options),
                 _countriesService);
 
         _fixture = new Fixture();

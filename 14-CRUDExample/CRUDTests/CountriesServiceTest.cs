@@ -13,7 +13,7 @@ public class CountriesServiceTest
 
     public CountriesServiceTest()
     {
-        var dbContextMock = new Mock<PersonsDbContext>();
+        var dbContextMock = new Mock<ApplicationDbContext>();
         var countries = new List<Country>();
         dbContextMock.Setup(x => x.Countries).ReturnsDbSet(countries);
         _countriesService = new CountriesService(dbContextMock.Object);
