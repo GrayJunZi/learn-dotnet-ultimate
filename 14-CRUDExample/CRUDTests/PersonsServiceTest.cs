@@ -21,7 +21,7 @@ public class PersonsServiceTest
     {
         _testOutputHelper = testOutputHelper;
         _countriesService =
-            new CountriesService(new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>().Options));
+            new CountriesService(null);
         _personsService =
             new PersonsService(new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>().Options),
                 _countriesService);

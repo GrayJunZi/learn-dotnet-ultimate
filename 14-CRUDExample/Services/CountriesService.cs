@@ -3,44 +3,40 @@ using Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO;
 
 namespace Services;
 
-public class CountriesService : ICountriesService
+public class CountriesService(ICountriesRepository countriesRepository) : ICountriesService
 {
-    private readonly ApplicationDbContext _db;
-
-    public CountriesService(ApplicationDbContext db)
-    {
-        _db = db;
-    }
-
     public async Task<CountryResponse> AddCountry(CountryAddRequest? countryAddRequest)
     {
         if (countryAddRequest?.CountryName == null)
             throw new ArgumentNullException(nameof(countryAddRequest));
 
-        if (_db.Countries.Any(x => x.Name == countryAddRequest.CountryName))
+        if (await countriesRepository.GetCountryByName(countryAddRequest.CountryName) != null)
             throw new ArgumentException($"Country {countryAddRequest.CountryName} already exists");
 
         var country = countryAddRequest.ToCountry();
         country.Id = Guid.NewGuid();
-        _db.Countries.Add(country);
-        await _db.SaveChangesAsync();
-
+        await countriesRepository.AddCountry(country);
         return country.ToCountryResponse();
     }
 
     public async Task<List<CountryResponse>> GetAllCountries()
     {
-        return await _db.Countries.Select(x => x.ToCountryResponse()).ToListAsync();
+        return (await countriesRepository.GetAllCountries())
+            .Select(x => x.ToCountryResponse())
+            .ToList();
     }
 
     public async Task<CountryResponse?> GetCountryByCountryId(Guid? countryId)
     {
-        return (await _db.Countries?.FirstOrDefaultAsync(x => x.Id == countryId))?.ToCountryResponse();
+        return countryId.HasValue
+            ? (await countriesRepository.GetCountryById(countryId.Value))?.ToCountryResponse()
+            : null;
     }
 
     public async Task<int> UploadCountriesFromExcelFile(IFormFile file)
@@ -61,14 +57,13 @@ public class CountriesService : ICountriesService
 
             if (!string.IsNullOrEmpty(cellValue))
             {
-                if (!await _db.Countries.AnyAsync(x => x.Name == cellValue))
+                if (await countriesRepository.GetCountryByName(cellValue) == null)
                 {
-                    _db.Countries.Add(new Country
+                    await countriesRepository.AddCountry(new Country
                     {
                         Name = cellValue,
                     });
-                    await _db.SaveChangesAsync();
-
+                    
                     inserted++;
                 }
             }

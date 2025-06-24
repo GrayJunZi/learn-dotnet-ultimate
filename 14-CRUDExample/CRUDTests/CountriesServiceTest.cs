@@ -16,7 +16,7 @@ public class CountriesServiceTest
         var dbContextMock = new Mock<ApplicationDbContext>();
         var countries = new List<Country>();
         dbContextMock.Setup(x => x.Countries).ReturnsDbSet(countries);
-        _countriesService = new CountriesService(dbContextMock.Object);
+        _countriesService = new CountriesService(null);
     }
 
     // 当 CountryAddRequest 为空，则应该抛异常
