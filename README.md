@@ -1,8 +1,8 @@
 # learn-dotnet-ultimate
 
-## Asp.Net Core 9 (.NET 9) | True Ultimate Guide
+## Asp.Net Core 10 (.NET 10) | True Ultimate Guide
 
-ASP .NET Core 6 to 9 | Asp.Net Core Projects | Bootcamp | Advanced | Interview Questions | Web API | MVC
+ASP .NET Core | Asp.Net Core Projects | Bootcamp | Advanced | Interview Questions | Web API | MVC | SOLID Principles
 
 ### 内容概览
 
@@ -7860,4 +7860,35 @@ actual.Should().NotThrow<ExceptionType>()
 
 await actual.Should().ThrowAsync<ExceptionType>()
 await actual.Should().NotThrowAsync<ExceptionType>()
+```
+
+### 210. 仓储介绍
+
+仓储(或仓储模式) 是应用程序的数据访问层(EF DbContext)和业务逻辑层(Service)之间的抽象。
+
+添加仓储层。
+```csharp
+dotnet new classlib -n "RepositoryContracts"
+dotnet sln add ./RepositoryContracts
+```
+
+添加仓储接口。
+```csharp
+public interface ICountriesRepository
+{
+    Task<Country> AddCountry(Country country);
+    Task<List<Country>> GetAllCountries();
+    Task<Country> GetCountryById(Guid countryId);
+    Task<Country> GetCountryByName(string countryName);
+}
+
+public interface IPersonsRepository
+{
+    Task<Person> AddPerson(Person person);
+    Task<List<Person>> GetAllPersons();
+    Task<Person> GetPersonById(Guid personId);
+    Task<List<Person>> GetFilteredPersons(Expression<Func<Person,bool>> predicate);
+    Task<bool> DeletePersonById(Guid personId);
+    Task<bool> UpdatePerson(Person person);
+}
 ```
