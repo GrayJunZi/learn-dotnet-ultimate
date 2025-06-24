@@ -8363,33 +8363,92 @@ public class PersonsControllerTest
 
 ### 220. 控制器单元测试
 
+增加测试代码。
+
 ```csharp
 public async Task Create_IfModelErrors_ToReturnCreateView()
+{
+    // Arrange
+    PersonAddRequest person_add_request = _fixture.Create<PersonAddRequest>();
+    
+    PersonResponse person_response = _fixture.Create<PersonResponse>();
+    
+    List<CountryResponse> countries = _fixture.Create<List<CountryResponse>>();
+
+    _countriesServiceMock.Setup(x => x.GetAllCountries())
+        .ReturnsAsync(countries);
+
+    _personsServiceMock.Setup(x => x.AddPerson(It.IsAny<PersonAddRequest>()))
+        .ReturnsAsync(person_response);
+    
+    PersonsController personsController = new PersonsController(_personsService, _countriesService);
+    
+    // Act
+    personsController.ModelState.AddModelError("PersonName", "Person Name can't be blank");
+
+    IActionResult result = await personsController.Create(person_add_request);
+    
+    // Assert
+    ViewResult viewResult = Assert.IsType<ViewResult>(result);
+    
+    viewResult.ViewData.Model.Should().BeAssignableTo<PersonAddRequest>();
+    viewResult.ViewData.Model.Should().Be(person_add_request);
+}
+```
+
+### 221. 集成测试
+
+在测试类库中安装以下包：
+```shell
+dotnet add package Microsoft.AspNetCore.Mvc.Testing
+```
+
+添加集成测试代码。
+
+```csharp
+public class PersonsControllerIntegrationTest : IClassFixture<CustomWebApplicationFactory>
+{
+    private readonly HttpClient _client;
+
+    public PersonsControllerIntegrationTest(CustomWebApplicationFactory factory)
+    {
+        _client = factory.CreateClient();
+    }
+
+
+    [Fact]
+    public async void Index_ToReturnView()
     {
         // Arrange
-        PersonAddRequest person_add_request = _fixture.Create<PersonAddRequest>();
-        
-        PersonResponse person_response = _fixture.Create<PersonResponse>();
-        
-        List<CountryResponse> countries = _fixture.Create<List<CountryResponse>>();
 
-        _countriesServiceMock.Setup(x => x.GetAllCountries())
-            .ReturnsAsync(countries);
 
-        _personsServiceMock.Setup(x => x.AddPerson(It.IsAny<PersonAddRequest>()))
-            .ReturnsAsync(person_response);
-        
-        PersonsController personsController = new PersonsController(_personsService, _countriesService);
-        
         // Act
-        personsController.ModelState.AddModelError("PersonName", "Person Name can't be blank");
+        HttpResponseMessage response = await _client.GetAsync("/Persons/Index");
 
-        IActionResult result = await personsController.Create(person_add_request);
-        
         // Assert
-        ViewResult viewResult = Assert.IsType<ViewResult>(result);
-        
-        viewResult.ViewData.Model.Should().BeAssignableTo<PersonAddRequest>();
-        viewResult.ViewData.Model.Should().Be(person_add_request);
     }
+}
+
+public class CustomWebApplicationFactory : WebApplicationFactory<Program>
+{
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        base.ConfigureWebHost(builder);
+
+        builder.UseEnvironment("Test");
+
+        builder.ConfigureServices(services =>
+        {
+            var descriptor =
+                services.SingleOrDefault(x => x.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
+            if (descriptor != null)
+            {
+                services.Remove(descriptor);
+            }
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseInMemoryDatabase("InMemoryDatabaseForTesting"));
+        });
+    }
+}
 ```
