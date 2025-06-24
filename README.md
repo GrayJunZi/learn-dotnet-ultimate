@@ -8270,3 +8270,25 @@ public class PersonsService(IPersonsRepository personsRepository) : IPersonsServ
 - 松散耦合的业务逻辑，服务和数据访问分开。
 - 更容易变更数据存储。
 - 便于单元测试。
+
+### 216. 模拟仓储
+
+```csharp
+public class PersonsServiceTest
+{
+    private readonly Mock<IPersonsRepository> _personsRepositoryMock;
+    private readonly Mock<ICountriesRepository> _countriesRepositoryMock;
+
+    private readonly IPersonsRepository _personsRepository;
+    private readonly ICountriesRepository _countriesRepository;
+
+    public PersonsServiceTest()
+    {
+        _personsRepositoryMock = new Mock<IPersonsRepository>();
+        _countriesRepositoryMock = new Mock<ICountriesRepository>();
+
+        _personsRepository = _personsRepositoryMock.Object;
+        _countriesRepository = _countriesRepositoryMock.Object;
+    }
+}
+```

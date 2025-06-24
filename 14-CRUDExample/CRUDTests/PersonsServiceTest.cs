@@ -1,7 +1,8 @@
 ﻿using AutoFixture;
 using Entities;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
+using Moq;
+using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -12,10 +13,18 @@ namespace CRUDTests;
 
 public class PersonsServiceTest
 {
+    private readonly IFixture _fixture;
     private readonly ITestOutputHelper _testOutputHelper;
+
     private readonly IPersonsService _personsService;
     private readonly ICountriesService _countriesService;
-    private readonly IFixture _fixture;
+
+    private readonly IPersonsRepository _personsRepository;
+    private readonly ICountriesRepository _countriesRepository;
+
+    private readonly Mock<IPersonsRepository> _personsRepositoryMock;
+    private readonly Mock<ICountriesRepository> _countriesRepositoryMock;
+
 
     public PersonsServiceTest(ITestOutputHelper testOutputHelper)
     {
@@ -26,6 +35,11 @@ public class PersonsServiceTest
             new PersonsService(null);
 
         _fixture = new Fixture();
+        _personsRepositoryMock = new Mock<IPersonsRepository>();
+        _countriesRepositoryMock = new Mock<ICountriesRepository>();
+
+        _personsRepository = _personsRepositoryMock.Object;
+        _countriesRepository = _countriesRepositoryMock.Object;
     }
 
     [Fact]
@@ -88,8 +102,11 @@ public class PersonsServiceTest
 
         var personAddRequest = _fixture
             .Build<PersonAddRequest>()
-            .With(x => x.Email,"example@test.com")
+            .With(x => x.Email, "example@test.com")
             .Create();
+
+        _personsRepositoryMock.Setup(x => x.AddPerson(It.IsAny<Person>()))
+            .ReturnsAsync(new Person());
 
         // Act
         var addedPerson = await _personsService.AddPerson(personAddRequest);
@@ -468,7 +485,7 @@ public class PersonsServiceTest
             await _personsService.UpdatePerson(updatedPerson);
         });
         */
-        
+
         Func<Task> action = async () => await _personsService.UpdatePerson(updatedPerson);
         await action.Should().ThrowAsync<ArgumentException>();
     }
