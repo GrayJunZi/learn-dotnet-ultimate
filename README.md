@@ -8264,3 +8264,9 @@ public class PersonsService(IPersonsRepository personsRepository) : IPersonsServ
     }
 }
 ```
+
+### 215. 仓储模式优缺点
+
+- 松散耦合的业务逻辑，服务和数据访问分开。
+- 更容易变更数据存储。
+- 便于单元测试。
