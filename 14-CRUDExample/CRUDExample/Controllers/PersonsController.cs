@@ -67,16 +67,16 @@ public class PersonsController : Controller
 
     [Route("create")]
     [HttpPost]
-    public IActionResult Create(PersonAddRequest personAddRequest)
+    public async Task<IActionResult> Create(PersonAddRequest personAddRequest)
     {
         if (!ModelState.IsValid)
         {
-            ViewBag.Countries = _countriesService.GetAllCountries();
+            ViewBag.Countries = await _countriesService.GetAllCountries();
             ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
             return View();
         }
 
-        _personsService.AddPerson(personAddRequest);
+        await _personsService.AddPerson(personAddRequest);
         return RedirectToAction("Index", "Persons");
     }
 
