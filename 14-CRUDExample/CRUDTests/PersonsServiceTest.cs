@@ -23,8 +23,7 @@ public class PersonsServiceTest
         _countriesService =
             new CountriesService(null);
         _personsService =
-            new PersonsService(new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>().Options),
-                _countriesService);
+            new PersonsService(null);
 
         _fixture = new Fixture();
     }
