@@ -24,7 +24,7 @@ ASP .NET Core | Asp.Net Core Projects | Bootcamp | Advanced | Interview Question
 - [x] 16. 增删改查 (CRUD Operations)
 - [x] 17. Tag Helpers
 - [x] 18. EntityFrameworkCore
-- [ ] 19. 高级单元测试 (Advanced Unit Testing [Moq & Repository Pattern])
+- [x] 19. 高级单元测试 (Advanced Unit Testing [Moq & Repository Pattern])
 - [ ] 20. 日志 (Logging and Serilog)
 - [ ] 21. 过滤器 (Filters)
 - [ ] 22. 错误处理 (Error Handling)
@@ -8486,3 +8486,17 @@ public async void Index_ToReturnView()
     document.QuerySelectorAll("table.persons").Should().NotBeNull();
 }
 ```
+
+## 二十、日志
+
+### 223. 日志介绍
+
+日志是为了实时记录程序运行过程的状态，帮助我们了解应用程序故障和性能瓶颈。
+
+| 日志存储介质 | 说明 |
+| ---------- | --- |
+| Console    | 控制台 |
+| Debug | Debug记录 |
+| EventLog | Windows系统日志 |
+| File | 日志文件 |
+| Database | 数据库 |
