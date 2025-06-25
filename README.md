@@ -8804,3 +8804,9 @@ dotnet add package Serilog.Sinks.Seq
   }
 }
 ```
+
+### 234. Serilog 请求Id
+
+`RequestId` 是每个请求的唯一编号(guid)，用于标识日志属于哪个请求。
+
+`RequestId` 是内部的 `TraceIdentifier`，由 Asp.Net Core 生成。
