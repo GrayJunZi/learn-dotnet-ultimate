@@ -4,6 +4,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using RepositoryContracts;
@@ -14,7 +15,7 @@ using Services.Helpers;
 
 namespace Services;
 
-public class PersonsService(IPersonsRepository personsRepository) : IPersonsService
+public class PersonsService(IPersonsRepository personsRepository,ILogger<PersonsService> logger) : IPersonsService
 {
     public async Task<PersonResponse?> AddPerson(PersonAddRequest? personAddRequest)
     {
@@ -37,6 +38,7 @@ public class PersonsService(IPersonsRepository personsRepository) : IPersonsServ
 
     public async Task<List<PersonResponse>> GetAllPersons()
     {
+        logger.LogInformation("Get all persons");
         // var person = _db.Persons.Include("Country").ToList();
 
         //return _db.Persons.Select(convertPersonResponse).ToList();
@@ -56,6 +58,7 @@ public class PersonsService(IPersonsRepository personsRepository) : IPersonsServ
 
     public async Task<List<PersonResponse>> GetFilteredPersons(string? field, string? search)
     {
+        logger.LogInformation("Get filtered persons of PersonsService");
         /*
             var persons = await GetAllPersons();
 

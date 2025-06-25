@@ -8598,3 +8598,17 @@ builder.Host.ConfigureLogging(loggingProvidder =>
     loggingProvidder.AddConsole();
 });
 ```
+
+### 227. 日志在各层间的应用
+
+```csharp
+public class ControllerName : Controller
+{
+ private readonly ILogger<ClassName> _logger;
+
+ public ControllerName(ILogger<ClassName> logger)
+ {
+  _logger = logger;
+ }
+}
+```

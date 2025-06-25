@@ -38,7 +38,7 @@ public class PersonsControllerTest
     {
         var person_response_list = _fixture.Create<List<PersonResponse>>();
 
-        var personsController = new PersonsController(_personsService, _countriesService);
+        var personsController = new PersonsController(_personsService, _countriesService, null);
 
         _personsServiceMock
             .Setup(x => x.GetFilteredPersons(It.IsAny<string>(), It.IsAny<string>()))
@@ -62,7 +62,7 @@ public class PersonsControllerTest
     }
 
     #endregion
-    
+
     #region Create
 
     [Fact]
@@ -70,9 +70,9 @@ public class PersonsControllerTest
     {
         // Arrange
         PersonAddRequest person_add_request = _fixture.Create<PersonAddRequest>();
-        
+
         PersonResponse person_response = _fixture.Create<PersonResponse>();
-        
+
         List<CountryResponse> countries = _fixture.Create<List<CountryResponse>>();
 
         _countriesServiceMock.Setup(x => x.GetAllCountries())
@@ -80,20 +80,20 @@ public class PersonsControllerTest
 
         _personsServiceMock.Setup(x => x.AddPerson(It.IsAny<PersonAddRequest>()))
             .ReturnsAsync(person_response);
-        
-        PersonsController personsController = new PersonsController(_personsService, _countriesService);
-        
+
+        PersonsController personsController = new PersonsController(_personsService, _countriesService, null);
+
         // Act
         personsController.ModelState.AddModelError("PersonName", "Person Name can't be blank");
 
         IActionResult result = await personsController.Create(person_add_request);
-        
+
         // Assert
         ViewResult viewResult = Assert.IsType<ViewResult>(result);
-        
+
         viewResult.ViewData.Model.Should().BeAssignableTo<PersonAddRequest>();
         viewResult.ViewData.Model.Should().Be(person_add_request);
     }
-    
+
     #endregion
 }

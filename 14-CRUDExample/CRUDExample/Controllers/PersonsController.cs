@@ -13,13 +13,16 @@ public class PersonsController : Controller
 {
     private readonly IPersonsService _personsService;
     private readonly ICountriesService _countriesService;
+    private readonly ILogger<PersonsController> _logger;
 
     public PersonsController(
         IPersonsService personsService,
-        ICountriesService countriesService)
+        ICountriesService countriesService,
+        ILogger<PersonsController> logger)
     {
         _personsService = personsService;
         _countriesService = countriesService;
+        _logger = logger;
     }
 
     [Route("/")]
@@ -30,6 +33,9 @@ public class PersonsController : Controller
         string sortBy = nameof(PersonResponse.PersonName),
         SortOptions? sortOrder = SortOptions.Asc)
     {
+        _logger.LogInformation("Index action method of PersonsController");
+        _logger.LogDebug($"field {field}, value {value}, sortBy {sortBy}, sortOrder {sortOrder}");
+        
         ViewBag.SearchFields = new Dictionary<string, object>
         {
             { "", "All" },
