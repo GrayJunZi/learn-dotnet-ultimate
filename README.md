@@ -8565,3 +8565,36 @@ app.Logger.LogCritical("critical-message");
  }
 }
 ```
+
+### 226. 日志提供程序
+
+日志提供程序指定存储与显示日志的位置。
+
+> Asp.Net Core 内置日志提供程序不支持文件和数据库存储。 
+
+配置系统日志最低输出级别。
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    },
+    "EventLog": {
+      "LogLevel": {
+        "Default": "Debug"
+      }
+    }
+  }
+}
+```
+
+设置日志提供程序。
+```csharp
+builder.Host.ConfigureLogging(loggingProvidder =>
+{
+    loggingProvidder.ClearProviders();
+    loggingProvidder.AddConsole();
+});
+```
