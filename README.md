@@ -8550,3 +8550,18 @@ app.Logger.LogWarning("warning-message");
 app.Logger.LogError("error-message");
 app.Logger.LogCritical("critical-message");
 ```
+
+### 225. 日志配置
+
+日志配置可以在 `appsettings.json` 文件中进行调整。
+
+```json
+{
+ "Logging": {
+  "LogLevel": {
+   "Default": "Debug | Information | Warning | Error| Critical"
+   "Microsoft.AspNetCore": "Debug | Information | Warning | Error | Critical"
+  }
+ }
+}
+```
