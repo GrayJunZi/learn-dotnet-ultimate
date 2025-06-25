@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using RepositoryContracts;
+using Serilog;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -15,7 +16,10 @@ using Services.Helpers;
 
 namespace Services;
 
-public class PersonsService(IPersonsRepository personsRepository,ILogger<PersonsService> logger) : IPersonsService
+public class PersonsService(
+    IPersonsRepository personsRepository,
+    ILogger<PersonsService> logger,
+    IDiagnosticContext diagnosticContext) : IPersonsService
 {
     public async Task<PersonResponse?> AddPerson(PersonAddRequest? personAddRequest)
     {
@@ -107,6 +111,7 @@ public class PersonsService(IPersonsRepository personsRepository,ILogger<Persons
             _ => await personsRepository.GetAllPersons(),
         };
 
+        diagnosticContext.Set("Persons", persons);
         return persons.Select(x => x.ToPersonResponse()).ToList();
     }
 

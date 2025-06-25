@@ -32,7 +32,7 @@ public class PersonsServiceTest
         _countriesService =
             new CountriesService(null);
         _personsService =
-            new PersonsService(null, null);
+            new PersonsService(null, null, null);
 
         _fixture = new Fixture();
         _personsRepositoryMock = new Mock<IPersonsRepository>();

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
+using Serilog;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -14,7 +15,7 @@ public class PersonsController : Controller
     private readonly IPersonsService _personsService;
     private readonly ICountriesService _countriesService;
     private readonly ILogger<PersonsController> _logger;
-
+    
     public PersonsController(
         IPersonsService personsService,
         ICountriesService countriesService,

@@ -8828,3 +8828,35 @@ dotnet add package Serilog.Sinks.Seq
   }
 }
 ```
+
+### 236. Serilog 诊断上下文
+
+`IDiagnosticContext` 诊断上下文支持向上下文添加其他扩充属性，所有这些属性都会立即记录在请求的最终 `Log completion event` 中。
+
+#### 安装 Serilog.Extensions.Hosting
+
+```shell
+dotnet add package Serilog.Extensions.Hosting
+```
+
+#### 配置Serilog
+
+```csharp
+app.UseSerilogRequestLogging();
+```
+
+#### 写入诊断上下文
+
+```csharp
+public class PersonsService(IDiagnosticContext diagnosticContext) : IPersonsService
+{
+    public async Task<List<PersonResponse>> GetFilteredPersons(string? field, string? search)
+    {
+        ...
+
+        diagnosticContext.Set("Persons", persons);
+    
+        ...
+    }
+}
+```
