@@ -9,6 +9,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using RepositoryContracts;
 using Serilog;
+using SerilogTimings;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -86,33 +87,35 @@ public class PersonsService(
             }
             */
 
-        var persons = field switch
+        using (Operation.Time("Time for Filtered Persons"))
         {
-            nameof(PersonResponse.PersonName) =>
-                await personsRepository.GetFilteredPersons(x => !string.IsNullOrEmpty(x.PersonName)
-                    ? x.PersonName.Contains(search)
-                    : true),
-            nameof(PersonResponse.Email) =>
-                await personsRepository.GetFilteredPersons(x => !string.IsNullOrEmpty(x.PersonName)
-                    ? x.Email.Contains(search)
-                    : true),
-            nameof(PersonResponse.Gender) =>
-                await personsRepository.GetFilteredPersons(x => !string.IsNullOrEmpty(x.PersonName)
-                    ? x.Gender.Contains(search)
-                    : true),
-            nameof(PersonResponse.Country) =>
-                await personsRepository.GetFilteredPersons(x => !string.IsNullOrEmpty(x.PersonName)
-                    ? x.Country.Name.Contains(search)
-                    : true),
-            nameof(PersonResponse.Address) =>
-                await personsRepository.GetFilteredPersons(x => !string.IsNullOrEmpty(x.PersonName)
-                    ? x.Address.Contains(search)
-                    : true),
-            _ => await personsRepository.GetAllPersons(),
-        };
-
-        diagnosticContext.Set("Persons", persons);
-        return persons.Select(x => x.ToPersonResponse()).ToList();
+            var persons = field switch
+            {
+                nameof(PersonResponse.PersonName) =>
+                    await personsRepository.GetFilteredPersons(x => !string.IsNullOrEmpty(x.PersonName)
+                        ? x.PersonName.Contains(search)
+                        : true),
+                nameof(PersonResponse.Email) =>
+                    await personsRepository.GetFilteredPersons(x => !string.IsNullOrEmpty(x.PersonName)
+                        ? x.Email.Contains(search)
+                        : true),
+                nameof(PersonResponse.Gender) =>
+                    await personsRepository.GetFilteredPersons(x => !string.IsNullOrEmpty(x.PersonName)
+                        ? x.Gender.Contains(search)
+                        : true),
+                nameof(PersonResponse.Country) =>
+                    await personsRepository.GetFilteredPersons(x => !string.IsNullOrEmpty(x.PersonName)
+                        ? x.Country.Name.Contains(search)
+                        : true),
+                nameof(PersonResponse.Address) =>
+                    await personsRepository.GetFilteredPersons(x => !string.IsNullOrEmpty(x.PersonName)
+                        ? x.Address.Contains(search)
+                        : true),
+                _ => await personsRepository.GetAllPersons(),
+            };
+            diagnosticContext.Set("Persons", persons);
+            return persons.Select(x => x.ToPersonResponse()).ToList();
+        }
     }
 
     public async Task<List<PersonResponse>> GetSortedPersons(List<PersonResponse> persons, string? field,

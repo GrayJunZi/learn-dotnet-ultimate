@@ -8860,3 +8860,23 @@ public class PersonsService(IDiagnosticContext diagnosticContext) : IPersonsServ
     }
 }
 ```
+
+### 237. Serilog 计时
+
+`SerilogTimings` 记录一段代码的计时，指示执行它所花费的时间。
+
+#### 安装 SerilogTimings
+
+```shell
+dotnet add package SerilogTimings
+```
+
+#### 计时方式
+
+调用 `Operation.Time` 来进行计时，`using` 语句结束时会自动记录时间。
+```csharp
+using (Operation.Time("Timings"))
+{
+    ...
+}
+```
