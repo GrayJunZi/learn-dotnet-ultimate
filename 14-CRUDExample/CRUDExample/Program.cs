@@ -25,6 +25,11 @@ var app = builder.Build();
 // app.UseRotativa();
 Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
 
+app.Logger.LogDebug("debug-message");
+app.Logger.LogInformation("information-message");
+app.Logger.LogWarning("warning-message");
+app.Logger.LogError("error-message");
+app.Logger.LogCritical("critical-message");
 
 app.UseStaticFiles();
 app.UseRouting();

@@ -8500,3 +8500,53 @@ public async void Index_ToReturnView()
 | EventLog | Windows系统日志 |
 | File | 日志文件 |
 | Database | 数据库 |
+
+### 224. ILogger
+
+#### 日志级别
+
+Debug
+```csharp
+ILogger.LogDebug("log_message");
+```
+
+提供详细数据和值的日志，用于调试目的。
+
+Info
+```csharp
+ILogger.LogInformation("log_message");
+```
+
+提供跟踪应用程序执行的一般流程日志。
+
+Warning
+```csharp
+ILogger.LogWarning("log_message");
+```
+
+提供异常或意外事件的日志。
+
+Error
+```csharp
+ILogger.LogError("log_message");
+```
+
+提供执行流程失败而停止的日志。
+
+Critical
+```csharp
+ILogger.LogCritical("log_message");
+```
+
+指示不可恢复的应用程序崩溃日志。
+
+#### ILogger
+
+在 `Program.cs` 中记录日志。
+```csharp
+app.Logger.LogDebug("debug-message");
+app.Logger.LogInformation("information-message");
+app.Logger.LogWarning("warning-message");
+app.Logger.LogError("error-message");
+app.Logger.LogCritical("critical-message");
+```
