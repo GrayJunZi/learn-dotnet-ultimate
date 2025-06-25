@@ -8612,3 +8612,28 @@ public class ControllerName : Controller
  }
 }
 ```
+
+### 228. HTTP日志
+
+HTTP日志记录了所有的HTTP请求和响应。
+
+需要设置 `HttpLoggingFields` 枚举的值来指定所需的详细信息。
+
+#### 启用 Http 日志
+
+开启HTTP日志。
+```csharp
+app.UseHttpLogging();
+```
+
+将配置文件中的 `Microsoft.AspNetCore` 节点设置为 `Information` 时，日志才会记录详细信息。
+```csharp
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Information"
+    },
+  }
+}
+```

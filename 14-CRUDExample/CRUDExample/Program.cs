@@ -37,6 +37,8 @@ app.Logger.LogWarning("warning-message");
 app.Logger.LogError("error-message");
 app.Logger.LogCritical("critical-message");
 
+app.UseHttpLogging();
+
 app.UseStaticFiles();
 app.UseRouting();
 app.MapControllers();
