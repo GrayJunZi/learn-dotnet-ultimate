@@ -1,14 +1,14 @@
 using Entities;
-using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
-using Rotativa.AspNetCore;
 using ServiceContracts;
 using Services;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+/*
 builder.Host.ConfigureLogging(loggingProvidder =>
 {
     loggingProvidder.ClearProviders();
@@ -19,6 +19,14 @@ builder.Services.AddHttpLogging(options =>
 {
     options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders
                             | HttpLoggingFields.ResponsePropertiesAndHeaders;
+});
+*/
+
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services);
 });
 
 builder.Services.AddControllersWithViews();
@@ -54,5 +62,4 @@ app.Run();
 
 public partial class Program
 {
-    
 }

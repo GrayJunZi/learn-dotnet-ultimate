@@ -8667,3 +8667,53 @@ builder.Services.AddHttpLogging(options =>
                             | HttpLoggingFields.ResponsePropertiesAndHeaders;
 });
 ```
+
+### 230. Serilog介绍
+
+Serilog 是 Asp.Net Core 的结构化日志记录库。
+
+支持各种日志记录目标，称为”Sinks“。
+- 控制台
+- Azure
+- DataDog
+- ElasticSearch
+- Amazon CloudWatch
+- Email
+- Seq
+
+#### 安装 Serilog
+
+```shell
+dotnet add package Serilog
+dotnet add package Serilog.AspNetCore
+```
+
+#### 配置 Serilog
+
+```csharp
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services);
+});
+```
+
+#### 配置文件
+
+在 `appsettings.json` 文件中配置 Serilog。
+```json
+{
+  "Serilog": {
+    "MinimumLevel": "Debug",
+    "Using": [
+      "Serilog.Sinks.Console"
+    ],
+    "WriteTo": [
+      {
+        "Name": "Console"
+      }
+    ]
+  }
+}
+```
