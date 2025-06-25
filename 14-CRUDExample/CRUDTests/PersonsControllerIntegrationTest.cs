@@ -1,5 +1,8 @@
-﻿using Entities;
+﻿using System.Net;
+using Entities;
+using Fizzler.Systems.HtmlAgilityPack;
 using FluentAssertions;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +31,16 @@ public class PersonsControllerIntegrationTest : IClassFixture<CustomWebApplicati
         HttpResponseMessage response = await _client.GetAsync("/Persons/Index");
 
         // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var html = new HtmlDocument();
+        html.LoadHtml(responseBody);
+        
+        var document = html.DocumentNode;
+
+        document.QuerySelectorAll("table.persons").Should().NotBeNull();
     }
 }
 

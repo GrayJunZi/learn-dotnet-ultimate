@@ -8452,3 +8452,37 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     }
 }
 ```
+
+### 222. 集成测试与响应体
+
+安装 `Fizzler` 包：
+```shell
+dotnet add package Fizzler
+dotnet add package Fizzler.Systems.HtmlAgilityPack
+```
+
+添加测试代码。
+
+```csharp
+[Fact]
+public async void Index_ToReturnView()
+{
+    // Arrange
+
+
+    // Act
+    HttpResponseMessage response = await _client.GetAsync("/Persons/Index");
+
+    // Assert
+    response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+    var responseBody = await response.Content.ReadAsStringAsync();
+
+    var html = new HtmlDocument();
+    html.LoadHtml(responseBody);
+    
+    var document = html.DocumentNode;
+
+    document.QuerySelectorAll("table.persons").Should().NotBeNull();
+}
+```
