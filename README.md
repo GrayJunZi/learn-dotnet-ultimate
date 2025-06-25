@@ -8810,3 +8810,21 @@ dotnet add package Serilog.Sinks.Seq
 `RequestId` 是每个请求的唯一编号(guid)，用于标识日志属于哪个请求。
 
 `RequestId` 是内部的 `TraceIdentifier`，由 Asp.Net Core 生成。
+
+### 235. Serilog Enrichers
+
+`Enrich` 是添加到 `LogContext` 的其他详细信息。因此，它们存储在日志中。
+```json
+{
+  "Serilog": {
+    "Enrich": [
+      "FromLogContext"
+    ],
+    "Properties":{
+        "ApplicationName": "MyApp",
+        "Environment": "Development",
+        "Version": "1.0.0"
+    }
+  }
+}
+```
