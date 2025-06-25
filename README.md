@@ -8743,3 +8743,33 @@ builder.Host.UseSerilog((context, services, configuration) =>
   }
 }
 ```
+
+### 232. Serilog数据库接收器
+
+#### 安装 Serilog.Sinks.MSSqlServer
+
+```shell
+dotnet add package Serilog.Sinks.MSSqlServer
+```
+
+`Serilog.Sinks.MSSqlServer` 记录到指定的数据库中。
+
+#### Serilog.Sinks.MSSqlServer 配置
+```json
+{
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.MSSqlServer" ],
+    "MinimumLevel": "Debug | Information | Warning | Error | Critical",
+    "WriteTo": [
+      {
+        "Name": "MSSqlServer",
+        "Args": {
+          "connectionString": "Server=localhost;Database=LogDB;User Id=sa;Password=12345678;TrustServerCertificate=True",
+          "tableName": "Logs",
+          "autoCreateSqlTable": true
+        }
+      }
+    ]
+  }
+}
+```
