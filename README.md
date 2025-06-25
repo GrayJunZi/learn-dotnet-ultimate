@@ -8717,3 +8717,29 @@ builder.Host.UseSerilog((context, services, configuration) =>
   }
 }
 ```
+
+### 231. Serilog文件接收器
+
+`Serilog.Sinks.File` 记录到指定的文件中。
+
+可以使用配置来设置文件名、滚动间隔、文件大小限制等。
+
+#### Serilog.Sinks.File 配置
+
+```json
+{
+ "Serilog": {
+    "Using": [ "Serilog.Sinks.File" ],
+    "MinimumLevel": "Debug | Information | Warning | Error | Critical",
+    "WriteTo": [
+    {
+     "Name": "File",
+     "Args": [
+       "path": "folder/filename.ext",
+       "rollingInterval": "Minute | Hour | Day | Month | Year | Infinite",
+     ]
+    }
+   ]
+  }
+}
+```
