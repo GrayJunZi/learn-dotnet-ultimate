@@ -8637,3 +8637,33 @@ app.UseHttpLogging();
   }
 }
 ```
+
+### 229. HTTP日志配置
+
+| 枚举值 | 说明 |
+| ----- | --- |
+| RequestMethod | 请求方式，例如：GET/POST/PUT/DELETE |
+| RequestPath | 请求路径，例如：/Persons/Index |
+| RequestProtocol | 请求协议，例如：HTTP/1.1 |
+| RequestScheme | 请求方案，例如：http/https |
+| RequestQuery | 请求查询字符串，例如：?id=1 |
+| RequestHeaders | 请求头，例如：Accept: text/html |
+| RequestPropertiesAndHeaders | 请求属性和头，例如：id=1, Accept: text/html |
+| RequestBody | 请求体 |
+| Request | 所有请求内容 | 
+| ResponseStatusCode | 响应状态码，例如：200 |
+| ResponseHeaders | 响应头 |
+| ResponsePropertiesAndHeaders | 请求属性和头，例如：id=1, Accept: text/html |
+| ResponseBody | 响应体 |
+| Response | 所有响应内容 |
+| All | 所有请求和响应内容 |
+
+#### 自定义HTTP日志内容
+
+```csharp
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders
+                            | HttpLoggingFields.ResponsePropertiesAndHeaders;
+});
+```

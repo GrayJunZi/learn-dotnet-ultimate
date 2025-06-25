@@ -1,4 +1,5 @@
 using Entities;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
@@ -12,6 +13,12 @@ builder.Host.ConfigureLogging(loggingProvidder =>
 {
     loggingProvidder.ClearProviders();
     loggingProvidder.AddConsole();
+});
+
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders
+                            | HttpLoggingFields.ResponsePropertiesAndHeaders;
 });
 
 builder.Services.AddControllersWithViews();
