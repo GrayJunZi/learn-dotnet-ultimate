@@ -8773,3 +8773,34 @@ dotnet add package Serilog.Sinks.MSSqlServer
   }
 }
 ```
+
+### 233. Serilog Seq接收器
+
+`Serilog.Sinks.Seq` 是结构化应用程序日志数据的实时搜索和分析服务器。
+
+Seq 服务器可以在 Windows、Linux 或 Docker 上运行。
+
+#### 安装 Serilog.Sinks.Seq
+
+```shell
+dotnet add package Serilog.Sinks.Seq
+```
+
+#### 配置 Serilog.Sinks.Seq
+```json
+{
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.Seq" ],
+    "MinimumLevel": "Debug | Information | Warning | Error | Critical",
+    "WriteTo": [
+      {
+        "Name": "Seq",
+        "Args": {
+          "serverUrl": "http://localhost:5341",
+          "apiKey": "SeqApiKey"
+        }
+      }
+    ]
+  }
+}
+```
