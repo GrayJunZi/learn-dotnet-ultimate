@@ -9241,3 +9241,40 @@ public class PersonsListResultFilter(ILogger<PersonsListResultFilter> logger) : 
     }
 }
 ```
+
+#### 250. 资源过滤器
+
+`ResourceFilter` 可以在 `ResultFilter` 执行之前和之后立即运行。
+
+`OnResourceExecution` 方法。
+- 它可以在模型绑定之前执行。例如：向动作方法添加`metrics`。
+- 它可以更改模型绑定的工作方法（显式调用自定义模型Binder）。
+- 它可以用作短路(阻止动作方法执行)并返回不同的 `IActionResult`。
+
+`OnResourceExecuted` 方法。
+- 它可以读取响应正文并将其存储在缓存中。
+
+添加 `FeatureDisabledResourceFilter` 资源过滤器类，实现 `IAsyncResourceFilter` 接口。
+
+```csharp
+public class FeatureDisabledResourceFilter(ILogger<FeatureDisabledResourceFilter> logger, bool isDisabled = true)
+    : IAsyncResourceFilter
+{
+    public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
+    {
+        logger.LogInformation("{FilterName}.{MethodName} Before", nameof(FeatureDisabledResourceFilter),
+            nameof(OnResourceExecutionAsync));
+
+        if (isDisabled)
+        {
+            context.Result = new StatusCodeResult(501);
+            return;
+        }
+        
+        await next();
+        
+        logger.LogInformation("{FilterName}.{MethodName} After", nameof(FeatureDisabledResourceFilter),
+            nameof(OnResourceExecutionAsync));
+    }
+}
+```
