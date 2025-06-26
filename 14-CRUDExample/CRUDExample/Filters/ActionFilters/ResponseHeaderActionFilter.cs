@@ -7,7 +7,7 @@ public class ResponseHeaderActionFilter(
     string key,
     string value,
     int order)
-    : IActionFilter, IOrderedFilter
+    : IAsyncActionFilter, IOrderedFilter
 {
     public int Order { get; } = order;
 
@@ -19,7 +19,13 @@ public class ResponseHeaderActionFilter(
     public void OnActionExecuted(ActionExecutedContext context)
     {
         logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsListActionFilter), nameof(OnActionExecuted));
+    }
 
+    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    {
+        logger.LogInformation("{FilterName}.{MethodName} Before", nameof(PersonsListActionFilter), nameof(OnActionExecutionAsync));
+        await next();
+        logger.LogInformation("{FilterName}.{MethodName} After", nameof(PersonsListActionFilter), nameof(OnActionExecutionAsync));
         context.HttpContext.Response.Headers.Add(key, value);
     }
 }
