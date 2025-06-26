@@ -9278,3 +9278,28 @@ public class FeatureDisabledResourceFilter(ILogger<FeatureDisabledResourceFilter
     }
 }
 ```
+
+### 251. 身份认证过滤器
+
+在过滤器管道中的所有过滤器执行之前运行。
+
+`OnAuthorize` 方法。
+- 确定用户是否有权执行请求。
+- 如果请求未获取授权，则使用管道进行短路。
+- 不要在 `OnAuthorize` 方法中引发异常，因为它们不会有异常过滤器处理。
+
+添加 `TokenAuthorizationFilter` 身份认证过滤器类，实现 `IAsyncAuthorizationFilter` 接口。
+
+```csharp
+public class TokenAuthorizationFilter : IAsyncAuthorizationFilter
+{
+    public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
+    {
+        if (!context.HttpContext.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
+        {
+            context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            return;
+        }
+    }
+}
+```

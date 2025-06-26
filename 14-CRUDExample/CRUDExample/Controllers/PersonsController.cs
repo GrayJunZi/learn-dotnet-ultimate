@@ -1,4 +1,5 @@
 ﻿using CRUDExample.Filters.ActionFilters;
+using CRUDExample.Filters.ResourceFilters;
 using CRUDExample.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,13 +13,14 @@ using ServiceContracts.Enums;
 namespace CRUDExample.Controllers;
 
 [Route("persons")]
-[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Controller-Header", "Controller-Header-Value" },Order = 2)]
+[TypeFilter(typeof(ResponseHeaderActionFilter),
+    Arguments = new object[] { "X-Controller-Header", "Controller-Header-Value" }, Order = 2)]
 public class PersonsController : Controller
 {
     private readonly IPersonsService _personsService;
     private readonly ICountriesService _countriesService;
     private readonly ILogger<PersonsController> _logger;
-    
+
     public PersonsController(
         IPersonsService personsService,
         ICountriesService countriesService,
@@ -32,8 +34,10 @@ public class PersonsController : Controller
     [Route("/")]
     [Route("index")]
     [TypeFilter(typeof(PersonsListActionFilter))]
-    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Custom-Header", "Custom-Header-Value" },Order = 1)]
+    [TypeFilter(typeof(ResponseHeaderActionFilter),
+        Arguments = new object[] { "X-Custom-Header", "Custom-Header-Value" }, Order = 1)]
     [TypeFilter(typeof(PersonsListResultFilter))]
+    [TypeFilter(typeof(FeatureDisabledResourceFilter), Arguments = new Object[] { false })]
     public async Task<IActionResult> Index(
         string? field = null,
         string? value = null,
@@ -42,7 +46,7 @@ public class PersonsController : Controller
     {
         _logger.LogInformation("Index action method of PersonsController");
         _logger.LogDebug($"field {field}, value {value}, sortBy {sortBy}, sortOrder {sortOrder}");
-        
+
         ViewBag.SearchFields = new Dictionary<string, object>
         {
             { "", "All" },
