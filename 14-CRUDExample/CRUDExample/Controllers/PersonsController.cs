@@ -78,6 +78,7 @@ public class PersonsController : Controller
 
     [Route("create")]
     [HttpPost]
+    [TypeFilter(typeof(PersonCreateAndEditPostActionFilter))]
     public async Task<IActionResult> Create(PersonAddRequest personAddRequest)
     {
         if (!ModelState.IsValid)

@@ -8948,20 +8948,6 @@ public async Task<IActionResult> Index(
 }
 ```
 
-#### 短路过滤器
-
-`ActionFilter` 在动作方式执行之前和之后立即执行。
-
-`OnActionExecuting` 方法。
-- 它可以访问动作方法参数，读取它们并对它们进行必要的动作。
-- 它可以验证动作方法参数。
-- 它可以用作短路(阻止动作方法执行)并返回不同的 `IActionResult`。
-
-`OnActionExecuted` 方法。 
-- 它可以操作 `ViewData`。
-- 可以更改动作方法返回的结果。
-- 它可以引发异常，将异常返回给异常过滤器(如果存在)；或将错误响应返回给浏览器。
-
 ### 240. ActionFilter 参数验证
 
 在 `OnActionExecuting` 方法中可以获取请求参数并且可以进行修改。
@@ -9183,6 +9169,47 @@ public class ResponseHeaderActionFilter(
         await next();
         logger.LogInformation("{FilterName}.{MethodName} After", nameof(PersonsListActionFilter), nameof(OnActionExecutionAsync));
         context.HttpContext.Response.Headers.Add(key, value);
+    }
+}
+```
+
+### 248. 短路动作方法
+
+`ActionFilter` 在动作方式执行之前和之后立即执行。
+
+`OnActionExecuting` 方法。
+- 它可以访问动作方法参数，读取它们并对它们进行必要的动作。
+- 它可以验证动作方法参数。
+- 它可以用作短路(阻止动作方法执行)并返回不同的 `IActionResult`。
+
+`OnActionExecuted` 方法。 
+- 它可以操作 `ViewData`。
+- 可以更改动作方法返回的结果。
+- 它可以引发异常，将异常返回给异常过滤器(如果存在)；或将错误响应返回给浏览器。
+
+添加过滤器类，当 `ModelState` 验证失败时，返回 `View` 视图，当验证通过时才会继续执行，这便是短路。
+
+```csharp
+public class PersonCreateAndEditPostActionFilter(ICountriesService countriesService) 
+    : IAsyncActionFilter
+{
+    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    {
+        if (context.Controller is PersonsController controller)
+        {
+            if (!controller.ModelState.IsValid)
+            {
+                controller.ViewBag.Countries = await countriesService.GetAllCountries();
+                controller.ViewBag.Errors =
+                    controller.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                
+                var personAddRequest = context.ActionArguments["personAddRequest"] as PersonAddRequest;
+                context.Result = controller.View(personAddRequest);
+            }
+            return;
+        }
+
+        await next();
     }
 }
 ```
