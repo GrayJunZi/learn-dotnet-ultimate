@@ -8903,3 +8903,61 @@ using (Operation.Time("Timings"))
 | 9 | IActionResult | 动作方法返回 |
 | 10 | OnResultExecuted | 结果过滤器执行之后(Result Filter) |
 | 11 | OnResourceExecuted | 资源过滤器执行之后(Resource Filter) | 
+
+### 239. ActionFilter
+
+#### 创建过滤器类
+
+创建 `PersonsListActionFilter` 类，实现 `IActionFilter` 接口。
+
+在进入动作方法之前会先执行 `OnActionExecuting` 方法。
+
+在动作方法执行完成后会执行 `OnActionExecuted` 方法。
+
+
+```csharp
+public class PersonsListActionFilter(ILogger<PersonsListActionFilter> logger) :IActionFilter
+{
+    public void OnActionExecuting(ActionExecutingContext context)
+    {
+        logger.LogInformation($"{nameof(PersonsListActionFilter)} OnActionExecuting");
+    }
+
+    public void OnActionExecuted(ActionExecutedContext context)
+    {
+        logger.LogInformation($"{nameof(PersonsListActionFilter)} OnActionExecuted");
+    }
+}
+```
+
+#### 应用过滤器
+
+在 `Index` 方法上添加 `TypeFilter` 属性，应用 `PersonsListActionFilter` 过滤器。
+
+```csharp
+[Route("/")]
+[Route("index")]
+[TypeFilter(typeof(PersonsListActionFilter))]
+public async Task<IActionResult> Index(
+    string? field = null,
+    string? value = null,
+    string sortBy = nameof(PersonResponse.PersonName),
+    SortOptions? sortOrder = SortOptions.Asc)
+{
+    ...
+}
+```
+
+#### 短路过滤器
+
+`ActionFilter` 在动作方式执行之前和之后立即执行。
+
+`OnActionExecuting` 方法。
+- 它可以访问动作方法参数，读取它们并对它们进行必要的动作。
+- 它可以验证动作方法参数。
+- 它可以用作短路(阻止动作方法执行)并返回不同的 `IActionResult`。
+
+`OnActionExecuted` 方法。 
+- 它可以操作 `ViewData`。
+- 可以更改动作方法返回的结果。
+- 它可以引发异常，将异常返回给异常过滤器(如果存在)；或将错误响应返回给浏览器。
