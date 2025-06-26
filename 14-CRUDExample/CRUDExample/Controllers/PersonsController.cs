@@ -30,6 +30,7 @@ public class PersonsController : Controller
     [Route("/")]
     [Route("index")]
     [TypeFilter(typeof(PersonsListActionFilter))]
+    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Custom-Header", "Custom-Header-Value" })]
     public async Task<IActionResult> Index(
         string? field = null,
         string? value = null,

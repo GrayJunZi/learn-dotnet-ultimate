@@ -9043,3 +9043,45 @@ public void OnActionExecuted(ActionExecutedContext context)
     logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsListActionFilter),nameof(OnActionExecuted));
 }
 ```
+
+### 243. 过滤器参数
+
+定义带参数的过滤器。
+
+```csharp
+public class ResponseHeaderActionFilter(
+    ILogger<ResponseHeaderActionFilter> logger,
+    string key,
+    string value)
+    : IActionFilter
+{
+    public void OnActionExecuting(ActionExecutingContext context)
+    {
+        logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsListActionFilter), nameof(OnActionExecuting));
+    }
+
+    public void OnActionExecuted(ActionExecutedContext context)
+    {
+        logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsListActionFilter), nameof(OnActionExecuted));
+
+        context.HttpContext.Response.Headers.Add(key, value);
+    }
+}
+```
+
+你可以提供一个参数数组，这些参数将作为过滤器类的构造函数参数提供。
+
+```csharp
+[Route("/")]
+[Route("index")]
+[TypeFilter(typeof(PersonsListActionFilter))]
+[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Custom-Header", "Custom-Header-Value" })]
+public async Task<IActionResult> Index(
+    string? field = null,
+    string? value = null,
+    string sortBy = nameof(PersonResponse.PersonName),
+    SortOptions? sortOrder = SortOptions.Asc)
+{
+    ...
+}
+```
