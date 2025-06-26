@@ -1,3 +1,4 @@
+using CRUDExample.Filters.ActionFilters;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
@@ -29,7 +30,12 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .ReadFrom.Services(services);
 });
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    var logger = builder.Services.BuildServiceProvider()
+        .GetService<ILogger<ResponseHeaderActionFilter>>();
+    options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global"));
+});
 
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<IPersonsRepository, PersonsRepository>();

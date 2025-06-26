@@ -9085,3 +9085,23 @@ public async Task<IActionResult> Index(
     ...
 }
 ```
+
+### 244. 全局过滤器
+
+全局过滤器将应用于项目中所有控制器的所有动作方法。
+
+筛选范围：
+- 全局级别过滤器
+- 控制器级别过滤器
+- 动作方法级别过滤器
+
+添加全局过滤器。
+
+```csharp
+builder.Services.AddControllersWithViews(options =>
+{
+    var logger = builder.Services.BuildServiceProvider()
+        .GetService<ILogger<ResponseHeaderActionFilter>>();
+    options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global"));
+});
+```
