@@ -25,7 +25,7 @@ ASP .NET Core | Asp.Net Core Projects | Bootcamp | Advanced | Interview Question
 - [x] 17. Tag Helpers
 - [x] 18. EntityFrameworkCore
 - [x] 19. 高级单元测试 (Advanced Unit Testing [Moq & Repository Pattern])
-- [ ] 20. 日志 (Logging and Serilog)
+- [x] 20. 日志 (Logging and Serilog)
 - [ ] 21. 过滤器 (Filters)
 - [ ] 22. 错误处理 (Error Handling)
 - [ ] 23. SOLID原则 (SOLID Principles)
@@ -8880,3 +8880,26 @@ using (Operation.Time("Timings"))
     ...
 }
 ```
+
+## 二十一、过滤器
+
+### 238. 过滤器介绍
+
+过滤器是在过滤器管道中特定阶段之前/之后执行的代码块。
+
+过滤器执行特定任务，例如授权、缓存、执行处理等。 
+
+#### 过滤器管道
+
+| 执行顺序 | 过滤器 | 说明 |
+| 1 | OnAuthorization | 认证过滤器(Authorization Filter) |
+| 2 | OnResourceExecuting | 资源过滤器执行之前(Resource Filter) |
+| 3 | Model Binding & Validation | 模型绑定与验证 |
+| 4 | OnActionExecuting | 动作方法过滤器执行之前(Action Filter) |
+| 5 | Action Method | 动作方法 |
+| 6 | OnActionExecuted | 动作方法过滤器执行之后(Action Filter) |
+| 7 | OnException | 异常过滤器(Exception Filter) |
+| 8 | OnResultExecuting | 结果过滤器执行之前(Result Filter) |
+| 9 | IActionResult | 动作方法返回 |
+| 10 | OnResultExecuted | 结果过滤器执行之后(Result Filter) |
+| 11 | OnResourceExecuted | 资源过滤器执行之后(Resource Filter) | 
