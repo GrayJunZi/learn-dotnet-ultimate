@@ -9213,3 +9213,31 @@ public class PersonCreateAndEditPostActionFilter(ICountriesService countriesServ
     }
 }
 ```
+
+### 249. 结果过滤器
+
+`ResultFilter` 在 IActionResult 执行之前和之后立即运行。
+
+`OnResultExecuting` 方法
+- 它可以通过不分配上下文中的 `Result` 属性来继续正常执行 `IActionResult`。
+- 它可以使作短路(阻止 IActionResult 执行)并返回不同的 `IActionResult`。
+
+`OnResultExecuted`
+- 它可以在响应的最后一刻进行更改，例如添加必要的响应头。
+- 它不应引发异常，因为异常过滤器不会捕获`ResultFilter`中引发的异常。
+
+添加 `PersonsListResultFilter` 结果过滤器类，实现 `IAsyncResultFilter` 接口。
+
+```csharp
+public class PersonsListResultFilter(ILogger<PersonsListResultFilter> logger) : IAsyncResultFilter
+{
+    public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
+    {
+        logger.LogInformation("{FilterName}.{MethodName} Before", nameof(PersonsListResultFilter), nameof(OnResultExecutionAsync));
+        await next();
+        logger.LogInformation("{FilterName}.{MethodName} After", nameof(PersonsListResultFilter), nameof(OnResultExecutionAsync));
+
+        context.HttpContext.Response.Headers["Last-Modified"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+    }
+}
+```

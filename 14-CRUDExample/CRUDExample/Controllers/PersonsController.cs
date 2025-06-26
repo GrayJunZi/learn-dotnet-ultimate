@@ -1,4 +1,5 @@
 ﻿using CRUDExample.Filters.ActionFilters;
+using CRUDExample.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Rotativa.AspNetCore;
@@ -32,6 +33,7 @@ public class PersonsController : Controller
     [Route("index")]
     [TypeFilter(typeof(PersonsListActionFilter))]
     [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Custom-Header", "Custom-Header-Value" },Order = 1)]
+    [TypeFilter(typeof(PersonsListResultFilter))]
     public async Task<IActionResult> Index(
         string? field = null,
         string? value = null,
