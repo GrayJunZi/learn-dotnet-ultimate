@@ -11,6 +11,7 @@ using ServiceContracts.Enums;
 namespace CRUDExample.Controllers;
 
 [Route("persons")]
+[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Controller-Header", "Controller-Header-Value" },Order = 2)]
 public class PersonsController : Controller
 {
     private readonly IPersonsService _personsService;
@@ -30,7 +31,7 @@ public class PersonsController : Controller
     [Route("/")]
     [Route("index")]
     [TypeFilter(typeof(PersonsListActionFilter))]
-    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Custom-Header", "Custom-Header-Value" })]
+    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Custom-Header", "Custom-Header-Value" },Order = 1)]
     public async Task<IActionResult> Index(
         string? field = null,
         string? value = null,

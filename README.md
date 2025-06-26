@@ -9105,3 +9105,22 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global"));
 });
 ```
+
+### 245. 自定义顺序过滤器
+
+指定 `Order` 的大小，来控制执行顺序。
+
+```csharp
+[Route("/")]
+[Route("index")]
+[TypeFilter(typeof(PersonsListActionFilter))]
+[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Custom-Header", "Custom-Header-Value" }, Order = 1)]
+public async Task<IActionResult> Index(
+    string? field = null,
+    string? value = null,
+    string sortBy = nameof(PersonResponse.PersonName),
+    SortOptions? sortOrder = SortOptions.Asc)
+{
+    ...
+}
+```
