@@ -8,7 +8,7 @@ public class PersonsListActionFilter(ILogger<PersonsListActionFilter> logger) : 
 {
     public void OnActionExecuting(ActionExecutingContext context)
     {
-        logger.LogInformation($"{nameof(PersonsListActionFilter)} OnActionExecuting");
+        logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsListActionFilter),nameof(OnActionExecuting));
 
         context.HttpContext.Items["arguments"] = context.ActionArguments;
 
@@ -39,7 +39,7 @@ public class PersonsListActionFilter(ILogger<PersonsListActionFilter> logger) : 
 
     public void OnActionExecuted(ActionExecutedContext context)
     {
-        logger.LogInformation($"{nameof(PersonsListActionFilter)} OnActionExecuted");
+        logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsListActionFilter),nameof(OnActionExecuted));
 
         var personsController = (PersonsController)context.Controller;
         var arguments = (IDictionary<string, object?>?)context.HttpContext.Items["arguments"];

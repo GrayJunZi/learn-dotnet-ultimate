@@ -9032,3 +9032,14 @@ public void OnActionExecuted(ActionExecutedContext context)
     }
 }
 ```
+
+### 242. Serilog结构化日志
+
+将日志格式化为结构化日志。
+
+```csharp
+public void OnActionExecuted(ActionExecutedContext context)
+{
+    logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsListActionFilter),nameof(OnActionExecuted));
+}
+```
