@@ -9004,3 +9004,31 @@ public class PersonsListActionFilter(ILogger<PersonsListActionFilter> logger) : 
     }
 }
 ```
+
+### 241. ActionFilter 操作ViewData
+
+`OnActionExecuted` 方法中可以操作 `ViewData`。
+
+```csharp
+public void OnActionExecuted(ActionExecutedContext context)
+{
+    logger.LogInformation($"{nameof(PersonsListActionFilter)} OnActionExecuted");
+
+    var personsController = (PersonsController)context.Controller;
+    var arguments = (IDictionary<string, object?>?)context.HttpContext.Items["arguments"];
+    if (arguments != null)
+    {
+        if (arguments.ContainsKey("field"))
+            personsController.ViewData["field"] = arguments["field"];
+        
+        if (arguments.ContainsKey("value"))
+            personsController.ViewData["value"] = arguments["value"];
+        
+        if (arguments.ContainsKey("sortBy"))
+            personsController.ViewData["sortBy"] = arguments["sortBy"];
+        
+        if (arguments.ContainsKey("sortOrder"))
+            personsController.ViewData["sortOrder"] = arguments["sortOrder"];
+    }
+}
+```

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using CRUDExample.Controllers;
+using Microsoft.AspNetCore.Mvc.Filters;
 using ServiceContracts.DTO;
 
 namespace CRUDExample.Filters.ActionFilters;
@@ -9,12 +10,14 @@ public class PersonsListActionFilter(ILogger<PersonsListActionFilter> logger) : 
     {
         logger.LogInformation($"{nameof(PersonsListActionFilter)} OnActionExecuting");
 
-        if (context.ActionArguments.ContainsKey("searchBy"))
+        context.HttpContext.Items["arguments"] = context.ActionArguments;
+
+        if (context.ActionArguments.ContainsKey("field"))
         {
-            var searchBy = context.ActionArguments["searchBy"] as string;
-            if (!string.IsNullOrEmpty(searchBy))
+            var field = context.ActionArguments["field"] as string;
+            if (!string.IsNullOrEmpty(field))
             {
-                var searchByOptions = new List<string>
+                var fieldOptions = new List<string>
                 {
                     nameof(PersonResponse.PersonName),
                     nameof(PersonResponse.Email),
@@ -24,11 +27,11 @@ public class PersonsListActionFilter(ILogger<PersonsListActionFilter> logger) : 
                     nameof(PersonResponse.Address),
                 };
 
-                if (!searchByOptions.Contains(searchBy))
+                if (!fieldOptions.Contains(field))
                 {
-                    logger.LogInformation("SearchBy actual value {searchBy}", searchBy);
-                    context.ActionArguments["searchBy"] = searchByOptions[2];
-                    logger.LogInformation("SearchBy update value {searchBy}", context.ActionArguments["searchBy"]);
+                    logger.LogInformation("Field actual value {field}", field);
+                    context.ActionArguments["field"] = fieldOptions[2];
+                    logger.LogInformation("Field update value {field}", context.ActionArguments["field"]);
                 }
             }
         }
@@ -37,5 +40,22 @@ public class PersonsListActionFilter(ILogger<PersonsListActionFilter> logger) : 
     public void OnActionExecuted(ActionExecutedContext context)
     {
         logger.LogInformation($"{nameof(PersonsListActionFilter)} OnActionExecuted");
+
+        var personsController = (PersonsController)context.Controller;
+        var arguments = (IDictionary<string, object?>?)context.HttpContext.Items["arguments"];
+        if (arguments != null)
+        {
+            if (arguments.ContainsKey("field"))
+                personsController.ViewData["field"] = arguments["field"];
+            
+            if (arguments.ContainsKey("value"))
+                personsController.ViewData["value"] = arguments["value"];
+            
+            if (arguments.ContainsKey("sortBy"))
+                personsController.ViewData["sortBy"] = arguments["sortBy"];
+            
+            if (arguments.ContainsKey("sortOrder"))
+                personsController.ViewData["sortOrder"] = arguments["sortOrder"];
+        }
     }
 }
