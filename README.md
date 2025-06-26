@@ -8961,3 +8961,46 @@ public async Task<IActionResult> Index(
 - 它可以操作 `ViewData`。
 - 可以更改动作方法返回的结果。
 - 它可以引发异常，将异常返回给异常过滤器(如果存在)；或将错误响应返回给浏览器。
+
+### 240. ActionFilter 参数验证
+
+在 `OnActionExecuting` 方法中可以获取请求参数并且可以进行修改。
+
+```csharp
+public class PersonsListActionFilter(ILogger<PersonsListActionFilter> logger) : IActionFilter
+{
+    public void OnActionExecuting(ActionExecutingContext context)
+    {
+        logger.LogInformation($"{nameof(PersonsListActionFilter)} OnActionExecuting");
+
+        if (context.ActionArguments.ContainsKey("searchBy"))
+        {
+            var searchBy = context.ActionArguments["searchBy"] as string;
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                var searchByOptions = new List<string>
+                {
+                    nameof(PersonResponse.PersonName),
+                    nameof(PersonResponse.Email),
+                    nameof(PersonResponse.DateOfBirth),
+                    nameof(PersonResponse.Gender),
+                    nameof(PersonResponse.CountryId),
+                    nameof(PersonResponse.Address),
+                };
+
+                if (!searchByOptions.Contains(searchBy))
+                {
+                    logger.LogInformation("SearchBy actual value {searchBy}", searchBy);
+                    context.ActionArguments["searchBy"] = searchByOptions[2];
+                    logger.LogInformation("SearchBy update value {searchBy}", context.ActionArguments["searchBy"]);
+                }
+            }
+        }
+    }
+
+    public void OnActionExecuted(ActionExecutedContext context)
+    {
+        logger.LogInformation($"{nameof(PersonsListActionFilter)} OnActionExecuted");
+    }
+}
+```
