@@ -9337,3 +9337,21 @@ public class HandleExceptionFilter(ILogger<HandleExceptionFilter> logger, IHostE
     }
 }
 ```
+
+### 253. 短路的影响
+
+- 授权过滤器 - 短路时不执行其他过滤器。
+- 资源过滤器 - 短路时不执行后续过滤器，但会执行资源过滤器(OnResourceExecuted)。
+- 动作方法过滤器 - 短路时仅不执行动作方法，后续正常执行。
+- 异常过滤器 - 短路时不执行结果过滤器。
+- 结果过滤器 - 短路时不执行`IActionResult`。
+
+#### 过滤器短路方式
+
+| 过滤器 | 短路方式 | 说明 |
+| ----- | ------- | --- |
+| 授权过滤器 | context.Result = IActionResult; | 绕过所有过滤器，仅执行动作方法和返回结果。 |
+| 授权过滤器 | context.Result = IActionResult; | 绕过模型绑定、动作方法、返回结果、结果过滤器。当执行 `context.Cancelled=true;`代码时，将会运行资源过滤器的`OnResourceExecuted`方法。 |
+| 动作方法过滤器 | context.Result = IActionResult; | 仅绕过动作方法，其他过滤器在`Executed`方法中过滤出了`context.Cancelled=true`的情况，同时，所有的结果过滤器、资源过滤器也都正常运行。 |
+| 异常过滤器 | context.Result = IActionResult;<br/>context.ExceptionHandled = true; | 绕过结果执行和结果过滤器，所有资源过滤器`Executed`方法都将运行。 |
+| 结果过滤器 | context.ExceptionHandled = true; | 仅绕过结果执行。其他结果过滤器`Executed`方法与所有资源过滤器都正常执行。 |
