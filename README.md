@@ -28,7 +28,7 @@ ASP .NET Core | Asp.Net Core Projects | Bootcamp | Advanced | Interview Question
 - [x] 20. 日志 (Logging and Serilog)
 - [x] 21. 过滤器 (Filters)
 - [x] 22. 错误处理 (Error Handling)
-- [ ] 23. SOLID原则 (SOLID Principles)
+- [x] 23. SOLID原则 (SOLID Principles)
 - [ ] 24. 整洁架构 (Clean Architecture)
 - [ ] 25. 身份认证 (Identity, Authorization, Security)
 - [ ] 26. Asp.Net Core Web API
@@ -9763,3 +9763,48 @@ public class HomeController : Controller
 - 子类的方法不应比基类的方法实现更严格的限制条件
 
 好处：可以防止代码在被“错误地”或“有意地”将子类替换为基类（或者反过来）时出现错误，因为它们的行为是一致的。
+
+## 二十四、整洁架构
+
+### 274. 整洁架构介绍
+
+不要让“业务逻辑”依赖于“数据访问逻辑”，而是将这种依赖关系进行反转；也就是说，让“数据访问逻辑”依赖于“业务逻辑”。
+
+好处：
+
+业务逻辑可以被清晰地分离出来，独立于数据存储和用户界面（UI），并且更容易进行单元测试。
+
+#### 传统三层 / N层 架构
+
+1. 用户界面(User Interface, UI)
+2. 业务逻辑层(Business Logic Layer, BLL)
+4. 仓储层(Repository Layer, RL) 
+3. 数据访问层(Data Access Layer, DAL)
+
+#### 整洁架构
+
+1. UI
+    - 控制器、视图、视图模型
+    - 过滤器、中间件
+2. Core
+    - 业务逻辑接口
+    - 业务逻辑服务
+    - 数据转换对象(DTO)
+3. Domain
+    - 仓储接口
+    - 实体类
+4. Infrastructure
+    - DbContext、仓储
+    - 外部API调用
+
+**更换外部系统**
+可以轻松地更换外部系统（如外部 API 或第三方服务），而不会影响应用程序的核心逻辑。
+
+**可扩展性强**
+可以轻松进行横向或纵向扩展，而不会对整个应用程序的架构造成太大影响。
+
+**与数据库无关**
+应用程序核心不依赖于特定的数据库，因此可以随时更换数据库，而不会影响应用程序的核心逻辑。
+
+**可测试性强**
+应用程序核心不依赖任何外部 API 或仓储（Repository），因此可以通过模拟（Mock）必要的仓储，轻松地对业务逻辑服务编写单元测试。
