@@ -9492,3 +9492,32 @@ public async Task<IActionResult> Index(
 - 过滤器可以直接通过其类名应用到控制器或动作方法上（无需使用 [ServiceFilter] 或 [TypeFilter] 属性）；或者可以在 Program.cs 中作为全局过滤器应用。
 - 例如：[FilterClassName] （这种方式较为简洁）
 - 过滤器类可以通过构造函数参数或过滤器类的属性接收参数。
+
+### 258. IFilterFactory
+
+创建 `ResponseHeaderFilterFactoryAttribute` 类，继承自 `Attribute` 类，实现 `IFilterFactory` 接口。
+
+```csharp
+public class ResponseHeaderFilterFactoryAttribute(string key, string value, int order) : Attribute, IFilterFactory
+{
+    public bool IsReusable => false;
+
+    public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
+    {
+        var logger = serviceProvider.GetRequiredService<ILogger<ResponseHeaderActionFilter>>();
+        var filter = new ResponseHeaderActionFilter(logger, key, value, order);
+        return filter;
+    }
+}
+```
+
+过滤器属性类（如 ActionFilterAttribute 等）
+- 过滤器可以作为属性应用到控制器或动作方法上。例如：[FilterClassName]
+- 过滤器类不能使用依赖注入（DI）：既不能通过构造函数注入也不能通过方法注入。
+- 过滤器类可以通过构造函数参数或过滤器类的属性接收参数。
+
+IFilterFactory
+- 过滤器可以作为属性应用到控制器或动作方法上。例如：[FilterClassName]
+- 过滤器类可以使用依赖注入（DI）：可以通过构造函数注入或方法注入来实现。
+- 如果过滤器类是通过 ServiceProvider（使用DI）实例化的，则过滤器类只能通过过滤器类的属性接收参数。 或者，
+- 如果你不需要在过滤器类中使用DI注入服务，你可以通过 new 关键字在 IFilterFactory 的 CreateInstance() 方法中实例化过滤器类；然后过滤器类可以通过构造函数参数或属性接收参数。
