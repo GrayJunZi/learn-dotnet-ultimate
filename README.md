@@ -9400,3 +9400,22 @@ public class PersonsAlwaysRunResultFilter(ILogger<PersonsListResultFilter> logge
     }
 }
 ```
+
+### 256. 服务过滤器
+
+类型过滤器（Type Filter）
+- 可以向过滤器传递参数。
+- 过滤器实例通过 Microsoft.Extensions.DependencyInjection.ObjectFactory 创建。
+- 它们不是通过依赖注入（DI）创建的。
+- 默认情况下，过滤器实例的生命周期是瞬态的（每次调用时都会创建一个新的过滤器实例）。
+- 但是，你可以通过设置 TypeFilterAttribute.IsReusable 属性为 true，在多个请求之间重用同一个过滤器实例。
+- 过滤器类不需要注册（添加）到IoC容器中。
+- 过滤器类可以使用构造函数注入或方法注入来注入服务。
+
+服务过滤器（Service Filter）
+- 不能向过滤器传递参数。
+- 过滤器实例通过 ServiceProvider（使用DI）创建。
+- 过滤器实例的生命周期是实际添加到IoC容器中的过滤器类的生命周期。
+- 例如，如果过滤器类使用 AddScoped() 方法添加到IoC容器中，则其实例是作用域范围的。
+- 过滤器类应该注册（添加）到IoC容器中，就像任何其他服务一样。
+- 过滤器类可以使用构造函数注入或方法注入来注入服务。
