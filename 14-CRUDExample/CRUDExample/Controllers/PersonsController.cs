@@ -1,4 +1,5 @@
-﻿using CRUDExample.Filters.ActionFilters;
+﻿using CRUDExample.Filters;
+using CRUDExample.Filters.ActionFilters;
 using CRUDExample.Filters.ExceptionFilters;
 using CRUDExample.Filters.ResourceFilters;
 using CRUDExample.Filters.ResultFilters;
@@ -39,6 +40,7 @@ public class PersonsController : Controller
         Arguments = new object[] { "X-Custom-Header", "Custom-Header-Value" }, Order = 1)]
     [TypeFilter(typeof(PersonsListResultFilter))]
     [TypeFilter(typeof(FeatureDisabledResourceFilter), Arguments = new Object[] { false })]
+    [TypeFilter(typeof(SkipFilter))]
     public async Task<IActionResult> Index(
         string? field = null,
         string? value = null,

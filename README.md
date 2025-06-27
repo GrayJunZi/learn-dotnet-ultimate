@@ -9366,3 +9366,37 @@ public class HandleExceptionFilter(ILogger<HandleExceptionFilter> logger, IHostE
 `OnResultExecuted` 方法。
 - 与结果过滤器相同
 
+### 255. 过滤器重写
+
+创建一个跳过过滤器的特性，继承自 `Attribute` 类。
+
+```csharp
+public class SkipFilter : Attribute
+{
+        
+}
+```
+
+在其他过滤器中判断有没有标记`SkipFilter`特性。
+
+```csharp
+public class PersonsAlwaysRunResultFilter(ILogger<PersonsListResultFilter> logger) : IAlwaysRunResultFilter
+{
+    public void OnResultExecuting(ResultExecutingContext context)
+    {
+        logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsAlwaysRunResultFilter),
+            nameof(OnResultExecuting));
+
+        if (context.Filters.OfType<SkipFilter>().Any())
+        {
+            return;
+        }
+    }
+
+    public void OnResultExecuted(ResultExecutedContext context)
+    {
+        logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsAlwaysRunResultFilter),
+            nameof(OnResultExecuted));
+    }
+}
+```

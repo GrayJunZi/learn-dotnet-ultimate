@@ -8,6 +8,11 @@ public class PersonsAlwaysRunResultFilter(ILogger<PersonsListResultFilter> logge
     {
         logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsAlwaysRunResultFilter),
             nameof(OnResultExecuting));
+
+        if (context.Filters.OfType<SkipFilter>().Any())
+        {
+            return;
+        }
     }
 
     public void OnResultExecuted(ResultExecutedContext context)
