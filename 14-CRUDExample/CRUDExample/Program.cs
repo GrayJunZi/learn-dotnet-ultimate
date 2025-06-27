@@ -1,4 +1,5 @@
 using CRUDExample.Filters.ActionFilters;
+using CRUDExample.StartupExtensions;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
@@ -30,22 +31,8 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .ReadFrom.Services(services);
 });
 
-builder.Services.AddControllersWithViews(options =>
-{
-    var logger = builder.Services.BuildServiceProvider()
-        .GetService<ILogger<ResponseHeaderActionFilter>>();
-    options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global", 1));
-});
 
-builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
-builder.Services.AddScoped<IPersonsRepository, PersonsRepository>();
-
-builder.Services.AddScoped<ICountriesService, CountriesService>();
-builder.Services.AddScoped<IPersonsService, PersonsService>();
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly("CRUDExample")));
+builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 

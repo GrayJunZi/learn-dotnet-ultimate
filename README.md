@@ -9540,3 +9540,40 @@ IFilterFactory
 ### 261. UI增强
 
 ...
+
+### 262. 配置服务扩展
+
+将需要注册到容器中的类添加到 `ConfigureServicesExtension` 类中。
+
+```csharp
+public static class ConfigureServicesExtension
+{
+    public static IServiceCollection ConfigureServices(this IServiceCollection services,IConfiguration configuration)
+    {
+        services.AddControllersWithViews(options =>
+        {
+            var logger = services.BuildServiceProvider()
+                .GetService<ILogger<ResponseHeaderActionFilter>>();
+            options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global", 1));
+        });
+
+        services.AddScoped<ICountriesRepository, CountriesRepository>();
+        services.AddScoped<IPersonsRepository, PersonsRepository>();
+
+        services.AddScoped<ICountriesService, CountriesService>();
+        services.AddScoped<IPersonsService, PersonsService>();
+
+        services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                b => b.MigrationsAssembly("CRUDExample")));
+
+        return services;
+    }
+}
+```
+
+在 Program.cs 中调用 `ConfigureServices` 方法。
+
+```csharp
+builder.Services.ConfigureServices(builder.Configuration);
+```
