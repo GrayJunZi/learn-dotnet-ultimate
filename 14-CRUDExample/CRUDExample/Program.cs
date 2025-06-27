@@ -36,6 +36,16 @@ builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler("/Error");
+    // app.UseExceptionHandlingMiddleware();
+}
+
 app.UseSerilogRequestLogging();
 
 // app.UseRotativa();

@@ -9644,3 +9644,28 @@ public class InvalidPersonIdException : ArgumentException
     }
 }
 ```
+
+### 265. UseExceptionHandler
+
+内置的 `UseExceptionHandler()` 中间件在应用程序执行过程中发生未处理的异常时，会重定向到指定的路由路径。
+
+可以作为自定义异常处理中间件的替代方案使用。
+
+- 捕获并记录未处理的异常。
+- 使用指定的路由路径在替代管道中重新执行请求。
+
+```csharp
+public class HomeController : Controller
+{
+    public IActionResult Error()
+    {
+        var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+        if (exceptionHandlerPathFeature != null && exceptionHandlerPathFeature.Error != null)
+        {
+            ViewBag.ErrorMessage = exceptionHandlerPathFeature.Error.Message;
+        }
+
+        return View();
+    }
+}
+```
