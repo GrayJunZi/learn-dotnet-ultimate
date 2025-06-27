@@ -26,7 +26,7 @@ ASP .NET Core | Asp.Net Core Projects | Bootcamp | Advanced | Interview Question
 - [x] 18. EntityFrameworkCore
 - [x] 19. 高级单元测试 (Advanced Unit Testing [Moq & Repository Pattern])
 - [x] 20. 日志 (Logging and Serilog)
-- [ ] 21. 过滤器 (Filters)
+- [x] 21. 过滤器 (Filters)
 - [ ] 22. 错误处理 (Error Handling)
 - [ ] 23. SOLID原则 (SOLID Principles)
 - [ ] 24. 整洁架构 (Clean Architecture)
@@ -9576,4 +9576,45 @@ public static class ConfigureServicesExtension
 
 ```csharp
 builder.Services.ConfigureServices(builder.Configuration);
+```
+
+## 二十二、错误处理
+
+### 263. 异常处理中间件
+
+处理过滤器管道中发生的所有错误(包括模型绑定、控制器和过滤器中的错误)，应添加到应用程序管道中，路由在中间件之前。
+
+添加异常处理中间件 `ErrorHandlingMiddleware` 类。
+
+```csharp
+public class ErrorHandlingMiddleware(
+    RequestDelegate next,
+    ILogger<ErrorHandlingMiddleware> logger,
+    IDiagnosticContext diagnosticContext)
+{
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            await next(context);
+        }
+        catch (Exception ex)
+        {
+            if (ex.InnerException != null)
+            {
+                logger.LogError(ex, "{ExceptionType} {ExceptionMessage}",
+                    ex.InnerException.GetType().ToString(),
+                    ex.InnerException.Message);
+            }
+            else
+            {
+                logger.LogError(ex, "{ExceptionType} {ExceptionMessage}",
+                    ex.GetType().ToString(),
+                    ex.Message);
+            }
+
+            await context.Response.WriteAsync("Error occured");
+        }
+    }
+}
 ```
