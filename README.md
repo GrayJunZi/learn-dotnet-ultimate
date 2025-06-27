@@ -9303,3 +9303,37 @@ public class TokenAuthorizationFilter : IAsyncAuthorizationFilter
     }
 }
 ```
+
+### 252. 异常过滤器
+
+`ExceptionFilter` 在过滤器管道期间引发异常时运行。
+
+`OnException` 方法。
+- 处理在控制器创建、模型绑定、`ActionFilter` 或动作方法中发生的未处理异常。
+- 不处理授权过滤器(Authorization Filter)、资源过滤器(Resource Filter)、结果过滤器(Result Filter)或IActionResult执行中发生的未处理异常。
+- 建议仅当您希望对特定控制器进行不同的错误处理并生成不同的结果时使用，否则，建议使用 `ErrorHandlingMiddleware` 而不是异常过滤器。
+
+添加 `HandleExceptionFilter` 异常过滤器类，实现 `IExceptionFilter` 接口。
+
+```csharp
+public class HandleExceptionFilter(ILogger<HandleExceptionFilter> logger, IHostEnvironment hostEnvironment)
+    : IExceptionFilter
+{
+    public void OnException(ExceptionContext context)
+    {
+        logger.LogError("Exception filter {FilterName}.{MethodName}\n{ExceptionType}\n{ExceptionMessage}",
+            nameof(HandleExceptionFilter),
+            nameof(OnException), context.Exception.GetType().ToString(),
+            context.Exception.Message);
+
+        if (hostEnvironment.IsDevelopment())
+        {
+            context.Result = new ContentResult
+            {
+                Content = context.Exception.Message,
+                StatusCode = StatusCodes.Status500InternalServerError,
+            };
+        }
+    }
+}
+```

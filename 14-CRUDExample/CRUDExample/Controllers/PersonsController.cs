@@ -1,13 +1,13 @@
 ﻿using CRUDExample.Filters.ActionFilters;
+using CRUDExample.Filters.ExceptionFilters;
 using CRUDExample.Filters.ResourceFilters;
 using CRUDExample.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
-using Serilog;
 using ServiceContracts;
-using ServiceContracts.DTO;
+using ServiceContracts.DTO; 
 using ServiceContracts.Enums;
 
 namespace CRUDExample.Controllers;
@@ -15,6 +15,7 @@ namespace CRUDExample.Controllers;
 [Route("persons")]
 [TypeFilter(typeof(ResponseHeaderActionFilter),
     Arguments = new object[] { "X-Controller-Header", "Controller-Header-Value" }, Order = 2)]
+[TypeFilter(typeof(HandleExceptionFilter))]
 public class PersonsController : Controller
 {
     private readonly IPersonsService _personsService;
