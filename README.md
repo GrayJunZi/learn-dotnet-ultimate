@@ -9822,16 +9822,7 @@ mkdir src
 mkdir tests
 ```
 
-(3). 创建UI项目。
-```shell
-cd src
-dotnet new web -n ContractsManager.UI
-
-cd ..\
-dotnet sln add .\src\ContractsManager.UI
-```
-
-(4). 创建Core项目
+(3). 创建Core项目
 ```shell
 cd src
 dotnet new classlib -n ContractsManager.Core
@@ -9849,4 +9840,15 @@ dotnet new classlib -n ContractsManager.Infrastructure
 
 cd ..
 dotnet sln add .\src\ContractsManager.Infrastructure
+```
+
+### 277. UI
+
+创建UI项目。
+```shell
+cd src
+dotnet new web -n ContractsManager.UI
+
+cd ..\
+dotnet sln add .\src\ContractsManager.UI
 ```
