@@ -27,7 +27,7 @@ ASP .NET Core | Asp.Net Core Projects | Bootcamp | Advanced | Interview Question
 - [x] 19. 高级单元测试 (Advanced Unit Testing [Moq & Repository Pattern])
 - [x] 20. 日志 (Logging and Serilog)
 - [x] 21. 过滤器 (Filters)
-- [ ] 22. 错误处理 (Error Handling)
+- [x] 22. 错误处理 (Error Handling)
 - [ ] 23. SOLID原则 (SOLID Principles)
 - [ ] 24. 整洁架构 (Clean Architecture)
 - [ ] 25. 身份认证 (Identity, Authorization, Security)
@@ -9654,6 +9654,8 @@ public class InvalidPersonIdException : ArgumentException
 - 捕获并记录未处理的异常。
 - 使用指定的路由路径在替代管道中重新执行请求。
 
+获取异常处理路径功能
+
 ```csharp
 public class HomeController : Controller
 {
@@ -9669,3 +9671,30 @@ public class HomeController : Controller
     }
 }
 ```
+
+## 二十三、SOLID原则
+
+### 266. SOLID原则介绍
+
+`SOLID` 是五个设计原则，其主要目的是创建松耦合、灵活且可维护的代码。
+- SOLID原则的总体目标：减少应用程序中各个类/模块之间的依赖性。
+
+#### 单一职责原则 Single Responsibility Principle (SRP)
+
+一个软件模块或类应该只有一个且唯一的变更理由。
+
+#### 里氏替换原则 Liskov Subsitution Principle (LSP)
+
+子类必须可以替换其父类。
+
+#### 开闭原则 Open-Closed Principle (OCP)
+
+类对修改关闭，但对扩展开放。
+
+#### 接口倒置原则 Interface Segregation Principle (ISP)
+
+没有客户端类应该被强迫依赖于它们不使用的接口方法。
+
+#### 依赖反转原则 Dependency Inversion Principle (DIP)
+
+高层模块不应该依赖于低层模块。二者都应该依赖于抽象。
