@@ -9852,3 +9852,11 @@ dotnet new web -n ContractsManager.UI
 cd ..\
 dotnet sln add .\src\ContractsManager.UI
 ```
+
+## 二十五、身份认证
+
+### 279. 身份认证介绍
+
+`Identity` 是一个用于管理用户、密码、配置文件数据、角色、令牌、邮箱确认、外部登录等功能的API。
+
+默认情况下，它是基于`EntityFramework Core`构建的，也可以创建自定义的数据存储。
