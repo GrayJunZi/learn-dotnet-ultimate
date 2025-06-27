@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractsManager.UI", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractsManager.Core", "src\ContractsManager.Core\ContractsManager.Core.csproj", "{3F6E4E09-80AD-46DA-8DC9-394C7C3D0857}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractsManager.Infrastructure", "src\ContractsManager.Infrastructure\ContractsManager.Infrastructure.csproj", "{40C1ED42-2B67-49D4-8F1B-2D06F283498D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +28,14 @@ Global
 		{3F6E4E09-80AD-46DA-8DC9-394C7C3D0857}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F6E4E09-80AD-46DA-8DC9-394C7C3D0857}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F6E4E09-80AD-46DA-8DC9-394C7C3D0857}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40C1ED42-2B67-49D4-8F1B-2D06F283498D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40C1ED42-2B67-49D4-8F1B-2D06F283498D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40C1ED42-2B67-49D4-8F1B-2D06F283498D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40C1ED42-2B67-49D4-8F1B-2D06F283498D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2FF11443-F064-42A1-AC8E-2EF2B3B6B5B0} = {4F624DD2-EE9D-40C1-A98B-4B7FC59B967E}
 		{3F6E4E09-80AD-46DA-8DC9-394C7C3D0857} = {4F624DD2-EE9D-40C1-A98B-4B7FC59B967E}
+		{40C1ED42-2B67-49D4-8F1B-2D06F283498D} = {4F624DD2-EE9D-40C1-A98B-4B7FC59B967E}
 	EndGlobalSection
 EndGlobal

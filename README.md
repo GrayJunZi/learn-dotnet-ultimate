@@ -9834,8 +9834,19 @@ dotnet sln add .\src\ContractsManager.UI
 (4). 创建Core项目
 ```shell
 cd src
-dotnet new web -n ContractsManager.Core
+dotnet new classlib -n ContractsManager.Core
 
 cd ..
 dotnet sln add .\src\ContractsManager.Core
+```
+
+### 276. Infrastructure
+
+创建Infrastructure项目
+```shell
+cd src
+dotnet new classlib -n ContractsManager.Infrastructure
+
+cd ..
+dotnet sln add .\src\ContractsManager.Infrastructure
 ```
