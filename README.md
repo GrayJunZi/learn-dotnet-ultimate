@@ -9618,3 +9618,29 @@ public class ErrorHandlingMiddleware(
     }
 }
 ```
+
+### 264. 自定义异常
+
+自定义异常类是继承 `System.Exception` 的异常类，表示特定领域的异常。
+- 用于表示特定于领域的错误，使其与系统相关的（.NET）异常区分开来。
+
+创建 `InvalidPersonIdException` 类，继承自 `ArgumentException` 类。
+
+```csharp
+public class InvalidPersonIdException : ArgumentException
+{
+    public InvalidPersonIdException() : base()
+    {
+    }
+
+    public InvalidPersonIdException(string message) : base(message)
+    {
+        
+    }
+
+    public InvalidPersonIdException(string message, Exception innerException) : base(message, innerException)
+    {
+        
+    }
+}
+```

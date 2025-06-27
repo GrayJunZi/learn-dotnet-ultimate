@@ -3,6 +3,7 @@ using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Entities;
+using Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
@@ -150,7 +151,7 @@ public class PersonsService(
 
         var person = await personsRepository.GetPersonById(personUpdateRequest.PersonId);
         if (person == null)
-            throw new ArgumentException("Given person id is invalid");
+            throw new InvalidPersonIdException("Given person id is invalid");
 
         person.PersonName = personUpdateRequest.PersonName;
         person.Email = personUpdateRequest.Email;
