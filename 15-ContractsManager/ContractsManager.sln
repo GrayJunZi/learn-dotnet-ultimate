@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractsManager.Core", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractsManager.Infrastructure", "src\ContractsManager.Infrastructure\ContractsManager.Infrastructure.csproj", "{40C1ED42-2B67-49D4-8F1B-2D06F283498D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F30EDB43-FD8E-4387-B680-B9D0C00A0EE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractsManager.Tests", "tests\ContractsManager.Tests\ContractsManager.Tests.csproj", "{23CAA432-2CB4-4A1F-A1F3-8E217F085B65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +36,15 @@ Global
 		{40C1ED42-2B67-49D4-8F1B-2D06F283498D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40C1ED42-2B67-49D4-8F1B-2D06F283498D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40C1ED42-2B67-49D4-8F1B-2D06F283498D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23CAA432-2CB4-4A1F-A1F3-8E217F085B65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23CAA432-2CB4-4A1F-A1F3-8E217F085B65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23CAA432-2CB4-4A1F-A1F3-8E217F085B65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23CAA432-2CB4-4A1F-A1F3-8E217F085B65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2FF11443-F064-42A1-AC8E-2EF2B3B6B5B0} = {4F624DD2-EE9D-40C1-A98B-4B7FC59B967E}
 		{3F6E4E09-80AD-46DA-8DC9-394C7C3D0857} = {4F624DD2-EE9D-40C1-A98B-4B7FC59B967E}
 		{40C1ED42-2B67-49D4-8F1B-2D06F283498D} = {4F624DD2-EE9D-40C1-A98B-4B7FC59B967E}
+		{23CAA432-2CB4-4A1F-A1F3-8E217F085B65} = {F30EDB43-FD8E-4387-B680-B9D0C00A0EE1}
 	EndGlobalSection
 EndGlobal
