@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
 using ServiceContracts;
-using ServiceContracts.DTO; 
+using ServiceContracts.DTO;
 using ServiceContracts.Enums;
 
 namespace CRUDExample.Controllers;
@@ -41,6 +41,7 @@ public class PersonsController : Controller
     [TypeFilter(typeof(PersonsListResultFilter))]
     [TypeFilter(typeof(FeatureDisabledResourceFilter), Arguments = new Object[] { false })]
     [TypeFilter(typeof(SkipFilter))]
+    [ResponseHeaderActionFilterAttribute("X-Custom-Header-Attribute", "Custom-Header-Value", 1)]
     public async Task<IActionResult> Index(
         string? field = null,
         string? value = null,

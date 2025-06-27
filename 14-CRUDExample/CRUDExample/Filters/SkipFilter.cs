@@ -1,4 +1,4 @@
-﻿-namespace CRUDExample.Filters;
+﻿namespace CRUDExample.Filters;
 
 public class SkipFilter : Attribute
 {

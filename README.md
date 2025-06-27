@@ -9419,3 +9419,76 @@ public class PersonsAlwaysRunResultFilter(ILogger<PersonsListResultFilter> logge
 - 例如，如果过滤器类使用 AddScoped() 方法添加到IoC容器中，则其实例是作用域范围的。
 - 过滤器类应该注册（添加）到IoC容器中，就像任何其他服务一样。
 - 过滤器类可以使用构造函数注入或方法注入来注入服务。
+
+### 257. 过滤器特性类
+
+过滤器接口:
+- IAuthorizationFilter
+- IResourceFilter
+- IActionFilter
+- IExceptionFilter
+- IResultFilter
+- IAsyncAuthorizationFilter
+- IAsyncResourceFilter
+- IAsyncActionFilter
+- IAsyncExceptionFilter
+- IAsyncResultFilter
+
+过滤器特性：
+- ActionFilterAttribute
+- ExceptionFilterAttribute
+- ResultFilterAttribute
+
+创建 `ResponseHeaderActionFilterAttribute` 类，继承自 `ActionFilterAttribute` 类。
+
+```csharp
+public class ResponseHeaderActionFilterAttribute(
+    string key,
+    string value,
+    int order) : ActionFilterAttribute
+{
+    public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    {
+        await next();
+
+        context.HttpContext.Response.Headers.Add(key, value);
+    }
+}
+```
+
+在接口上标记 `[ResponseHeaderActionFilterAttribute]` 特性。
+
+```csharp
+[Route("/")]
+[Route("index")]
+[TypeFilter(typeof(PersonsListActionFilter))]
+[TypeFilter(typeof(ResponseHeaderActionFilter),
+    Arguments = new object[] { "X-Custom-Header", "Custom-Header-Value" }, Order = 1)]
+[TypeFilter(typeof(PersonsListResultFilter))]
+[TypeFilter(typeof(FeatureDisabledResourceFilter), Arguments = new Object[] { false })]
+[TypeFilter(typeof(SkipFilter))]
+[ResponseHeaderActionFilterAttribute("X-Custom-Header-Attribute", "Custom-Header-Value", 1)]
+public async Task<IActionResult> Index(
+    string? field = null,
+    string? value = null,
+    string sortBy = nameof(PersonResponse.PersonName),
+    SortOptions? sortOrder = SortOptions.Asc)
+{
+    ...
+}
+```
+
+过滤器接口（如 IActionFilter, IResultFilter 等）
+- 过滤器类必须实现所有方法：包括“Executing”和“Executed”方法。
+- 过滤器类可以使用依赖注入（DI）：可以通过构造函数注入或方法注入来实现。
+- 不实现 Attribute 类。
+- 过滤器应通过 [ServiceFilter] 或 [TypeFilter] 属性应用到控制器或动作方法上；或者可以在 Program.cs 中作为全局过滤器应用。
+- 例如：[TypeFilter(typeof(FilterClassName))] （这种方式较为冗长）
+- 过滤器类只能通过构造函数参数接收参数；但仅限于使用 [TypeFilter] 属性时；不能通过 [ServiceFilter] 属性接收参数。
+
+过滤器属性类（如 ActionFilterAttribute 等）
+- 过滤器类可以选择性地重写所需的方法：可以重写“Executing”和/或“Executed”方法中的任意一个或两个。
+- 过滤器类不能使用依赖注入（DI）：既不能通过构造函数注入也不能通过方法注入。
+- 过滤器可以直接通过其类名应用到控制器或动作方法上（无需使用 [ServiceFilter] 或 [TypeFilter] 属性）；或者可以在 Program.cs 中作为全局过滤器应用。
+- 例如：[FilterClassName] （这种方式较为简洁）
+- 过滤器类可以通过构造函数参数或过滤器类的属性接收参数。
