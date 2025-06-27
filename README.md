@@ -9355,3 +9355,14 @@ public class HandleExceptionFilter(ILogger<HandleExceptionFilter> logger, IHostE
 | 动作方法过滤器 | context.Result = IActionResult; | 仅绕过动作方法，其他过滤器在`Executed`方法中过滤出了`context.Cancelled=true`的情况，同时，所有的结果过滤器、资源过滤器也都正常运行。 |
 | 异常过滤器 | context.Result = IActionResult;<br/>context.ExceptionHandled = true; | 绕过结果执行和结果过滤器，所有资源过滤器`Executed`方法都将运行。 |
 | 结果过滤器 | context.ExceptionHandled = true; | 仅绕过结果执行。其他结果过滤器`Executed`方法与所有资源过滤器都正常执行。 |
+
+### 254. IAlwaysRunResultFilter
+
+`IAlwaysRunResultFilter` 在结果过滤器执行前后运行，当授权过滤器、资源过滤器或异常过滤器短路时不运行。
+
+`OnResultExecuting` 方法。
+- 与结果过滤器相同
+
+`OnResultExecuted` 方法。
+- 与结果过滤器相同
+
