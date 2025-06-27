@@ -9860,3 +9860,34 @@ dotnet sln add .\src\ContractsManager.UI
 `Identity` 是一个用于管理用户、密码、配置文件数据、角色、令牌、邮箱确认、外部登录等功能的API。
 
 默认情况下，它是基于`EntityFramework Core`构建的，也可以创建自定义的数据存储。
+
+### 280. 创建模型
+
+安装：
+```shell
+dotnet add package Microsoft.AspNetCore.Identity
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+```
+
+#### IdentityUser<T>
+
+它作为 ApplicationUser 类的基类，而 ApplicationUser 类是用于存储用户信息的模型类。
+
+你可以向 ApplicationUser 类中添加额外的属性。
+
+内置属性：
+- Id
+- UserName
+- PasswordHash
+- Email
+- PhoneNumber
+
+#### IdentityRole<T>
+
+它作为 ApplicationRole 类的基类，而 ApplicationRole 类是用于存储角色信息的模型类。例如：“管理员”（admin）。
+
+你可以向 ApplicationRole 类中添加额外的属性。
+
+内部属性：
+- Id
+- Name
