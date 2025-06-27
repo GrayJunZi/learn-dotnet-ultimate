@@ -9808,3 +9808,34 @@ public class HomeController : Controller
 
 **可测试性强**
 应用程序核心不依赖任何外部 API 或仓储（Repository），因此可以通过模拟（Mock）必要的仓储，轻松地对业务逻辑服务编写单元测试。
+
+### 275. Core
+
+(1). 创建一个解决方案。
+```shell
+dotnet new sln -n ContractsManager
+```
+
+(2). 创建文件夹。
+```shell
+mkdir src
+mkdir tests
+```
+
+(3). 创建UI项目。
+```shell
+cd src
+dotnet new web -n ContractsManager.UI
+
+cd ..\
+dotnet sln add .\src\ContractsManager.UI
+```
+
+(4). 创建Core项目
+```shell
+cd src
+dotnet new web -n ContractsManager.Core
+
+cd ..
+dotnet sln add .\src\ContractsManager.Core
+```
