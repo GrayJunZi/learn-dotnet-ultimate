@@ -9984,3 +9984,7 @@ else
     <button class="btn btn-primary my-2 my-sm-0">Sign Up</button>
 }
 ```
+
+### 286. 激活导航链接
+
+...
