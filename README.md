@@ -9891,3 +9891,7 @@ dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
 内部属性：
 - Id
 - Name
+
+### 281. 注册视图
+
+...

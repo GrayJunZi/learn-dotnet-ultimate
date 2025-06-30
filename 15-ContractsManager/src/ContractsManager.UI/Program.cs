@@ -1,6 +1,9 @@
+using ContractsManager.Core.Domain.IdentityEntities;
 using CRUDExample.Filters.ActionFilters;
 using CRUDExample.StartupExtensions;
 using Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
@@ -31,6 +34,11 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .ReadFrom.Services(services);
 });
 
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, Guid>>()
+    .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, Guid>>()
+    .AddDefaultTokenProviders();
 
 builder.Services.ConfigureServices(builder.Configuration);
 
