@@ -10005,3 +10005,7 @@ services.AddIdentity<ApplicationUser, ApplicationRole>(options => {
 .AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, Guid>>()
 .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, Guid>>();
 ```
+
+### 288. 登录视图
+
+...
