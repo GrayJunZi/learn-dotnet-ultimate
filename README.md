@@ -9969,3 +9969,18 @@ public async Task<IActionResult> Register(RegisterDTO registerDTO)
 ```csharp
 app.UseAuthentication();
 ```
+
+### 285. 登录注销按钮
+
+```csharp
+@if (User.Identity.IsAuthenticated)
+{
+    <button class="btn btn-success my-2 my-sm-0">@User.Identity.Name</button>
+    <button class="btn btn-danger my-2 my-sm-0">Sign Out</button>
+    }
+else
+{
+    <button class="btn btn-primary my-2 my-sm-0">Sign In</button>
+    <button class="btn btn-primary my-2 my-sm-0">Sign Up</button>
+}
+```
