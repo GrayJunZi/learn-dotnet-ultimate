@@ -10009,3 +10009,15 @@ services.AddIdentity<ApplicationUser, ApplicationRole>(options => {
 ### 288. 登录视图
 
 ...
+
+### 289. 鉴权策略
+
+```csharp
+services.AddAuthorization(options =>
+{
+  var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+  options.FallbackPolicy = policy;
+});
+```
+
+在控制器或方法中添加`[AllowAnonymous]`属性，用于允许匿名用户访问。

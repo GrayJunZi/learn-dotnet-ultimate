@@ -2,6 +2,7 @@ using ContractsManager.Core.Domain.IdentityEntities;
 using CRUDExample.Filters.ActionFilters;
 using CRUDExample.StartupExtensions;
 using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,20 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
     .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, Guid>>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    options.LoginPath = "/Account/Login";
+});
+
 builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
@@ -78,6 +93,7 @@ app.UseHttpLogging();
 */
 
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseStaticFiles();
 app.UseRouting();

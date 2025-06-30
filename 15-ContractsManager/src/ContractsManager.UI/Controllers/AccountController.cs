@@ -1,10 +1,12 @@
 ﻿using ContractsManager.Core.Domain.IdentityEntities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServiceContracts.DTO;
 
 namespace CRUDExample.Controllers;
 
+[AllowAnonymous]
 public class AccountController(
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager) : Controller
