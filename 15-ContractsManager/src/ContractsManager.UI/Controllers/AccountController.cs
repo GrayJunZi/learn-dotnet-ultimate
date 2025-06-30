@@ -6,7 +6,8 @@ using ServiceContracts.DTO;
 namespace CRUDExample.Controllers;
 
 public class AccountController(
-    UserManager<ApplicationUser> userManager) : Controller
+    UserManager<ApplicationUser> userManager,
+    SignInManager<ApplicationUser> signInManager) : Controller
 {
     [HttpGet]
     public IActionResult Register()
@@ -34,6 +35,7 @@ public class AccountController(
         var result = await userManager.CreateAsync(user);
         if (result.Succeeded)
         {
+            await signInManager.SignInAsync(user, false);
             return RedirectToAction("Index", "Persons");
         }
         else

@@ -68,6 +68,9 @@ app.Logger.LogCritical("critical-message");
 
 app.UseHttpLogging();
 */
+
+app.UseAuthentication();
+
 app.UseStaticFiles();
 app.UseRouting();
 app.MapControllers();

@@ -9954,3 +9954,18 @@ public async Task<IActionResult> Register(RegisterDTO registerDTO)
     }
 }
 ```
+
+### 284. SignInManager
+
+为用户的登录和注册功能提供业务逻辑方法。 它提供了创建、查询、更新和删除用户的方法。
+
+方法：
+- SignInAsync()
+- PasswordSignInAsync()
+- SignOutAsync()
+- IsSignedIn()
+
+启用身份认证。
+```csharp
+app.UseAuthentication();
+```
