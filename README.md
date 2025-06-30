@@ -9895,3 +9895,13 @@ dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
 ### 281. 注册视图
 
 ...
+
+### 282. 添加Identity
+
+```csharp
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, Guid>>()
+    .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, Guid>>()
+    .AddDefaultTokenProviders();
+```
