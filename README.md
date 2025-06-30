@@ -9988,3 +9988,20 @@ else
 ### 286. 激活导航链接
 
 ...
+
+### 287. 密码复杂度配置
+
+```csharp
+services.AddIdentity<ApplicationUser, ApplicationRole>(options => {
+    options.Password.RequiredLength = 6; //number of characters required in password
+    options.Password.RequireNonAlphanumeric = true; //is non-alphanumeric characters (symbols) required in password
+    options.Password.RequireUppercase = true; //is at least one upper case character required in password
+    options.Password.RequireLowercase = true; //is at least one lower case character required in password
+    options.Password.RequireDigit = true; //is at least one digit required in password
+    options.Password.RequiredUniqueChars = 1; //number of distinct characters required in password
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders()
+.AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, Guid>>()
+.AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, Guid>>();
+```
