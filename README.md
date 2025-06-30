@@ -9905,3 +9905,52 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, Guid>>()
     .AddDefaultTokenProviders();
 ```
+
+### 283. UserManager
+
+为管理用户提供了业务逻辑方法。它包含了用于创建、查询、更新和删除用户的各类方法。
+
+方法：
+- CreateAsync()
+- DeleteAsync()
+- UpdateAsync()
+- IsInRoleAsync()
+- FindByEmailAsync()
+- FindByIdAsync()
+- FindByNameAsync()
+
+注册账号
+
+```csharp
+[HttpPost]
+public async Task<IActionResult> Register(RegisterDTO registerDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        ViewBag.Errors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList();
+        return View();
+    }
+
+    var user = new ApplicationUser
+    {
+        Email = registerDTO.Email,
+        PhoneNumber = registerDTO.Phone,
+        UserName = registerDTO.Email,
+        PersonName = registerDTO.PersonName,
+    };
+
+    var result = await userManager.CreateAsync(user);
+    if (result.Succeeded)
+    {
+        return RedirectToAction("Index", "Persons");
+    }
+    else
+    {
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(error.Code, error.Description);
+        }
+        return View(registerDTO);
+    }
+}
+```

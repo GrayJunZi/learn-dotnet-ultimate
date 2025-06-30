@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ContractsManager.Core.Domain.IdentityEntities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using ServiceContracts.DTO;
 
 namespace CRUDExample.Controllers;
 
-public class AccountController : Controller
+public class AccountController(
+    UserManager<ApplicationUser> userManager) : Controller
 {
     [HttpGet]
     public IActionResult Register()
@@ -12,8 +15,34 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public IActionResult Register(RegisterDTO registerDTO)
+    public async Task<IActionResult> Register(RegisterDTO registerDTO)
     {
-        return RedirectToAction("Index","Persons");
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Errors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList();
+            return View();
+        }
+
+        var user = new ApplicationUser
+        {
+            Email = registerDTO.Email,
+            PhoneNumber = registerDTO.Phone,
+            UserName = registerDTO.Email,
+            PersonName = registerDTO.PersonName,
+        };
+
+        var result = await userManager.CreateAsync(user);
+        if (result.Succeeded)
+        {
+            return RedirectToAction("Index", "Persons");
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(error.Code, error.Description);
+            }
+            return View(registerDTO);
+        }
     }
 }
